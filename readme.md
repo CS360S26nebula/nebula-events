@@ -35,36 +35,40 @@
 ---
 
 ## Meeting Minutes
-
-### Meeting – Feb 25, 2026
+### Meeting – Feb 17, 2026
 
 #### Date
-Friday, February 25, 2026
-
+Friday, February 22, 2026
+Duration: 30 minutes
 #### Attendance
-- Anmol  
-- Amir  
-- Michael  
-- Jehanzeb  
-- Tharidu  
-- Dillon  
+- All Present 
 
 ---
 
 #### Key Takeaways
-- Document meeting minutes for **every meeting** going forward.
-- Ensure assignments are **evenly divided** and all members contribute to **all areas** (wiki, code, design, etc.).
-- UML guidelines:
-  - Controllers should be explicitly represented.
-  - Model classes should be simple POJOs.
-  - All CRUD operations belong in controller classes.
-- Storyboard requirements:
-  - Must be **fully documented** and submitted in **picture form**.
-  - A **complete, high-level storyboard** is required.
-  - Additional videos or smaller feature storyboards may be submitted alongside.
-- Experiment search should be implemented in a **controller class**, not a static class.
-- Storyboard must include **Experiment Search** and **Experiment execution flow**.
+- Discussion on topic area for the project.
+- Went over each topic's scope and application.
+- Created common github organization and repository.
+- Added initial commits, and resolved conflicts in pull requests.
+---
 
+
+### Meeting – Feb 252, 2026
+
+#### Date
+Friday, February 22, 2026
+Duration: 25 minutes
+#### Attendance
+- All Present 
+
+---
+
+#### Key Takeaways
+- Deliverables review and allignment with expected submission criterias.
+- Usage of Figma, scope of UML diagrams and expectations from submissions in phase 2.
+- Addressed points of confusion about project timeline, start point and initial progress.
+- Resolved queries about design choices and project scope. 
+- Storyboard requirements:
 ---
 
 #### Prepared Questions & Decisions
@@ -168,3 +172,4 @@ _Add screenshots or links to wireframe images._
 ### Wireframes – Project Part 3
 
 _Add screenshots or links to wireframe images._
+
