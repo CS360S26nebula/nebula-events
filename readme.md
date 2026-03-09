@@ -5,7 +5,8 @@
 
 - [Meeting Minutes](#meeting-minutes)
   - [Meeting – Feb 17, 2026](#meeting--feb-17-2026)
-  - [Meeting – Feb 25, 2026](#meeting--feb-25-2026)
+  - [Meeting – Feb 22, 2026](#meeting--feb-22-2026)
+  - [Meeting – Mar 6, 2026](#meeting--Mar-6-2026)
   - [Meeting – TBD](#meeting--tbd)
 
 - [UML Diagrams](#uml-diagrams)
@@ -54,7 +55,7 @@ Duration: 45 minutes
 ---
 
 
-### Meeting – Feb 25, 2026
+### Meeting – Feb 22, 2026
 
 #### Date
 Friday, February 22, 2026
@@ -69,6 +70,22 @@ Duration: 25 minutes
 - Usage of Figma, scope of UML diagrams and expectations from submissions in phase 2.
 - Addressed points of confusion about project timeline, start point and initial progress.
 - Resolved queries about design choices and project scope. 
+- Storyboard requirements:
+---
+### Meeting – Mar 6, 2026
+
+#### Date
+Friday, March 6, 2026
+Duration: 1 hour 15 minutes
+#### Attendance
+- All Present 
+
+---
+
+#### Key Takeaways
+- Discussed workload divison, assigned tasks for Figma and CRC analysis
+- Decided figma colour scheme
+- Final classes and features discussed
 - Storyboard requirements:
 ---
 
@@ -173,6 +190,7 @@ _Add screenshots or links to wireframe images._
 ### Wireframes – Project Part 3
 
 _Add screenshots or links to wireframe images._
+
 
 
 
