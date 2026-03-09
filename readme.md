@@ -89,47 +89,10 @@ Duration: 1 hour 15 minutes
 - Storyboard requirements:
 ---
 
-#### Prepared Questions & Decisions
-
-**Issue #1**
-- Description limit → No  
-- Additional experiment validation → No  
-
-**Issue #4**
-- Map API restrictions → No, implementation detail  
-
-**Issue #7**
-- Resume ended experiment → Not required  
-
-**Issue #9**
-- Modify trials → Not required  
-
-**Issue #11**
-- Plot type → Scatter plot (data over time)  
-
-**Issue #14**
-- Question text length → No limit  
-- Displayed fields → Designer’s choice  
-
-**Issue #15**
-- Typos in user story → Yes  
-- Reply depth → Designer’s choice (1 level sufficient)  
-
-**Issue #18**
-- Subscription handling → Follow-up required  
-- Scan method → Team choice (recommended within experiment)  
-- QR Code stores:
-  - Location
-  - Experiment ID
-  - Success / failure
-  - Non-negative values; measurement optional  
-
-**Issue #19**
-- Barcode same as QR code  
-- Barcode data must be stored on server  
-
-**Issue #23**
-- Search performance / real-time updates → Designer’s choice  
+#### CRC Analysis
+Class Name,Faculty 
+Responsibilities,• Create an expected-visitor request before the guest arrives (CNIC + phone number). • Receive ad-hoc visitor requests (when a guest shows up unexpectedly). • Accept or reject an ad-hoc request. • Provide basic host info needed for verification. 
+Collaborators,• Administration • Security • Visitor • Logs • Request 
 
 ---
 
@@ -190,6 +153,7 @@ _Add screenshots or links to wireframe images._
 ### Wireframes – Project Part 3
 
 _Add screenshots or links to wireframe images._
+
 
 
 
