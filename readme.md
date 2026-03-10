@@ -145,17 +145,37 @@ _Will be added in next phase_
 
 ## Product Backlog
 
+Product Backlog is also available in the kanban board linked at the end of this readme file. 
 ### Product Backlog – Project Part 1
-| ID | User Story | Priority | Status |
-|----|------------|----------|--------|
+
+| ID | Theme | User Story | Risk | Points | Release |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **US01** | Auth | As a security administrator, I want to create and manage accounts for security guards, so only authorized personnel can access the gate dashboard. | Low | 2 | Half-way |
+| **US02** | Auth | As a security guard, I want to log securely into the mobile/tablet application, so my specific actions and logs are tied to my identity. | Low | 3 | Half-way |
+| **US03** | Pre-Plan | As a faculty/staff member, I want to submit a visitor request with dates, times, license plates, and a CNIC upload, so my guests are pre-approved for entry. | Low | 3 | Half-way |
+| **US04** | Dashboard | As a security guard, I want to view a daily, filterable dashboard of all expected visitors, so I know exactly who is authorized to arrive today. | Medium | 5 | Half-way |
+| **US05** | Verification | As a security guard, I want to search for a visitor by name, CNIC, or host name, so that I can manually verify them if they lose their digital pass. | Low | 2 | Half-way |
+| **US06** | Logging | As a security guard, I want to log the exact entry time of a verified visitor, so that the system updates the campus occupancy record. | Medium | 3 | Half-way |
+| **US07** | Logging | As a security guard, I want to log the exit time of a visitor as they leave, so that the trail reflects that they are no longer on campus. | Low | 2 | Half-way |
+| **US08** | Ad-Hoc | As a security guard, I want to trigger an ad-hoc approval notification to a specific host (Student/Faculty), so that I can process unexpected arrivals. | High | 5 | Final |
+| **US09** | Ad-Hoc | As a host (Faculty/Student), I want to receive real-time notifications to approve or deny an unexpected guest, so that I maintain control over who visits me. | High | 8 | Final |
+| **US10** | Exception | As a security guard, I want to be able to log an "Emergency" entry (ambulances), so that critical personnel can enter immediately while still leaving an audit trail. | Medium | 3 | Final |
+| **US11** | Audit | As a security administrator, I want to generate filterable reports of all entries, exits, and ad-hoc overrides, so that I can audit campus security procedures. | Medium | 5 | Final |
+| **US12** | Exception | As a security administrator, I want to suspend or resume visitor entries for any duration, so that campus access can be restricted on certain events. | Low | 2 | Half-way |
+| **US13** | Verification | As a security guard, I want to use the device camera to scan a visitor's QR code digital pass, so that I can instantly verify their pre-approved status. | Medium | 3 | Half-way |
+| **US14** | Security | As a security administrator, I want to add or remove specific individuals from a blacklist using their CNIC, so that offenders are blocked from campus entry. | Medium | 3 | Final |
+| **US15** | Config | As a security administrator, I want to configure the standard daily gate timings (open/close hours), so that the system automatically enforces regular campus hours. | Low | 3 | Final |
+| **US16** | Config | As a security administrator, I want to toggle specific feature permissions for different user roles, so that I can dynamically control system access. | High | 5 | Final |
+
+---
 
 ### Product Backlog – Project Part 2
-| ID | User Story | Priority | Status |
-|----|------------|----------|--------|
+| ID | Theme | User Story | Risk | Points | Release |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 
 ### Product Backlog – Project Part 3
-| ID | User Story | Priority | Status |
-|----|------------|----------|--------|
+| ID | Theme | User Story | Risk | Points | Release |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 
 ---
 
@@ -166,6 +186,7 @@ _Will be added in next phase_
 
 ### Project Backlog
 [Link for Github KanBan Board](https://github.com/orgs/CS360S26nebula/projects/3/views/1)
+
 
 
 
