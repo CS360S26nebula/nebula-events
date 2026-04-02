@@ -8,6 +8,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+/**
+ * App entry layout with edge-to-edge insets.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

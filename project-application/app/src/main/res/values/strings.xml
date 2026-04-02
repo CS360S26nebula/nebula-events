@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">SE project</string>
     <string name="plus">+</string>
+    <string name="pending_requests_title">Pending Requests</string>
+    <string name="pending_requests_subtitle">Approve/Reject Visitor Requests</string>
+    <string name="preapproved_requests_title">Pre-Approved Requests</string>
+    <string name="preapproved_requests_subtitle">View Pre-Approved Visitor Requests</string>
+    <string name="request_pre_approved">Request marked as Pre-Approved.</string>
+    <string name="request_approve_failed">Could not update request.</string>
+    <string name="rejected_requests_title">Rejected Requests</string>
+    <string name="rejected_requests_subtitle">View rejected visitor requests</string>
+    <string name="rejection_reason_required">Please enter a rejection reason.</string>
+    <string name="request_rejected">Request rejected.</string>
+    <string name="request_reject_failed">Could not reject request.</string>
 </resources>

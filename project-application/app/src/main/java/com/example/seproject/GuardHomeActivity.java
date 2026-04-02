@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Guard home shell with navigation to scan, passes, profile, and request list shortcuts.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class GuardHomeActivity extends AppCompatActivity {
 
     private static final int COLOR_ACTIVE   = 0xFF27374D;
@@ -37,6 +44,36 @@ public class GuardHomeActivity extends AppCompatActivity {
         LinearLayout navCreateEntry = findViewById(R.id.navCreateEntry);
         LinearLayout navPasses = findViewById(R.id.navPasses);
         LinearLayout navProfile = findViewById(R.id.navProfile);
+        View pendingBox = findViewById(R.id.pendingBox);
+        View preapprovedBox = findViewById(R.id.preapprovedBox);
+        View rejectedBox = findViewById(R.id.rejectedBox);
+
+        pendingBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.pending_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, getString(R.string.pending_requests_subtitle));
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
+            startActivity(intent);
+        });
+
+        preapprovedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pre-Approved");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.preapproved_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, getString(R.string.preapproved_requests_subtitle));
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
+            startActivity(intent);
+        });
+
+        rejectedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Rejected");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.rejected_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, getString(R.string.rejected_requests_subtitle));
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
+            startActivity(intent);
+        });
 
         navHome.setOnClickListener(v -> activateTab(0));
         navScan.setOnClickListener(v -> activateTab(1));

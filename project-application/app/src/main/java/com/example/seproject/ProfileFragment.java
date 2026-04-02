@@ -12,6 +12,15 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Profile screen with toggles, call admin, and logout.
+ *
+ * <p>Happy path: user taps logout → Firebase sign-out and redirect to {@link LoginActivity}.
+ * Toggle views switch tag/image between on/off states.</p>
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class ProfileFragment extends Fragment {
 
     @Override

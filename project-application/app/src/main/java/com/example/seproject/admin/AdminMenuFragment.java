@@ -11,6 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.seproject.R;
 
+/**
+ * Root admin menu tiles (manage users, blacklist, restrict entry).
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class AdminMenuFragment extends Fragment {
 
     public AdminMenuFragment() {

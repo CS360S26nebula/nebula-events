@@ -19,6 +19,12 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+/**
+ * Admin remove-user search and batch delete from Firestore.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class RemoveUserAdminFragment extends Fragment {
     private static final String REQUEST_KEY_REMOVE_USER_CONFIRM = "request_key_remove_user_confirm";
     private static final String BUNDLE_KEY_CONFIRMED = "bundle_key_confirmed";

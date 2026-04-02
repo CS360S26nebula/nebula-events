@@ -9,6 +9,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.seproject.R;
 
+/**
+ * Entry point to add or remove users (child fragments).
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class ManageUsersAdminFragment extends Fragment {
 
     public ManageUsersAdminFragment() {

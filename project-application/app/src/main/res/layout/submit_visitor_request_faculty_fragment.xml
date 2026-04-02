@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-24dp"
                 android:gravity="center"
-                android:text="Add User"
+                android:text="Submit Visitor Request"
                 android:textColor="#27374D"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="Name of User"
+                android:text="Visitor's Name"
                 android:textSize="13sp" />
 
             <EditText
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="User Role"
+                android:text="Visitor Type"
                 android:textSize="13sp" />
 
             <RelativeLayout
@@ -77,7 +77,7 @@
                     android:src="@drawable/person_dark" />
 
                 <Spinner
-                    android:id="@+id/sp_role"
+                    android:id="@+id/sp_visitor_type"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@id/role_icon_anchor"
@@ -99,162 +99,76 @@
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/keyboard_arrow_down" />
             </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Invitor's Name"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_invitor_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input"
+                android:drawableStart="@drawable/person_dark"
+                android:drawablePadding="8dp"
+                android:hint="Enter full name"
+                android:paddingHorizontal="10dp"
+                android:textSize="11sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Visit Date"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_visit_date"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input"
+                android:clickable="true"
+                android:drawableEnd="@drawable/date_range"
+                android:drawablePadding="8dp"
+                android:focusable="false"
+                android:hint="MM/DD/YYYY"
+                android:inputType="none"
+                android:paddingHorizontal="10dp"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Date of Birth"
+                android:text="Visit Time"
                 android:textSize="13sp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="6dp"
-                android:orientation="horizontal">
+                android:background="@drawable/bg_input"
+                android:paddingHorizontal="10dp">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/sp_visit_time"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_input">
-                    <Spinner
-                        android:id="@+id/sp_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:spinnerMode="dropdown" />
-                    <ImageView
-                        android:layout_width="13dp"
-                        android:layout_height="13dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/keyboard_arrow_down" />
-                </RelativeLayout>
+                    android:background="@android:color/transparent"
+                    android:paddingStart="4dp"
+                    android:spinnerMode="dropdown" />
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_input">
-                    <Spinner
-                        android:id="@+id/sp_month"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:spinnerMode="dropdown" />
-                    <ImageView
-                        android:layout_width="13dp"
-                        android:layout_height="13dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/keyboard_arrow_down" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_input">
-                    <Spinner
-                        android:id="@+id/sp_year"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:spinnerMode="dropdown" />
-                    <ImageView
-                        android:layout_width="13dp"
-                        android:layout_height="13dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/keyboard_arrow_down" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Email"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_input"
-                android:drawableStart="@drawable/mail"
-                android:drawablePadding="8dp"
-                android:hint="Enter email"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="10dp"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Password"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_input"
-                android:drawableStart="@drawable/lock"
-                android:drawablePadding="8dp"
-                android:hint="Enter Password"
-                android:inputType="textPassword"
-                android:paddingHorizontal="10dp"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Confirm Password"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/et_confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_input"
-                android:drawableStart="@drawable/lock"
-                android:drawablePadding="8dp"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
-                android:paddingHorizontal="10dp"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Phone Number"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_input"
-                android:drawableStart="@drawable/phone_dark"
-                android:drawablePadding="8dp"
-                android:hint="Enter Phone Number"
-                android:inputType="phone"
-                android:paddingHorizontal="10dp"
-                android:textSize="11sp" />
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/keyboard_arrow_down" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -274,13 +188,52 @@
                 android:hint="Enter CNIC Number"
                 android:paddingHorizontal="10dp"
                 android:textSize="11sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Phone Number"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input"
+                android:drawableStart="@drawable/phone_dark"
+                android:drawablePadding="8dp"
+                android:hint="Enter Phone Number"
+                android:inputType="phone"
+                android:paddingHorizontal="10dp"
+                android:textSize="11sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Visit Reason"
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/et_visit_reason"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input"
+                android:drawableStart="@drawable/person_dark"
+                android:drawablePadding="8dp"
+                android:hint="Enter reason"
+                android:paddingHorizontal="10dp"
+                android:textSize="11sp" />
+
+
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_user"
+                android:id="@+id/btn_submit_request"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="28dp"
-                android:text="Add"
+                android:text="Submit"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"

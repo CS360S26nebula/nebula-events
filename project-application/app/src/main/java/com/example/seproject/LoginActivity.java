@@ -13,6 +13,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Email/password sign-in and role-based redirect after Firestore profile load.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput;

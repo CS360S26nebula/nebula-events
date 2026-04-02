@@ -48,7 +48,7 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/et_name"
+                android:id="@+id/et_guest_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="6dp"

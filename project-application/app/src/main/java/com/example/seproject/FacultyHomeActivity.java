@@ -4,11 +4,21 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
+/**
+ * Faculty dashboard with navigation, submit-request overlay, and request list shortcuts.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class FacultyHomeActivity extends AppCompatActivity {
 
     private static final int COLOR_ACTIVE   = 0xFF27374D;
@@ -16,11 +26,27 @@ public class FacultyHomeActivity extends AppCompatActivity {
 
     private ImageView navHomeIcon, navDownloadIcon, navPassesIcon, navProfileIcon;
     private TextView  navHomeText, navDownloadText, navPassesText, navProfileText;
+    private FrameLayout facultyFragmentOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_home);
+
+        facultyFragmentOverlay = findViewById(R.id.faculty_fragment_overlay);
+        FragmentManager fm = getSupportFragmentManager();
+        OnBackPressedCallback submitScreenBack = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                fm.popBackStack();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, submitScreenBack);
+        fm.addOnBackStackChangedListener(() -> {
+            int count = fm.getBackStackEntryCount();
+            submitScreenBack.setEnabled(count > 0);
+            facultyFragmentOverlay.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        });
 
         navHomeIcon     = findViewById(R.id.navHomeIcon);
         navDownloadIcon = findViewById(R.id.navDownloadIcon);
@@ -37,10 +63,44 @@ public class FacultyHomeActivity extends AppCompatActivity {
         LinearLayout navSubmitRequest = findViewById(R.id.navSubmitRequest);
         LinearLayout navPasses        = findViewById(R.id.navPasses);
         LinearLayout navProfile       = findViewById(R.id.navProfile);
+        View approvedBox = findViewById(R.id.approvedBox);
+        View rejectedBox = findViewById(R.id.rejectedBox);
+        View pendingBox = findViewById(R.id.pendingBox);
 
-        navHome.setOnClickListener(v          -> activateTab(0));
-        navDownload.setOnClickListener(v      -> activateTab(1));
-        navSubmitRequest.setOnClickListener(v -> activateTab(2));
+        pendingBox.setOnClickListener(v -> {
+            Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.pending_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "View Pending Requests");
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
+            startActivity(intent);
+        });
+        approvedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Approved");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, "Approved Requests");
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "View Approved Requests");
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
+            startActivity(intent);
+        });
+
+        rejectedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Rejected");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.rejected_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, getString(R.string.rejected_requests_subtitle));
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
+            startActivity(intent);
+        });
+
+        navSubmitRequest.setOnClickListener(v -> {
+            activateTab(2);
+            fm.beginTransaction()
+                    .replace(R.id.faculty_fragment_overlay, new FacultySubmitVisitorRequest())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         navPasses.setOnClickListener(v        -> activateTab(3));
         navProfile.setOnClickListener(v -> {
             activateTab(4);

@@ -27,6 +27,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Admin flow to register a new user via secondary Firebase app and Firestore profile.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class AddUserAdminFragment extends Fragment {
 
     private static final String SECONDARY_APP_NAME = "admin_create_user_app";
@@ -79,7 +85,7 @@ public class AddUserAdminFragment extends Fragment {
     }
 
     private void initViews(@NonNull View view) {
-        editName = view.findViewById(R.id.et_name);
+        editName = view.findViewById(R.id.et_guest_name);
         editEmail = view.findViewById(R.id.et_email);
         editPassword = view.findViewById(R.id.et_password);
         editConfirmPassword = view.findViewById(R.id.et_confirm_password);

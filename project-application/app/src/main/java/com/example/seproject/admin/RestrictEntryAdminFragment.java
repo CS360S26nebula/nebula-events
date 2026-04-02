@@ -14,6 +14,12 @@ import com.example.seproject.R;
 
 import java.util.Calendar;
 
+/**
+ * Admin UI to configure restricted entry time window (placeholder data binding).
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class RestrictEntryAdminFragment extends Fragment {
 
     public RestrictEntryAdminFragment() {

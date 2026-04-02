@@ -3,6 +3,12 @@ package com.example.seproject;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Hosts {@link ProfileFragment} in {@code R.id.profile_container}.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     @Override

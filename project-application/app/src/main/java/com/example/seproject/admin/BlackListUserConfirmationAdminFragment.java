@@ -13,6 +13,12 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.seproject.R;
 
+/**
+ * Confirmation dialog for blacklist action.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class BlackListUserConfirmationAdminFragment extends DialogFragment {
     private static final String REQUEST_KEY_BLACKLIST_CONFIRM = "request_key_blacklist_confirm";
     private static final String BUNDLE_KEY_CONFIRMED = "bundle_key_confirmed";

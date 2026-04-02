@@ -7,6 +7,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.seproject.R;
 
+/**
+ * Container activity for the admin tools menu and hosted fragments.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class AdminMenuHostActivity extends AppCompatActivity {
 
     @Override

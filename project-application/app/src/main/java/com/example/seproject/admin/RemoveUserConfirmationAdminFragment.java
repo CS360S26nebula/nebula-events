@@ -13,6 +13,12 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.seproject.R;
 
+/**
+ * Confirmation dialog for user removal.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class RemoveUserConfirmationAdminFragment extends DialogFragment {
     private static final String REQUEST_KEY_REMOVE_USER_CONFIRM = "request_key_remove_user_confirm";
     private static final String BUNDLE_KEY_CONFIRMED = "bundle_key_confirmed";

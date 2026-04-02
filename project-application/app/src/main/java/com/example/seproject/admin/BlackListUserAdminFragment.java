@@ -26,6 +26,12 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Admin blacklist user form and Firestore update flow.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class BlackListUserAdminFragment extends Fragment {
     private static final String REQUEST_KEY_BLACKLIST_CONFIRM = "request_key_blacklist_confirm";
     private static final String BUNDLE_KEY_CONFIRMED = "bundle_key_confirmed";
@@ -87,7 +93,7 @@ public class BlackListUserAdminFragment extends Fragment {
     }
 
     private void initViews(@NonNull View view) {
-        etName = view.findViewById(R.id.et_name);
+        etName = view.findViewById(R.id.et_guest_name);
         etCnic = view.findViewById(R.id.et_cnic);
         etReason = view.findViewById(R.id.et_reason);
         spRole = view.findViewById(R.id.sp_role);

@@ -44,6 +44,12 @@
         <activity
             android:name=".admin.AdminMenuHostActivity"
             android:exported="false" />
+        <activity
+            android:name=".admin.FacultySubmitVisitorRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RequestListActivity"
+            android:exported="false" />
 
     </application>
 
