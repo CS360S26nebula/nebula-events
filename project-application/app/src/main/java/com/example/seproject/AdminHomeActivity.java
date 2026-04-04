@@ -60,6 +60,15 @@ public class AdminHomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        approvedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Approved");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, "Approved Requests");
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "Manage your approved requests");
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Admin");
+            startActivity(intent);
+        });
+
         preapprovedBox.setOnClickListener(v -> {
             Intent intent = new Intent(AdminHomeActivity.this, RequestListActivity.class);
             intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pre-Approved");

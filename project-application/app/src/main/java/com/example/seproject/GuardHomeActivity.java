@@ -47,12 +47,22 @@ public class GuardHomeActivity extends AppCompatActivity {
         View pendingBox = findViewById(R.id.pendingBox);
         View preapprovedBox = findViewById(R.id.preapprovedBox);
         View rejectedBox = findViewById(R.id.rejectedBox);
+        View approvedBox = findViewById(R.id.approvedBox);
 
         pendingBox.setOnClickListener(v -> {
             Intent intent = new Intent(GuardHomeActivity.this, RequestListActivity.class);
             intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
             intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.pending_requests_title));
             intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, getString(R.string.pending_requests_subtitle));
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
+            startActivity(intent);
+        });
+
+        approvedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Approved");
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, "Approved Requests");
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "Manage your approved requests");
             intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
             startActivity(intent);
         });
