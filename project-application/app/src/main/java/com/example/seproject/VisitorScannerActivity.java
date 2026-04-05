@@ -121,7 +121,7 @@ public class VisitorScannerActivity extends AppCompatActivity {
 
                         String currentStatus = document.getString("requestStatus");
                         if ("Approved".equals(currentStatus)) {
-                            Snackbar.make(viewFinder, "ENTRY ALREADY CHECKED IN!", 2000).setBackgroundTint(Color.RED).show();
+                            Snackbar.make(viewFinder, "ENTRY ALREADY CHECKED IN!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                             new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
 //                            isScanning = true;
                             return;
@@ -131,17 +131,17 @@ public class VisitorScannerActivity extends AppCompatActivity {
                                 .document(documentId)
                                 .update("requestStatus", "Approved", "checkedInAtMillis", System.currentTimeMillis())
                                 .addOnSuccessListener(unused -> {
-                                    Snackbar.make(viewFinder, "Checked in Successfully!", 2000).setBackgroundTint(Color.GREEN).show();
+                                    Snackbar.make(viewFinder, "Checked in Successfully!", 2000).setBackgroundTint(Color.GREEN).setTextColor(Color.WHITE).show();
                                     new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
 //                                    isScanning = true;
                                 })
                                 .addOnFailureListener(e -> {
-                                    Snackbar.make(viewFinder, "Failed to Check In!", 2000).setBackgroundTint(Color.RED).show();
+                                    Snackbar.make(viewFinder, "Failed to Check In!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                                     new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
 //                                    isScanning = true;
                                 });
                     } else {
-                        Snackbar.make(viewFinder, "Invalid Code!", 2000).setBackgroundTint(Color.RED).show();
+                        Snackbar.make(viewFinder, "Invalid Code!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                         new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 5000);
 //                        isScanning = true;
                     }
