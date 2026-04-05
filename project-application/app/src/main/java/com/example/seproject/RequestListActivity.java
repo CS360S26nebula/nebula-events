@@ -2,9 +2,12 @@ package com.example.seproject;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +36,7 @@ import java.util.UUID;
  * @author Moiz Imran
  * @version 1.0
  */
-public class RequestListActivity extends AppCompatActivity implements PendingRequestsAdapter.ActionListener {
+public class RequestListActivity extends AppCompatActivity implements PendingRequestsAdapter.ActionListener, PreApprovedRequestsAdapter.ActionListener {
 
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_SUBTITLE = "extra_subtitle";
@@ -50,6 +53,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     private String targetStatus;
     private String role;
     private TextView tvEmpty;
+    private EditText etSearch;
 
     /**
      * Reads intent extras, registers the reject-confirmation result listener, builds the list
@@ -78,6 +82,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
 
         findViewById(R.id.btn_back).setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         tvEmpty = findViewById(R.id.tv_empty_state);
+        etSearch = findViewById(R.id.et_search);
 
         getSupportFragmentManager().setFragmentResultListener(
                 RejectRequestConfirmationFragment.REQUEST_KEY_REJECT_CONFIRM,
@@ -92,6 +97,25 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                 });
 
         setupRecyclerView();
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ((STATUS_PRE_APPROVED.equals(targetStatus) || STATUS_APPROVED.equals(targetStatus))
+                        && adapter instanceof PreApprovedRequestsAdapter) {
+                    ((PreApprovedRequestsAdapter) adapter).filter(s.toString());
+                    tvEmpty.setVisibility(((PreApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         attachDatabaseListener();
     }
@@ -115,20 +139,20 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                 break;
             case STATUS_PRE_APPROVED:
                 if (staff) {
-                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>());
+                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this, PreApprovedRequestsAdapter.MODE_PRE_APPROVED);
                 } else if (faculty) {
                     adapter = new FacultyApprovedRequestsAdapter(new ArrayList<>());
                 } else {
-                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>());
+                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this, PreApprovedRequestsAdapter.MODE_PRE_APPROVED);
                 }
                 break;
             case STATUS_APPROVED:
                 if (staff) {
-                    adapter = new PendingRequestsAdapter(this);
+                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this, PreApprovedRequestsAdapter.MODE_APPROVED);
                 } else if (faculty) {
                     adapter = new FacultyApprovedRequestsAdapter(new ArrayList<>());
                 } else {
-                    adapter = new PendingRequestsAdapter(this);
+                    adapter = new PreApprovedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this, PreApprovedRequestsAdapter.MODE_APPROVED);
                 }
                 break;
             case STATUS_REJECTED:
@@ -199,7 +223,10 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
             if (adapter instanceof PendingRequestsAdapter) {
                 ((PendingRequestsAdapter) adapter).setItems(list, ids);
             } else if (adapter instanceof PreApprovedRequestsAdapter) {
-                ((PreApprovedRequestsAdapter) adapter).setItems(list);
+                ((PreApprovedRequestsAdapter) adapter).setItems(list, ids);
+                if (etSearch != null && (STATUS_PRE_APPROVED.equals(targetStatus) || STATUS_APPROVED.equals(targetStatus))) {
+                    ((PreApprovedRequestsAdapter) adapter).filter(etSearch.getText().toString());
+                }
             } else if (adapter instanceof FacultyApprovedRequestsAdapter) {
                 ((FacultyApprovedRequestsAdapter) adapter).setItems(list);
             } else if (adapter instanceof FacultyPendingRequestsAdapter) {
@@ -210,7 +237,12 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                 ((FacultyRejectedRequestsAdapter) adapter).setItems(list);
             }
 
-            tvEmpty.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+            if (adapter instanceof PreApprovedRequestsAdapter
+                    && (STATUS_PRE_APPROVED.equals(targetStatus) || STATUS_APPROVED.equals(targetStatus))) {
+                tvEmpty.setVisibility(((PreApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            } else {
+                tvEmpty.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+            }
         });
     }
 
@@ -229,7 +261,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
         if (adapter instanceof PendingRequestsAdapter) {
             ((PendingRequestsAdapter) adapter).setItems(new ArrayList<>(), new ArrayList<>());
         } else if (adapter instanceof PreApprovedRequestsAdapter) {
-            ((PreApprovedRequestsAdapter) adapter).setItems(new ArrayList<>());
+            ((PreApprovedRequestsAdapter) adapter).setItems(new ArrayList<>(), new ArrayList<>());
         } else if (adapter instanceof FacultyApprovedRequestsAdapter) {
             ((FacultyApprovedRequestsAdapter) adapter).setItems(new ArrayList<>());
         } else if (adapter instanceof FacultyPendingRequestsAdapter) {
@@ -292,6 +324,26 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
         }
         RejectRequestConfirmationFragment.newInstance(documentId)
                 .show(getSupportFragmentManager(), "reject_request_dialog");
+    }
+
+    @Override
+    public void onCheckIn(@NonNull Request request, @NonNull String documentId) {
+        boolean staff = "Guard".equals(role) || "Admin".equals(role);
+        if (!staff || !STATUS_PRE_APPROVED.equals(targetStatus)) {
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("requests")
+                .document(documentId)
+                .update(
+                        "requestStatus", STATUS_APPROVED,
+                        "checkedInAtMillis", System.currentTimeMillis()
+                )
+                .addOnSuccessListener(unused ->
+                        Toast.makeText(this, "Visitor checked in successfully.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to check in visitor.", Toast.LENGTH_SHORT).show());
     }
 
     /**
