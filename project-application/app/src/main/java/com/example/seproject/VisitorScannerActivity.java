@@ -30,7 +30,15 @@ import com.google.mlkit.vision.common.InputImage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+/**
+ * Activity responsible for scanning visitor QR codes, or taking manual pass-Id inputs and validating them against Firestore records.
+ * <p>
+ * This class utilizes CameraX for live preview, Google ML Kit for real-time barcode analysis,
+ * and Firebase Firestore to check pass validity and update check-in status. It supports
+ * both automatic QR detection and manual code entry.
+ * @author Ali Azhar
+ * @version 1.0
+ */
 public class VisitorScannerActivity extends AppCompatActivity {
 
     private ImageView btnBack, ivQrPlaceholder;
