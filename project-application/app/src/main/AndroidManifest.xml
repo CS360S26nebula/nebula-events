@@ -52,6 +52,7 @@
             android:name=".RequestListActivity"
             android:exported="false" />
 
+        <activity android:name=".FacultyDownloadActivity" />
         <activity
             android:name=".VisitorScannerActivity"
             android:exported="false" />
