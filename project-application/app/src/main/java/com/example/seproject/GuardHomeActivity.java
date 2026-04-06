@@ -86,7 +86,10 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         navHome.setOnClickListener(v -> activateTab(0));
-        navScan.setOnClickListener(v -> activateTab(1));
+        navScan.setOnClickListener(v -> {
+            activateTab(1);
+            startActivity(new Intent(GuardHomeActivity.this, VisitorScannerActivity.class));
+        });
         navCreateEntry.setOnClickListener(v -> activateTab(2));
         navPasses.setOnClickListener(v -> activateTab(3));
         navProfile.setOnClickListener(v -> {
