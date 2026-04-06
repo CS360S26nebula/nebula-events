@@ -25,6 +25,14 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
     public static final String MODE_PRE_APPROVED = "Pre-Approved";
     public static final String MODE_APPROVED = "Approved";
     public interface ActionListener {
+
+        /**
+         * Called when the user taps the Check In button for a pre-approved visitor.
+         *
+         * @param request the selected visitor request
+         * @param documentId Firestore document id for that request
+         */
+
         void onCheckIn(@NonNull Request request, @NonNull String documentId);
     }
 
@@ -36,9 +44,13 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
     private final String mode;
 
     /**
-     * @param initialItems starting rows; copied into an internal list
+     * Creates the adapter with the starting rows, matching document ids, action callback, and screen mode.
+     *
+     * @param initialItems starting request rows
+     * @param initialDocumentIds matching Firestore document ids
+     * @param actionListener callback used for check-in actions
+     * @param mode determines whether the adapter behaves as Pre-Approved or Approved
      */
-
     public PreApprovedRequestsAdapter(@NonNull List<Request> initialItems, @NonNull List<String> initialDocumentIds, @NonNull ActionListener actionListener, @NonNull String mode) {
         this.actionListener = actionListener;
         this.mode = mode;
@@ -56,7 +68,10 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
     }
 
     /**
-     * @param newItems replaces all rows
+     * Replaces the current rows and matching document ids, then refreshes the list.
+     *
+     * @param newItems new request rows to show
+     * @param newDocumentIds matching Firestore document ids
      */
     public void setItems(@NonNull List<Request> newItems, @NonNull List<String> newDocumentIds) {
         items.clear();
@@ -74,6 +89,12 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
         notifyDataSetChanged();
     }
 
+    /**
+     * Filters the visible list using the given search text.
+     * The search currently checks pass id, visitor name, visitor cnic, and invitor name.
+     *
+     * @param query text typed by the user in the search bar
+     */
     public void filter(@NonNull String query) {
         items.clear();
         documentIds.clear();
@@ -108,6 +129,14 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
         notifyDataSetChanged();
     }
 
+    /**
+     * Creates one card view for the RecyclerView.
+     *
+     * @param parent parent view group
+     * @param viewType row view type
+     * @return holder for one pre-approved or approved request card
+     */
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -115,6 +144,13 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
                 .inflate(R.layout.item_pre_approved_list_card, parent, false);
         return new ViewHolder(view);
     }
+
+    /**
+     * Binds one request row to the card view and adjusts badge text and button behavior based on the current adapter mode.
+     *
+     * @param holder view holder for the row
+     * @param position row position in the current filtered list
+     */
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -141,6 +177,12 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
         }
     }
 
+    /**
+     * Returns the number of rows currently visible in the adapter.
+     *
+     * @return visible row count
+     */
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -158,6 +200,11 @@ public class PreApprovedRequestsAdapter extends RecyclerView.Adapter<PreApproved
         final TextView tvStatusBadge;
         final MaterialButton btnCheckIn;
 
+        /**
+         * Finds and stores all views used inside one request card.
+         *
+         * @param itemView inflated row view
+         */
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRequestId = itemView.findViewById(R.id.tv_request_id);

@@ -51,6 +51,17 @@ public class RequestTest {
     }
 
     @Test
+    public void constructor_initializesCheckedInAtZero() {
+        assertEquals(0L, request.getCheckedInAtMillis());
+    }
+
+    @Test
+    public void checkedInAtMillis_setterStoresValue() {
+        request.setCheckedInAtMillis(900L);
+        assertEquals(900L, request.getCheckedInAtMillis());
+    }
+
+    @Test
     public void setters_updateState() {
         request.setRequestStatus("Rejected");
         request.setRejectionReason("No show");

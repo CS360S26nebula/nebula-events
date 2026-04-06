@@ -24,6 +24,13 @@ public class GuardHomeActivity extends AppCompatActivity {
     private ImageView navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon;
     private TextView navHomeText, navScanText, navPassesText, navProfileText;
 
+    /**
+     * Sets up the guard dashboard screen, connects navigation views, and opens the correct request list when a dashboard status box is tapped.
+     * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
+     *
+     * @param savedInstanceState previous state if the activity is being recreated
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,12 +104,22 @@ public class GuardHomeActivity extends AppCompatActivity {
         activateTab(0);
     }
 
+    /**
+     * Resets the bottom navigation highlight when the guard returns to this dashboard screen.
+     */
+
     @Override
     protected void onResume() {
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
         activateTab(0);
     }
+
+    /**
+     * Updates the bottom navigation icons and text colors so the selected tab appears active.
+     *
+     * @param tab index of the tab to highlight
+     */
 
     private void activateTab(int tab) {
         int[] outlineIcons = {
