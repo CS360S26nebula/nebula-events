@@ -514,6 +514,20 @@
         </LinearLayout>
     </ScrollView>
 
+    <FrameLayout
+        android:id="@+id/visitor_entry_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#F2F4F7"
+        android:clickable="true"
+        android:elevation="12dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- ======== BOTTOM NAVIGATION ======== -->
     <LinearLayout
         android:id="@+id/bottomNav"
