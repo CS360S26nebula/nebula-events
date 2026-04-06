@@ -37,5 +37,9 @@ public class AdminMenuFragment extends Fragment {
                 ((AdminMenuHostActivity) requireActivity()).navigateTo(new ManageUsersAdminFragment(), true));
         view.findViewById(R.id.card_restrict_visitor).setOnClickListener(v ->
                 ((AdminMenuHostActivity) requireActivity()).navigateTo(new RestrictEntryAdminFragment(), true));
+
+        // Umer: Added navigation for Gate Timings
+        view.findViewById(R.id.card_gate_timings).setOnClickListener(v ->
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(new AdminGateTimingsFragment(), true));
     }
 }

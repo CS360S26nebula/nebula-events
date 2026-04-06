@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:text="&#x2190;"
+        android:textColor="#333333"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gate Timings"
+        android:textColor="#111111"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButtonsContainer"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+        <LinearLayout
+            android:id="@+id/daysContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#666666" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconMonday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenMonday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenMonday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeMonday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenMonday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeMonday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenMonday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeMonday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeMonday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeMonday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeMonday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowTuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tuesday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconTuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsTuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenTuesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenTuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeTuesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenTuesday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeTuesday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenTuesday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeTuesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeTuesday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeTuesday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeTuesday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowWednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wednesday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconWednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsWednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenWednesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenWednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeWednesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenWednesday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeWednesday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenWednesday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeWednesday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeWednesday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeWednesday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeWednesday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowThursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thursday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconThursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsThursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenThursday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenThursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeThursday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenThursday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeThursday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenThursday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeThursday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeThursday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeThursday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeThursday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowFriday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Friday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconFriday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsFriday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenFriday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenFriday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeFriday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenFriday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeFriday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenFriday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeFriday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeFriday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeFriday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeFriday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowSaturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Saturday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconSaturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsSaturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenSaturday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenSaturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeSaturday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSaturday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeSaturday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSaturday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeSaturday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSaturday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeSaturday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSaturday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rowSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sunday"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/iconSunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#x203A;"
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/detailsSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="Gate Open"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenSunday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/cbGateOpenSunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#333333"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Opening Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeSunday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSunday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpeningTimeSunday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00am"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSunday"
+                        app:strokeColor="#DDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Gate Closing Time"
+                        android:textColor="#888888"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeSunday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSunday" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClosingTimeSunday"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="10:00pm"
+                        android:textAllCaps="false"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSunday"
+                        app:strokeColor="#DDDDDD" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#666666" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomButtonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:stateListAnimator="@null"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="#111111"
+            android:textSize="15sp"
+            app:backgroundTint="#FFFFFF"
+            app:cornerRadius="8dp"
+            app:strokeColor="#DDDDDD"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:stateListAnimator="@null"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:backgroundTint="#27374D"
+            app:cornerRadius="8dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
