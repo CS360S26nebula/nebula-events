@@ -35,6 +35,8 @@ public class Request {
     private long rejectedAtMillis;
     private long checkedInAtMillis;
 
+    private long checkedOutAtMillis;
+
     /**
      * No-arg constructor for Firestore and default construction.
      */
@@ -80,6 +82,7 @@ public class Request {
         this.rejectionReason = rejectionReason;
         this.rejectedAtMillis = 0L;
         this.checkedInAtMillis = 0L;
+        this.checkedOutAtMillis = 0L;
     }
 
     /**
@@ -300,5 +303,11 @@ public class Request {
      */
     public void setCreatedAtMillis(long createdAtMillis) {
         this.createdAtMillis = createdAtMillis;
+    }
+
+    public long getCheckedOutAtMillis() { return checkedOutAtMillis; }
+
+    public void setCheckedOutAtMillis(long checkedOutAtMillis) {
+        this.checkedOutAtMillis = checkedOutAtMillis;
     }
 }
