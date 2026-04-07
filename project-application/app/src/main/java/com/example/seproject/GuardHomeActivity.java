@@ -155,6 +155,7 @@ public class GuardHomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
+        refreshCounts();
         activateTab(0);
     }
 
@@ -171,7 +172,7 @@ public class GuardHomeActivity extends AppCompatActivity {
                         if ("Pending".equals(status)) pending++;
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
-                        else if ("PreApproved".equals(status)) PreApproved++;
+                        else if ("Pre-Approved".equals(status)) PreApproved++;
                         if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
                             Blacklisted++;
                         }
