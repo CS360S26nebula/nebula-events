@@ -40,7 +40,7 @@ import java.util.function.BiConsumer;
  * record the staff member who submitted the form.
  *
  * @author Moiz Imran
- * @version 1.0
+ * @version 1.1
  */
 public class CreateVisitorEntry extends Fragment {
     private EditText editGuestName;

@@ -32,7 +32,7 @@ import java.util.List;
  * Invalid input shows toasts and does not write.</p>
  *
  * @author Moiz Imran
- * @version 1.0
+ * @version 1.1
  */
 public class FacultySubmitVisitorRequest extends Fragment {
     private EditText editGuestName;

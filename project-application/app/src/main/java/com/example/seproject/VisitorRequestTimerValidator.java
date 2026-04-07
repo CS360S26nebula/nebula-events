@@ -9,20 +9,32 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Validates requests ensuring that they are for within the times when gate is open
+ * Responsible for validating visitor entry requests against gate timings from database
+ * Utilizes a callback interface to return the validation results.
  *
  * @author Umer Ashraf
- * @version 1.0
+ * @version 1.2
  */
 public class VisitorRequestTimerValidator {
+
+    /**
+     * Callback interface.
+     */
     public interface ValidationCallback {
+        /**
+         * @param isValid      True if requested time is within the allowed timings; false otherwise.
+         * @param errorMessage An error message to display if validation fails
+         */
         void onResult(boolean isValid, String errorMessage);
     }
 
     /**
-     * visitDateStr : The date string from the UI (e.g., "15/04/2026")
-     * visitTimeStr : The time string from the UI (e.g., "2:30 PM")
-     * callback :     The listener that will handle the result
+     * Validates whether a requested date and time fall within the
+     * allowed operating hours for the gate.
+     *
+     * @param visitDateStr Requested date string as "dd/MM/yyyy"
+     * @param visitTimeStr Requested time string in AM/PM
+     * @param callback     The listener to handle success or failure result.
      */
     public static void validate(String visitDateStr, String visitTimeStr, ValidationCallback callback) {
 
@@ -31,7 +43,7 @@ public class VisitorRequestTimerValidator {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             Date date = dateFormatter.parse(visitDateStr);
             SimpleDateFormat dayFormatter = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-            dayOfWeek = dayFormatter.format(date); // Converts "15/04/2026" to "Wednesday"
+            dayOfWeek = dayFormatter.format(date);
         } catch (ParseException e) {
             callback.onResult(false, "Invalid date format.");
             return;
@@ -56,21 +68,11 @@ public class VisitorRequestTimerValidator {
                         }
 
                         try {
-                            String cleanRequested = visitTimeStr.replace(" ", "").toLowerCase(Locale.ENGLISH);
-                            String cleanOpen = timing.getOpeningTime().replace(" ", "").toLowerCase(Locale.ENGLISH);
-                            String cleanClose = timing.getClosingTime().replace(" ", "").toLowerCase(Locale.ENGLISH);
-
-                            SimpleDateFormat timeParser = new SimpleDateFormat("h:mma", Locale.ENGLISH);
-                            Date requestedTime = timeParser.parse(cleanRequested);
-                            Date openingTime = timeParser.parse(cleanOpen);
-                            Date closingTime = timeParser.parse(cleanClose);
-
-                            if (requestedTime.before(openingTime) || requestedTime.after(closingTime)) {
-                                callback.onResult(false, "Gate is only open from " + timing.getOpeningTime() + " to " + timing.getClosingTime() + " on " + dayOfWeek + "s.");
-                            } else {
+                            if (isTimeWithinBounds(visitTimeStr, timing.getOpeningTime(), timing.getClosingTime())) {
                                 callback.onResult(true, null);
+                            } else {
+                                callback.onResult(false, "Gate is only open from " + timing.getOpeningTime() + " to " + timing.getClosingTime() + " on " + dayOfWeek + "s.");
                             }
-
                         } catch (ParseException e) {
                             callback.onResult(false, "Error calculating time slots.");
                         }
@@ -80,5 +82,28 @@ public class VisitorRequestTimerValidator {
                     }
                 })
                 .addOnFailureListener(e -> callback.onResult(false, "Failed to connect to the database."));
+    }
+
+    /**
+     * Checks if a requested time string falls between an open and close time.
+     * Isolated so it can be rigorously unit tested without needing Firebase connection.
+     *
+     * @param requestedTimeStr The time the visitor wants to enter
+     * @param openTimeStr      Gate opening time
+     * @param closeTimeStr     Gate closing time
+     * @return True if the time within bounds, false otherwise.
+     * @throws ParseException If any of the time strings are not in the expected format.
+     */
+    public static boolean isTimeWithinBounds(String requestedTimeStr, String openTimeStr, String closeTimeStr) throws ParseException {
+        String cleanReq = requestedTimeStr.replace(" ", "").toLowerCase(Locale.ENGLISH);
+        String cleanOpen = openTimeStr.replace(" ", "").toLowerCase(Locale.ENGLISH);
+        String cleanClose = closeTimeStr.replace(" ", "").toLowerCase(Locale.ENGLISH);
+
+        SimpleDateFormat timeParser = new SimpleDateFormat("h:mma", Locale.ENGLISH);
+        Date requestedTime = timeParser.parse(cleanReq);
+        Date openingTime = timeParser.parse(cleanOpen);
+        Date closingTime = timeParser.parse(cleanClose);
+
+        return !requestedTime.before(openingTime) && !requestedTime.after(closingTime);
     }
 }

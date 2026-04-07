@@ -26,17 +26,28 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Sets up Gate Timings for days to set times during which gate access is allowed
+ * Responsible for managing the gate access timings. Allows administrators
+ * to set specific opening and closing times for each day of the week.
+ * It handles local state, unsaved changes tracking, and ensures synchronization
+ * with the database.
  *
  * @author Umer Ashraf
  * @version 2.0
  */
-
 public class AdminGateTimingsFragment extends Fragment {
+
+    /** Flag to track if changes were made. */
     private boolean hasUnsavedChanges = false;
+
+    /** Local memory holding the data model for each day of the week. */
     private List<DailyGateTimings> weeklyTimings = new ArrayList<>();
+
+    /** Instance of the database. */
     private FirebaseFirestore database;
 
+    /**
+     * Inflates the associated layout for the gate timings activity/fragment.
+     */
     public AdminGateTimingsFragment() {
         super(R.layout.acitivity_admin_gate_timings);
     }
@@ -47,11 +58,19 @@ public class AdminGateTimingsFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    /**
+     * Initializes the database (default values), and then triggers fetch
+     * from the database, and wires up all click listeners.
+     *
+     * @param view The View returned by {@link #onCreateView}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         database = FirebaseFirestore.getInstance();
+
         initializeDefaultData();
         fetchGateTimingsFromDatabase(view);
 
@@ -62,6 +81,7 @@ public class AdminGateTimingsFragment extends Fragment {
                 requireActivity().onBackPressed();
             }
         });
+
         view.findViewById(R.id.btnCancel).setOnClickListener(v -> {
             if (hasUnsavedChanges) {
                 showCancelConfirmationDialog();
@@ -69,6 +89,7 @@ public class AdminGateTimingsFragment extends Fragment {
                 requireActivity().onBackPressed();
             }
         });
+
         view.findViewById(R.id.btnSave).setOnClickListener(v -> {
             if (hasUnsavedChanges) {
                 showSaveConfirmationDialog();
@@ -120,14 +141,22 @@ public class AdminGateTimingsFragment extends Fragment {
         setupTimePicker(view, R.id.btnClosingTimeSunday, weeklyTimings.get(6), false);
     }
 
+    /**
+     * Initializes the weeklyTimings list with objects with default values.
+     * Acts as a safe skeleton for the UI to bind to while the actual data
+     * is being fetched asynchronously.
+     */
     private void initializeDefaultData() {
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         for (String day : days) {
-            // Default assumes gate is NOT open yet, starting at 10am-10pm
             weeklyTimings.add(new DailyGateTimings(day, false, "10:00am", "10:00pm"));
         }
     }
 
+    /**
+     * Displays an alert dialog confirming if the user wants to discard unsaved changes
+     * when attempting to navigate back via the back button.
+     */
     private void showBackConfirmationDialog() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Discard Changes?")
@@ -137,6 +166,10 @@ public class AdminGateTimingsFragment extends Fragment {
                 .show();
     }
 
+    /**
+     * Displays an alert dialog confirming if the user wants to discard unsaved changes
+     * when clicking the Cancel button.
+     */
     private void showCancelConfirmationDialog() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Discard Changes?")
@@ -146,6 +179,10 @@ public class AdminGateTimingsFragment extends Fragment {
                 .show();
     }
 
+    /**
+     * Displays a confirmation dialog before pushing changes to the database
+     * when clicking the save button
+     */
     private void showSaveConfirmationDialog() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Save Gate Timings")
@@ -172,6 +209,14 @@ public class AdminGateTimingsFragment extends Fragment {
                 .show();
     }
 
+    /**
+     * Configures the expand/collapse behavior for a specific day's row.
+     *
+     * @param view      The root view of the fragment.
+     * @param rowId     The view ID of the header row.
+     * @param detailsId The view ID of the expanding/collapsing container.
+     * @param iconId    The view ID of the icon indicating open/closed state.
+     */
     private void setupDayToggle(View view, int rowId, int detailsId, int iconId) {
         View row = view.findViewById(rowId);
         View details = view.findViewById(detailsId);
@@ -180,24 +225,39 @@ public class AdminGateTimingsFragment extends Fragment {
         row.setOnClickListener(v -> {
             if (details.getVisibility() == View.VISIBLE) {
                 details.setVisibility(View.GONE);
-                icon.setText("\u203A"); // Right chevron icon
+                icon.setText("\u203A");
             } else {
                 details.setVisibility(View.VISIBLE);
-                icon.setText("\u2304"); // Down chevron icon
+                icon.setText("\u2304");
             }
         });
     }
 
+    /**
+     * Binds a checkbox to its corresponding data model object.
+     * Updates the model and marks the state as having unsaved changes upon interaction.
+     *
+     * @param view       The root view of the fragment.
+     * @param checkboxId The view ID of the checkbox.
+     * @param timingDay  The Java model representing the current day's configuration.
+     */
     private void setupCheckbox(View view, int checkboxId, DailyGateTimings timingDay) {
         CheckBox checkBox = view.findViewById(checkboxId);
 
         checkBox.setOnClickListener(v -> {
-            // Update our data model immediately when checked/unchecked
             timingDay.setGateOpen(checkBox.isChecked());
             hasUnsavedChanges = true;
         });
     }
 
+    /**
+     * When a time is selected, it updates the button text and the underlying data model.
+     *
+     * @param view          The root view of the fragment.
+     * @param buttonId      The view ID of the button triggering the picker.
+     * @param timingDay     The Java model representing the current day's configuration.
+     * @param isOpeningTime True if this picker is setting the opening time, false for closing time.
+     */
     private void setupTimePicker(View view, int buttonId, DailyGateTimings timingDay, boolean isOpeningTime) {
         MaterialButton button = view.findViewById(buttonId);
 
@@ -214,7 +274,6 @@ public class AdminGateTimingsFragment extends Fragment {
                         if (!button.getText().toString().equals(formattedTime)) {
                             button.setText(formattedTime);
 
-                            // Save to the Java Object depending on which button was clicked
                             if (isOpeningTime) {
                                 timingDay.setOpeningTime(formattedTime);
                             } else {
@@ -230,22 +289,22 @@ public class AdminGateTimingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Queries Firestore for the 'GateTimings'.
+     * Converts received documents into DailyGateTimings objects and updates the local list and UI.
+     *
+     * @param view The root view of the fragment.
+     */
     private void fetchGateTimingsFromDatabase(View view) {
-        // Show a loading indicator (optional, but good UX)
         Toast.makeText(getContext(), "Loading timings...", Toast.LENGTH_SHORT).show();
 
         database.collection("GateTimings")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-
-                        // Loop through the documents we got back from Firebase
                         for (com.google.firebase.firestore.QueryDocumentSnapshot document : task.getResult()) {
-
                             DailyGateTimings timing = document.toObject(DailyGateTimings.class);
-
                             updateLocalTimingList(timing);
-
                             updateUIForDay(view, timing);
                         }
                     } else {
@@ -254,6 +313,11 @@ public class AdminGateTimingsFragment extends Fragment {
                 });
     }
 
+    /**
+     * Merges fetched data form the database into the existing local memory.
+     *
+     * @param fetchedTiming The newly downloaded timing object from Firestore.
+     */
     private void updateLocalTimingList(DailyGateTimings fetchedTiming) {
         for (DailyGateTimings local : weeklyTimings) {
             if (local.getDayOfWeek().equals(fetchedTiming.getDayOfWeek())) {
@@ -265,8 +329,14 @@ public class AdminGateTimingsFragment extends Fragment {
         }
     }
 
+    /**
+     * Matches a DailyGateTimings object to its specific elements by day string
+     * and updates the values.
+     *
+     * @param view   The root view of the fragment.
+     * @param timing The specific day's configuration to display.
+     */
     private void updateUIForDay(View view, DailyGateTimings timing) {
-        // Match the day to the correct UI elements based on the string name
         int checkboxId = 0, openBtnId = 0, closeBtnId = 0;
 
         switch (timing.getDayOfWeek()) {
@@ -307,12 +377,10 @@ public class AdminGateTimingsFragment extends Fragment {
                 break;
         }
 
-        // If we found the IDs, update the views on the screen!
         if (checkboxId != 0) {
             ((android.widget.CheckBox) view.findViewById(checkboxId)).setChecked(timing.isGateOpen());
             ((MaterialButton) view.findViewById(openBtnId)).setText(timing.getOpeningTime());
             ((MaterialButton) view.findViewById(closeBtnId)).setText(timing.getClosingTime());
         }
     }
-
 }
