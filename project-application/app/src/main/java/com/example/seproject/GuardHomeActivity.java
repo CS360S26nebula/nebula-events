@@ -14,6 +14,10 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 /**
  * Guard home shell with navigation to scan, passes, profile, and request list shortcuts.
  *
@@ -26,7 +30,7 @@ public class GuardHomeActivity extends AppCompatActivity {
     private static final int COLOR_INACTIVE = 0xFF111111;
 
     private ImageView navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon;
-    private TextView navHomeText, navScanText, navPassesText, navProfileText;
+    private TextView  navHomeText, navScanText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount,tvPreApprovedCount,tvBlacklistedCount;
 
     /**
      * Sets up the guard dashboard screen, connects navigation views, and opens the correct request list when a dashboard status box is tapped.
@@ -112,7 +116,11 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         navHome.setOnClickListener(v -> activateTab(0));
-        navScan.setOnClickListener(v -> activateTab(1));
+        navScanIcon.setOnClickListener(v -> {
+            activateTab(1);
+            Intent intent = new Intent(GuardHomeActivity.this, VisitorScannerActivity.class);
+            startActivity(intent);
+        });
         navCreateEntry.setOnClickListener(v -> {
             activateTab(2);
             fm.beginTransaction()
@@ -127,6 +135,16 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         activateTab(0);
+        tvPendingCount = findViewById(R.id.tv_pending_count);
+        tvApprovedCount = findViewById(R.id.tv_approved_count);
+        tvRejectedCount = findViewById(R.id.tv_rejected_count);
+        tvBlacklistedCount = findViewById(R.id.tv_blacklisted_count);
+        tvPreApprovedCount = findViewById(R.id.tv_pre_approved_count);
+//        int pending = 0;
+//        int approved = 0;
+//        int rejected = 0;
+
+        refreshCounts();
     }
 
     /**
@@ -137,9 +155,35 @@ public class GuardHomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
+        refreshCounts();
         activateTab(0);
     }
 
+    private void refreshCounts() {
+
+        FirebaseFirestore.getInstance().collection("requests")
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    for (QueryDocumentSnapshot doc : snapshots) {
+
+                        Request r = doc.toObject(Request.class);
+                        String status = r.getRequestStatus();
+                        if ("Pending".equals(status)) pending++;
+                        else if ("Approved".equals(status)) approved++;
+                        else if ("Rejected".equals(status)) rejected++;
+                        else if ("Pre-Approved".equals(status)) PreApproved++;
+                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
+                            Blacklisted++;
+                        }
+                    }
+                    tvPendingCount.setText(String.valueOf(pending));
+                    tvApprovedCount.setText(String.valueOf(approved));
+                    tvRejectedCount.setText(String.valueOf(rejected));
+                    tvPreApprovedCount.setText(String.valueOf(PreApproved));
+                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
+                });
+    }
     /**
      * Updates the bottom navigation icons and text colors so the selected tab appears active.
      *
