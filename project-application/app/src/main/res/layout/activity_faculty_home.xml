@@ -118,6 +118,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_approved_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -158,6 +159,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_rejected_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -203,13 +205,15 @@
                                 android:textColor="#111111"
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
+
                             <TextView
+                                android:id="@+id/tv_pending_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
                                 android:text="10"
                                 android:textColor="#333333"
-                                android:textSize="13sp"
-                                android:layout_marginTop="3dp" />
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </LinearLayout>
 
