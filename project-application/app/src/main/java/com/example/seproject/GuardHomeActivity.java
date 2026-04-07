@@ -5,10 +5,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Guard home shell with navigation to scan, passes, profile, and request list shortcuts.
@@ -35,6 +39,21 @@ public class GuardHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guard_home);
+
+        final FrameLayout visitorEntryOverlay = findViewById(R.id.visitor_entry_overlay);
+        FragmentManager fm = getSupportFragmentManager();
+        OnBackPressedCallback visitorEntryBack = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                fm.popBackStack();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, visitorEntryBack);
+        fm.addOnBackStackChangedListener(() -> {
+            int count = fm.getBackStackEntryCount();
+            visitorEntryBack.setEnabled(count > 0);
+            visitorEntryOverlay.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        });
 
         navHomeIcon = findViewById(R.id.navHomeIcon);
         navScanIcon = findViewById(R.id.navScanIcon);
@@ -93,11 +112,14 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         navHome.setOnClickListener(v -> activateTab(0));
-        navScan.setOnClickListener(v -> {
-            activateTab(1);
-            startActivity(new Intent(GuardHomeActivity.this, VisitorScannerActivity.class));
+        navScan.setOnClickListener(v -> activateTab(1));
+        navCreateEntry.setOnClickListener(v -> {
+            activateTab(2);
+            fm.beginTransaction()
+                    .replace(R.id.visitor_entry_overlay, new CreateVisitorEntry())
+                    .addToBackStack(null)
+                    .commit();
         });
-        navCreateEntry.setOnClickListener(v -> activateTab(2));
         navPasses.setOnClickListener(v -> activateTab(3));
         navProfile.setOnClickListener(v -> {
             activateTab(4);
