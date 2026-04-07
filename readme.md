@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [Team Information](#team-information)
-
+-[Latest deliverable milestones](#Halfway-Deliverable:-Project-Features)
 - [Meeting Minutes](#meeting-minutes)
   - [Meeting – Feb 17, 2026](#meeting--feb-17-2026)
   - [Meeting – Feb 22, 2026](#meeting--feb-22-2026)
@@ -19,7 +19,6 @@
 - [Links](#Links)
 
 ---
-
 ## Team Information
 - **Team Name:** _Nebula_
 
@@ -32,8 +31,69 @@
 | Umer Ashraf        | 27100236    | UmerAshraf-236            |
 
 ---
+# Halfway Deliverable: Project Features
+
+### Administrator Controls
+* **Manual Gate Adjustments**: Admins can easily change gate opening and closing times or shut the gate to visitors for the day when needed.
+* **User Management**: A straightforward dashboard for Admins to add new users, remove old ones, or manage the blacklist directly through the app.
+
+### Visitor Access & Scanning
+* **Offline QR Scanning**: Visitors can download their approved QR code to their phone gallery. Guards can scan these codes even if the visitor doesn't have the app or a working internet connection.
+* **Direct Guest Entry**: Guards can register guest entries for students on the spot. This removes the need for secondary approvals and prevents delays at the gate during busy hours.
+
+### Data Reliability
+* **Real-Time Synchronization**: All account data and entry logs are synced to a live database, keeping everything consistent across the Admin, Guard, and Faculty views.
+* **Searchable Logs**: Entry history is kept safe and organized, making it easy to search and query whenever you need to look up a specific record.
+---
 
 ## Meeting Minutes
+##Phase-2
+
+---
+### Meeting – March 30, 2026
+
+#### Date
+Monday, March 30, 2026
+Duration: 30 minutes
+---
+
+#### Key Takeaways
+- decided work timeline for the deliverable.
+- divided user stories and workload
+- started converting Figma UI to android xmls.
+---
+### Meeting – April 6, 2026
+
+#### Date
+Monday, April 6, 2026
+Duration: 2 hours 30 minutes
+---
+
+#### Key Takeaways
+- Group coding/ brain storming session.
+- Ensured consistent usage of colour schemes, constants across different files.
+- Fixed recurring issues with test cases from last few commits.
+- merged pull requests with code conflicts.
+---
+
+---
+### Meeting – April 7, 2026
+
+#### Date
+Tuesday, April 7, 2026
+Duration: 2 hours
+---
+
+#### Key Takeaways
+- Coding, bug fixes and discussion over final group deliverables.
+- Meeting with TA to discuss app improvements and final refinements.
+- Last minute merge conflicts resolution.
+- division of work for formatting, uploads and code integration.
+
+---
+
+
+##Phase-1
 ### Meeting – Feb 17, 2026
 
 #### Date
