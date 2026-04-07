@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,18 +17,25 @@ import com.example.seproject.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Sets up Gate Timings for days to set times during which gate access is allowed
  *
  * @author Umer Ashraf
- * @version 1.0
+ * @version 2.0
  */
 
 public class AdminGateTimingsFragment extends Fragment {
-
     private boolean hasUnsavedChanges = false;
+    private List<DailyGateTimings> weeklyTimings = new ArrayList<>();
+    private FirebaseFirestore database;
 
     public AdminGateTimingsFragment() {
         super(R.layout.acitivity_admin_gate_timings);
@@ -42,6 +50,10 @@ public class AdminGateTimingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        database = FirebaseFirestore.getInstance();
+        initializeDefaultData();
+        fetchGateTimingsFromDatabase(view);
 
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
             if (hasUnsavedChanges) {
@@ -65,47 +77,55 @@ public class AdminGateTimingsFragment extends Fragment {
             }
         });
 
-        // Setup Monday
+        // Monday
         setupDayToggle(view, R.id.rowMonday, R.id.detailsMonday, R.id.iconMonday);
-        setupCheckbox(view, R.id.cbGateOpenMonday);
-        setupTimePicker(view, R.id.btnOpeningTimeMonday);
-        setupTimePicker(view, R.id.btnClosingTimeMonday);
+        setupCheckbox(view, R.id.cbGateOpenMonday, weeklyTimings.get(0));
+        setupTimePicker(view, R.id.btnOpeningTimeMonday, weeklyTimings.get(0), true);
+        setupTimePicker(view, R.id.btnClosingTimeMonday, weeklyTimings.get(0), false);
 
-        // Setup Tuesday
+        // Tuesday
         setupDayToggle(view, R.id.rowTuesday, R.id.detailsTuesday, R.id.iconTuesday);
-        setupCheckbox(view, R.id.cbGateOpenTuesday);
-        setupTimePicker(view, R.id.btnOpeningTimeTuesday);
-        setupTimePicker(view, R.id.btnClosingTimeTuesday);
+        setupCheckbox(view, R.id.cbGateOpenTuesday, weeklyTimings.get(1));
+        setupTimePicker(view, R.id.btnOpeningTimeTuesday, weeklyTimings.get(1), true);
+        setupTimePicker(view, R.id.btnClosingTimeTuesday, weeklyTimings.get(1), false);
 
-        // Setup Wednesday
+        // Wednesday
         setupDayToggle(view, R.id.rowWednesday, R.id.detailsWednesday, R.id.iconWednesday);
-        setupCheckbox(view, R.id.cbGateOpenWednesday);
-        setupTimePicker(view, R.id.btnOpeningTimeWednesday);
-        setupTimePicker(view, R.id.btnClosingTimeWednesday);
+        setupCheckbox(view, R.id.cbGateOpenWednesday, weeklyTimings.get(2));
+        setupTimePicker(view, R.id.btnOpeningTimeWednesday, weeklyTimings.get(2), true);
+        setupTimePicker(view, R.id.btnClosingTimeWednesday, weeklyTimings.get(2), false);
 
-        // Setup Thursday
+        // Thursday
         setupDayToggle(view, R.id.rowThursday, R.id.detailsThursday, R.id.iconThursday);
-        setupCheckbox(view, R.id.cbGateOpenThursday);
-        setupTimePicker(view, R.id.btnOpeningTimeThursday);
-        setupTimePicker(view, R.id.btnClosingTimeThursday);
+        setupCheckbox(view, R.id.cbGateOpenThursday, weeklyTimings.get(3));
+        setupTimePicker(view, R.id.btnOpeningTimeThursday, weeklyTimings.get(3), true);
+        setupTimePicker(view, R.id.btnClosingTimeThursday, weeklyTimings.get(3), false);
 
-        // Setup Friday
+        // Friday
         setupDayToggle(view, R.id.rowFriday, R.id.detailsFriday, R.id.iconFriday);
-        setupCheckbox(view, R.id.cbGateOpenFriday);
-        setupTimePicker(view, R.id.btnOpeningTimeFriday);
-        setupTimePicker(view, R.id.btnClosingTimeFriday);
+        setupCheckbox(view, R.id.cbGateOpenFriday, weeklyTimings.get(4));
+        setupTimePicker(view, R.id.btnOpeningTimeFriday, weeklyTimings.get(4), true);
+        setupTimePicker(view, R.id.btnClosingTimeFriday, weeklyTimings.get(4), false);
 
-        // Setup Saturday
+        // Saturday
         setupDayToggle(view, R.id.rowSaturday, R.id.detailsSaturday, R.id.iconSaturday);
-        setupCheckbox(view, R.id.cbGateOpenSaturday);
-        setupTimePicker(view, R.id.btnOpeningTimeSaturday);
-        setupTimePicker(view, R.id.btnClosingTimeSaturday);
+        setupCheckbox(view, R.id.cbGateOpenSaturday, weeklyTimings.get(5));
+        setupTimePicker(view, R.id.btnOpeningTimeSaturday, weeklyTimings.get(5), true);
+        setupTimePicker(view, R.id.btnClosingTimeSaturday, weeklyTimings.get(5), false);
 
-        // Setup Sunday
+        // Sunday
         setupDayToggle(view, R.id.rowSunday, R.id.detailsSunday, R.id.iconSunday);
-        setupCheckbox(view, R.id.cbGateOpenSunday);
-        setupTimePicker(view, R.id.btnOpeningTimeSunday);
-        setupTimePicker(view, R.id.btnClosingTimeSunday);
+        setupCheckbox(view, R.id.cbGateOpenSunday, weeklyTimings.get(6));
+        setupTimePicker(view, R.id.btnOpeningTimeSunday, weeklyTimings.get(6), true);
+        setupTimePicker(view, R.id.btnClosingTimeSunday, weeklyTimings.get(6), false);
+    }
+
+    private void initializeDefaultData() {
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        for (String day : days) {
+            // Default assumes gate is NOT open yet, starting at 10am-10pm
+            weeklyTimings.add(new DailyGateTimings(day, false, "10:00am", "10:00pm"));
+        }
     }
 
     private void showBackConfirmationDialog() {
@@ -131,9 +151,22 @@ public class AdminGateTimingsFragment extends Fragment {
                 .setTitle("Save Gate Timings")
                 .setMessage("Are you sure you want to save changes?")
                 .setPositiveButton("Save", (dialog, which) -> {
-                    // TODO: Implement your saving logic here
-                    Toast.makeText(getContext(), "Gate timings saved!", Toast.LENGTH_SHORT).show();
-                    requireActivity().onBackPressed();
+
+                    WriteBatch batch = database.batch();
+                    for (DailyGateTimings timing : weeklyTimings) {
+                        DocumentReference docRef = database.collection("GateTimings").document(timing.getDayOfWeek());
+                        batch.set(docRef, timing);
+                    }
+
+                    batch.commit().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Gate timings saved", Toast.LENGTH_SHORT).show();
+                            hasUnsavedChanges = false;
+                            requireActivity().onBackPressed();
+                        } else {
+                            Toast.makeText(getContext(), "Failed to save.", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -155,16 +188,20 @@ public class AdminGateTimingsFragment extends Fragment {
         });
     }
 
-    private void setupCheckbox(View view, int checkboxId) {
-        // Triggered only on physical user taps
-        view.findViewById(checkboxId).setOnClickListener(v -> hasUnsavedChanges = true);
+    private void setupCheckbox(View view, int checkboxId, DailyGateTimings timingDay) {
+        CheckBox checkBox = view.findViewById(checkboxId);
+
+        checkBox.setOnClickListener(v -> {
+            // Update our data model immediately when checked/unchecked
+            timingDay.setGateOpen(checkBox.isChecked());
+            hasUnsavedChanges = true;
+        });
     }
 
-    private void setupTimePicker(View view, int buttonId) {
+    private void setupTimePicker(View view, int buttonId, DailyGateTimings timingDay, boolean isOpeningTime) {
         MaterialButton button = view.findViewById(buttonId);
 
         button.setOnClickListener(v -> {
-            // Defaulting to 10:00 for the picker starting position
             TimePickerDialog timePickerDialog = new TimePickerDialog(
                     getContext(),
                     (picker, hourOfDay, minute) -> {
@@ -174,15 +211,108 @@ public class AdminGateTimingsFragment extends Fragment {
 
                         String formattedTime = String.format(Locale.getDefault(), "%02d:%02d%s", displayHour, minute, amPm);
 
-                        // Check if the time actually changed before updating the flag
                         if (!button.getText().toString().equals(formattedTime)) {
                             button.setText(formattedTime);
+
+                            // Save to the Java Object depending on which button was clicked
+                            if (isOpeningTime) {
+                                timingDay.setOpeningTime(formattedTime);
+                            } else {
+                                timingDay.setClosingTime(formattedTime);
+                            }
+
                             hasUnsavedChanges = true;
                         }
                     },
-                    10, 0, false // false sets it to 12-hour AM/PM format
+                    10, 0, false
             );
             timePickerDialog.show();
         });
     }
+
+    private void fetchGateTimingsFromDatabase(View view) {
+        // Show a loading indicator (optional, but good UX)
+        Toast.makeText(getContext(), "Loading timings...", Toast.LENGTH_SHORT).show();
+
+        database.collection("GateTimings")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+
+                        // Loop through the documents we got back from Firebase
+                        for (com.google.firebase.firestore.QueryDocumentSnapshot document : task.getResult()) {
+
+                            DailyGateTimings timing = document.toObject(DailyGateTimings.class);
+
+                            updateLocalTimingList(timing);
+
+                            updateUIForDay(view, timing);
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Failed to load timings.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateLocalTimingList(DailyGateTimings fetchedTiming) {
+        for (DailyGateTimings local : weeklyTimings) {
+            if (local.getDayOfWeek().equals(fetchedTiming.getDayOfWeek())) {
+                local.setGateOpen(fetchedTiming.isGateOpen());
+                local.setOpeningTime(fetchedTiming.getOpeningTime());
+                local.setClosingTime(fetchedTiming.getClosingTime());
+                break;
+            }
+        }
+    }
+
+    private void updateUIForDay(View view, DailyGateTimings timing) {
+        // Match the day to the correct UI elements based on the string name
+        int checkboxId = 0, openBtnId = 0, closeBtnId = 0;
+
+        switch (timing.getDayOfWeek()) {
+            case "Monday":
+                checkboxId = R.id.cbGateOpenMonday;
+                openBtnId = R.id.btnOpeningTimeMonday;
+                closeBtnId = R.id.btnClosingTimeMonday;
+                break;
+            case "Tuesday":
+                checkboxId = R.id.cbGateOpenTuesday;
+                openBtnId = R.id.btnOpeningTimeTuesday;
+                closeBtnId = R.id.btnClosingTimeTuesday;
+                break;
+            case "Wednesday":
+                checkboxId = R.id.cbGateOpenWednesday;
+                openBtnId = R.id.btnOpeningTimeWednesday;
+                closeBtnId = R.id.btnClosingTimeWednesday;
+                break;
+            case "Thursday":
+                checkboxId = R.id.cbGateOpenThursday;
+                openBtnId = R.id.btnOpeningTimeThursday;
+                closeBtnId = R.id.btnClosingTimeThursday;
+                break;
+            case "Friday":
+                checkboxId = R.id.cbGateOpenFriday;
+                openBtnId = R.id.btnOpeningTimeFriday;
+                closeBtnId = R.id.btnClosingTimeFriday;
+                break;
+            case "Saturday":
+                checkboxId = R.id.cbGateOpenSaturday;
+                openBtnId = R.id.btnOpeningTimeSaturday;
+                closeBtnId = R.id.btnClosingTimeSaturday;
+                break;
+            case "Sunday":
+                checkboxId = R.id.cbGateOpenSunday;
+                openBtnId = R.id.btnOpeningTimeSunday;
+                closeBtnId = R.id.btnClosingTimeSunday;
+                break;
+        }
+
+        // If we found the IDs, update the views on the screen!
+        if (checkboxId != 0) {
+            ((android.widget.CheckBox) view.findViewById(checkboxId)).setChecked(timing.isGateOpen());
+            ((MaterialButton) view.findViewById(openBtnId)).setText(timing.getOpeningTime());
+            ((MaterialButton) view.findViewById(closeBtnId)).setText(timing.getClosingTime());
+        }
+    }
+
 }
