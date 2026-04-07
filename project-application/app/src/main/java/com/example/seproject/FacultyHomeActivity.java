@@ -128,7 +128,9 @@ public class FacultyHomeActivity extends AppCompatActivity {
 
         refreshCounts();
     }
-
+    /**
+     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,7 +138,9 @@ public class FacultyHomeActivity extends AppCompatActivity {
         activateTab(0);
         refreshCounts();
     }
-
+    /**
+     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     */
     private void refreshCounts() {
         String uid = FirebaseAuth.getInstance().getUid();
         if (uid == null) return;

@@ -54,6 +54,13 @@ public class VisitorScannerActivity extends AppCompatActivity {
             });
 
     @Override
+    /**
+     * Sets up the scanner interface and initializes camera logic.
+     * * <p>Binds UI components, attaches listeners for manual code validation,
+     * and evaluates camera permissions to initiate startCamera.</p>
+     *
+     * @param savedInstanceState State bundle for activity restoration.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivty_scan_qr_guard);
@@ -77,7 +84,22 @@ public class VisitorScannerActivity extends AppCompatActivity {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
-
+    /**
+     * Initializes and starts the Camera for barcode scanning.
+     * <p>
+     * This method performs the following operations:
+     * <ul>
+     * <li>Retrieves an instance of {@link androidx.camera.lifecycle.ProcessCameraProvider}.</li>
+     * <li>Configures a {@link androidx.camera.core.Preview} use case to display the camera feed
+     * on the {@code viewFinder}.</li>
+     * <li>Sets up an {@link androidx.camera.core.ImageAnalysis} use case with a non-blocking call
+     * <li>Binds the configured use cases to the current Activity's lifecycle.</li>
+     * <li>Updates the UI by hiding the QR placeholder and making the viewfinder visible
+     * once the camera is ready.</li>
+     * </ul>
+     * * @see androidx.camera.core.ImageAnalysis.Analyzer
+     *
+     */
     private void startCamera() {
         ProcessCameraProvider.getInstance(this).addListener(() -> {
             try {
@@ -118,6 +140,11 @@ public class VisitorScannerActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> imageProxy.close());
     }
 
+    /**
+    Checks if a received passID is valid and has not been scanned yet, uses snackbars to display error and success messages
+
+     @param code Pass ID of the scanned visitor
+     */
     private void validateVisitorCode(String code) {
         FirebaseFirestore.getInstance().collection("requests")
                 .whereEqualTo("passId", code)
@@ -129,7 +156,13 @@ public class VisitorScannerActivity extends AppCompatActivity {
 
                         String currentStatus = document.getString("requestStatus");
                         if ("Approved".equals(currentStatus)) {
-                            Snackbar.make(viewFinder, "ENTRY ALREADY CHECKED IN!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                            Snackbar.make(viewFinder, "Entry Already checked in!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
+//                            isScanning = true;
+                            return;
+                        }
+                        if ("Expired".equals(currentStatus)) {
+                            Snackbar.make(viewFinder, "Expired Visitor Pass!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
                             new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
 //                            isScanning = true;
                             return;
