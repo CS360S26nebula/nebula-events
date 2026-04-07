@@ -34,7 +34,7 @@ import java.util.UUID;
  * {@link #EXTRA_ROLE} may be null or absent; empty {@code EXTRA_STATUS} defaults to Pending.</p>
  *
  * @author Moiz Imran
- * @version 1.0
+ * @version 2.0
  */
 public class RequestListActivity extends AppCompatActivity implements PendingRequestsAdapter.ActionListener, PreApprovedRequestsAdapter.ActionListener, ApprovedRequestsAdapter.ActionListener {
 
@@ -386,6 +386,12 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                         Toast.makeText(this, "Failed to check in visitor.", Toast.LENGTH_SHORT).show());
     }
 
+    /**
+     * Opens checkout confirmation dialog.
+     *
+     * @param request Row being checked out
+     * @param documentId Firestore document id
+     */
     @Override
     public void onCheckOut(@NonNull Request request, @NonNull String documentId) {
         boolean staff = "Guard".equals(role) || "Admin".equals(role);
@@ -417,6 +423,11 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                 .addOnFailureListener(e -> Toast.makeText(this, R.string.request_reject_failed, Toast.LENGTH_SHORT).show());
     }
 
+    /**
+     * Writes check out fields to Firestore for the given document.
+     *
+     * @param documentId target document id
+     */
     private void persistCheckOut(@NonNull String documentId) {
         FirebaseFirestore.getInstance()
                 .collection("requests")
