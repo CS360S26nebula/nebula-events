@@ -17,6 +17,12 @@
   - [Product Backlog – Project Part 3](#product-backlog--project-part-3)
 - [Links](#links)
 
+
+---
+## Usage
+
+* **Quick Installation**: Download the application from the `APK` folder for a one-click setup on your Android device.
+* **Manual Compilation**: Alternatively, you can build the project yourself using the source files found in the `project-application` directory.
 ---
 
 ## Team Information
@@ -46,6 +52,9 @@
 * **Real-Time Synchronization**: All account data and entry logs are synced to a live database, keeping everything consistent across the Admin, Guard, and Faculty views.
 * **Searchable Logs**: Entry history is kept safe and organized, making it easy to search and query whenever you need to look up a specific record.
 
+### Faculty Pre-Approval System
+* **Advance Guest Registration**: Faculty can log visitors before they arrive, ensuring all security details are handled in advance. Any status update—whether a request is approved or declined—shows up on your personal dashboard in real-time.
+* **Direct Pass Sharing**: Once a request is cleared, you can save the digital pass and send it straight to your visitor. This ensures a **hassle-free** arrival, as your guest only needs to show the code at the gate to be scanned in, even if they don't have the app themselves.
 ---
 
 ## Meeting Minutes
