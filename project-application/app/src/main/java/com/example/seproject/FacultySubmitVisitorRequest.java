@@ -168,20 +168,50 @@ public class FacultySubmitVisitorRequest extends Fragment {
                 });
     }
 
-    private void submitRequest() {
-        String visitorName = editGuestName.getText().toString().trim();
-        String invitorName = editInvitorName.getText().toString().trim();
-        String visitorPhoneNumber = editPhone.getText().toString().trim();
-        String visitorCnic = editCnic.getText().toString().trim();
-        String visitReason = editVisitReason.getText().toString().trim();
-        String visitorType = selectedValue(spVisitorType);
-        String visitDate = editVisitDate.getText().toString().trim();
-        String visitTime = selectedValue(spVisitTime);
-        if (!validateInput(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason, visitorType, visitDate, visitTime)) {
+//    private void submitRequest() {
+//        String visitorName = editGuestName.getText().toString().trim();
+//        String invitorName = editInvitorName.getText().toString().trim();
+//        String visitorPhoneNumber = editPhone.getText().toString().trim();
+//        String visitorCnic = editCnic.getText().toString().trim();
+//        String visitReason = editVisitReason.getText().toString().trim();
+//        String visitorType = selectedValue(spVisitorType);
+//        String visitDate = editVisitDate.getText().toString().trim();
+//        String visitTime = selectedValue(spVisitTime);
+//        if (!validateInput(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason, visitorType, visitDate, visitTime)) {
+//            return;
+//        }
+//        createVisitorRequest(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason, visitorType, visitDate, visitTime);
+//    }
+
+    /* EDIT BY UMER:
+     * editted function to check if requested time falls within gate times.
+     * */
+private void submitRequest() {
+    String visitorName = editGuestName.getText().toString().trim();
+    String invitorName = editInvitorName.getText().toString().trim();
+    String visitorPhoneNumber = editPhone.getText().toString().trim();
+    String visitorCnic = editCnic.getText().toString().trim();
+    String visitReason = editVisitReason.getText().toString().trim();
+    String visitorType = selectedValue(spVisitorType);
+    String visitDate = editVisitDate.getText().toString().trim();
+    String visitTime = selectedValue(spVisitTime);
+
+    if (!validateInput(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason, visitorType, visitDate, visitTime)) {
+        return;
+    }
+
+    btnSubmitRequest.setEnabled(false);
+
+    VisitorRequestTimerValidator.validate(visitDate, visitTime, (isValid, errorMessage) -> {
+        if (!isValid) {
+            toast(errorMessage);
+            btnSubmitRequest.setEnabled(true);
             return;
         }
         createVisitorRequest(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason, visitorType, visitDate, visitTime);
-    }
+        btnSubmitRequest.setEnabled(true);
+    });
+}
 
     private void clearForm() {
         editGuestName.setText("");
