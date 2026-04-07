@@ -2,7 +2,6 @@ package com.example.seproject;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,12 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 
 /**
  * Admin/Guard form to register a visitor in Firestore {@code requests}. Documents are written as
- * {@code Approved} with a generated {@code passId}. {@code requesterUid} and
+ * {@code Approved} with a generated {@code passId}. Validation and id/status generation are
+ * delegated to {@link CreateVisitorEntryRules}. {@code requesterUid} and
  * {@code requesterEmail} are set from the <strong>host faculty</strong> resolved via
  * {@code users} collection (email must match their profile / login email) so the row appears in
  * that faculty's lists in {@link RequestListActivity}. {@code createdByUid} / {@code createdByEmail}
@@ -120,7 +119,7 @@ public class CreateVisitorEntry extends Fragment {
             toast("Please enter the invitor's email.");
             return false;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(invitorEmail).matches()) {
+        if (!CreateVisitorEntryRules.isInvitorEmailFormatValid(invitorEmail)) {
             toast("Please enter a valid invitor email.");
             return false;
         }
@@ -178,7 +177,7 @@ public class CreateVisitorEntry extends Fragment {
                                     @NonNull String facultyUid, @NonNull String facultyEmail,
                                     @NonNull String invitorEmailEntered) {
         String requestId = "ID-" + System.currentTimeMillis();
-        String passId = "PASS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT);
+        String passId = CreateVisitorEntryRules.buildPassId();
         String rejectionReason = "";
         Request requestObj = new Request(
                 requestId,
@@ -190,7 +189,7 @@ public class CreateVisitorEntry extends Fragment {
                 visitTime,
                 invitorName,
                 visitorType,
-                "Approved",
+                CreateVisitorEntryRules.statusForStaffCreatedEntry(),
                 System.currentTimeMillis(),
                 passId,
                 rejectionReason

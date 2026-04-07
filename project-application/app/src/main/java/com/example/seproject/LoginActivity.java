@@ -1,8 +1,11 @@
 package com.example.seproject;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,9 +25,11 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput;
+    private ImageView passwordToggle;
     private Button loginButton;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private boolean isPasswordVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
 
         emailInput = findViewById(R.id.emailEditText);
         passwordInput = findViewById(R.id.passwordEditText);
+        passwordToggle = findViewById(R.id.passwordToggle);
         loginButton = findViewById(R.id.loginButton);
+        setupPasswordToggle();
 
 
         loginButton.setOnClickListener(v -> {
@@ -52,6 +59,23 @@ public class LoginActivity extends AppCompatActivity {
 
 
             loginUser(email, password);
+        });
+    }
+
+    private void setupPasswordToggle() {
+        isPasswordVisible = false;
+        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        passwordToggle.setImageResource(R.drawable.ic_visibility_off);
+        passwordToggle.setOnClickListener(v -> {
+            isPasswordVisible = !isPasswordVisible;
+            if (isPasswordVisible) {
+                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                passwordToggle.setImageResource(R.drawable.ic_visibility_on);
+            } else {
+                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                passwordToggle.setImageResource(R.drawable.ic_visibility_off);
+            }
+            passwordInput.setSelection(passwordInput.getText().length());
         });
     }
 
