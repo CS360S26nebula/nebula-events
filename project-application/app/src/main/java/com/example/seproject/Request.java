@@ -288,6 +288,10 @@ public class Request {
         this.rejectedAtMillis = rejectedAtMillis;
     }
 
+    /**
+     * @param checkedInAtMillis checked in time; any long
+     */
+
     public void setCheckedInAtMillis(long checkedInAtMillis) {
         this.checkedInAtMillis = checkedInAtMillis;
     }
@@ -300,6 +304,10 @@ public class Request {
     }
 
     public long getCheckedOutAtMillis() { return checkedOutAtMillis; }
+
+    /**
+     * @param checkedOutAtMillis checked out time; any long
+     */
 
     public void setCheckedOutAtMillis(long checkedOutAtMillis) {
         this.checkedOutAtMillis = checkedOutAtMillis;

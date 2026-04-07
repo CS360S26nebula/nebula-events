@@ -14,6 +14,12 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lists approved requests (pass id and visitor details).
+ *
+ * @author Abdullah Ahmad
+ * @version 1.0
+ */
 public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedRequestsAdapter.ViewHolder> {
 
     public static final String MODE_APPROVED = "Approved";
@@ -28,9 +34,12 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
     private final List<String> allDocumentIds = new ArrayList<>();
     private final ActionListener actionListener;
 
-    public ApprovedRequestsAdapter(@NonNull List<Request> initialItems,
-                                   @NonNull List<String> initialDocumentIds,
-                                   @NonNull ActionListener actionListener) {
+    /**
+     * @param initialItems Starting rows; copied into an internal list
+     * @param initialDocumentIds Firestore document ids corresponding to starting rows
+     * @param actionListener Callback for user actions
+     */
+    public ApprovedRequestsAdapter(@NonNull List<Request> initialItems, @NonNull List<String> initialDocumentIds, @NonNull ActionListener actionListener) {
         this.actionListener = actionListener;
 
         items.addAll(initialItems);
@@ -38,6 +47,11 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
         documentIds.addAll(initialDocumentIds);
         allDocumentIds.addAll(initialDocumentIds);
     }
+
+    /**
+     * @param newItems Updated list
+     * @param newDocumentIds Firestore document ids corresponding to the updated list
+     */
 
     public void setItems(@NonNull List<Request> newItems, @NonNull List<String> newDocumentIds) {
         items.clear();
@@ -54,11 +68,15 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
         notifyDataSetChanged();
     }
 
+    /**
+     * @param query search string; may or may not be empty
+     */
+
     public void filter(@NonNull String query) {
         items.clear();
         documentIds.clear();
 
-        if (TextUtils.isEmpty(query)) {
+        if (query == null || query.trim().isEmpty()) {
             items.addAll(allItems);
             documentIds.addAll(allDocumentIds);
             notifyDataSetChanged();
@@ -88,6 +106,12 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
         notifyDataSetChanged();
     }
 
+    /**
+     * @param parent Parent view group
+     * @param viewType Type of the view
+     * @return new ViewHolder
+     */
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -95,6 +119,11 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
                 .inflate(R.layout.item_approved_request_card_guard, parent, false);
         return new ViewHolder(view);
     }
+
+    /**
+     * @param holder Instance of ViewHolder
+     * @param position Position of item
+     */
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -114,10 +143,18 @@ public class ApprovedRequestsAdapter extends RecyclerView.Adapter<ApprovedReques
         holder.btnCheckOut.setOnClickListener(v -> actionListener.onCheckOut(request, documentId));
     }
 
+    /**
+     * @return item count
+     */
+
     @Override
     public int getItemCount() {
         return items.size();
     }
+
+    /**
+     * ViewHolder class holding references to UI components
+     */
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvRequestId;
