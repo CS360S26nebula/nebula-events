@@ -12,4 +12,6 @@
     <string name="rejection_reason_required">Please enter a rejection reason.</string>
     <string name="request_rejected">Request rejected.</string>
     <string name="request_reject_failed">Could not reject request.</string>
+    <string name="visitor_checked_out">Visitor checked out successfully.</string>
+    <string name="checkout_failed">Failed to log exit time. Please try again.</string>
 </resources>
