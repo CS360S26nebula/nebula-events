@@ -118,6 +118,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_approved_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -158,6 +159,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_rejected_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -204,6 +206,7 @@
                                 android:textStyle="bold"
                                 android:textSize="13sp" />
                             <TextView
+                                android:id="@+id/tv_preapproved_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -244,6 +247,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_blacklisted_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
@@ -290,6 +294,7 @@
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
+                                android:id="@+id/tv_pending_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"

@@ -5,10 +5,18 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 /**
  * Guard home shell with navigation to scan, passes, profile, and request list shortcuts.
@@ -22,12 +30,34 @@ public class GuardHomeActivity extends AppCompatActivity {
     private static final int COLOR_INACTIVE = 0xFF111111;
 
     private ImageView navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon;
-    private TextView navHomeText, navScanText, navPassesText, navProfileText;
+    private TextView  navHomeText, navScanText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount,tvPreApprovedCount,tvBlacklistedCount;
+
+    /**
+     * Sets up the guard dashboard screen, connects navigation views, and opens the correct request list when a dashboard status box is tapped.
+     * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
+     *
+     * @param savedInstanceState previous state if the activity is being recreated
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guard_home);
+
+        final FrameLayout visitorEntryOverlay = findViewById(R.id.visitor_entry_overlay);
+        FragmentManager fm = getSupportFragmentManager();
+        OnBackPressedCallback visitorEntryBack = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                fm.popBackStack();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, visitorEntryBack);
+        fm.addOnBackStackChangedListener(() -> {
+            int count = fm.getBackStackEntryCount();
+            visitorEntryBack.setEnabled(count > 0);
+            visitorEntryOverlay.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        });
 
         navHomeIcon = findViewById(R.id.navHomeIcon);
         navScanIcon = findViewById(R.id.navScanIcon);
@@ -86,8 +116,18 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         navHome.setOnClickListener(v -> activateTab(0));
-        navScan.setOnClickListener(v -> activateTab(1));
-        navCreateEntry.setOnClickListener(v -> activateTab(2));
+        navScanIcon.setOnClickListener(v -> {
+            activateTab(1);
+            Intent intent = new Intent(GuardHomeActivity.this, VisitorScannerActivity.class);
+            startActivity(intent);
+        });
+        navCreateEntry.setOnClickListener(v -> {
+            activateTab(2);
+            fm.beginTransaction()
+                    .replace(R.id.visitor_entry_overlay, new CreateVisitorEntry())
+                    .addToBackStack(null)
+                    .commit();
+        });
         navPasses.setOnClickListener(v -> activateTab(3));
         navProfile.setOnClickListener(v -> {
             activateTab(4);
@@ -95,14 +135,62 @@ public class GuardHomeActivity extends AppCompatActivity {
         });
 
         activateTab(0);
+        tvPendingCount = findViewById(R.id.tv_pending_count);
+        tvApprovedCount = findViewById(R.id.tv_approved_count);
+        tvRejectedCount = findViewById(R.id.tv_rejected_count);
+        tvBlacklistedCount = findViewById(R.id.tv_blacklisted_count);
+        tvPreApprovedCount = findViewById(R.id.tv_pre_approved_count);
+//        int pending = 0;
+//        int approved = 0;
+//        int rejected = 0;
+
+        refreshCounts();
     }
+
+    /**
+     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
+     */
 
     @Override
     protected void onResume() {
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
+        refreshCounts();
         activateTab(0);
     }
+    /**
+     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     */
+    private void refreshCounts() {
+
+        FirebaseFirestore.getInstance().collection("requests")
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    for (QueryDocumentSnapshot doc : snapshots) {
+
+                        Request r = doc.toObject(Request.class);
+                        String status = r.getRequestStatus();
+                        if ("Pending".equals(status)) pending++;
+                        else if ("Approved".equals(status)) approved++;
+                        else if ("Rejected".equals(status)) rejected++;
+                        else if ("Pre-Approved".equals(status)) PreApproved++;
+                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
+                            Blacklisted++;
+                        }
+                    }
+                    tvPendingCount.setText(String.valueOf(pending));
+                    tvApprovedCount.setText(String.valueOf(approved));
+                    tvRejectedCount.setText(String.valueOf(rejected));
+                    tvPreApprovedCount.setText(String.valueOf(PreApproved));
+                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
+                });
+    }
+    /**
+     * Updates the bottom navigation icons and text colors so the selected tab appears active.
+     *
+     * @param tab index of the tab to highlight
+     */
 
     private void activateTab(int tab) {
         int[] outlineIcons = {

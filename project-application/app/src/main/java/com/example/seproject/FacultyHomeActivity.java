@@ -13,6 +13,10 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 /**
  * Faculty dashboard with navigation, submit-request overlay, and request list shortcuts.
  *
@@ -25,7 +29,7 @@ public class FacultyHomeActivity extends AppCompatActivity {
     private static final int COLOR_INACTIVE = 0xFF111111;
 
     private ImageView navHomeIcon, navDownloadIcon, navPassesIcon, navProfileIcon;
-    private TextView  navHomeText, navDownloadText, navPassesText, navProfileText;
+    private TextView  navHomeText, navDownloadText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount;
     private FrameLayout facultyFragmentOverlay;
 
     @Override
@@ -58,6 +62,10 @@ public class FacultyHomeActivity extends AppCompatActivity {
         navPassesText   = findViewById(R.id.navPassesText);
         navProfileText  = findViewById(R.id.navProfileText);
 
+
+        tvPendingCount = findViewById(R.id.tv_pending_count);
+        tvApprovedCount = findViewById(R.id.tv_approved_count);
+        tvRejectedCount = findViewById(R.id.tv_rejected_count);
         LinearLayout navHome          = findViewById(R.id.navHome);
         LinearLayout navDownload      = findViewById(R.id.navDownload);
         LinearLayout navSubmitRequest = findViewById(R.id.navSubmitRequest);
@@ -101,6 +109,12 @@ public class FacultyHomeActivity extends AppCompatActivity {
                     .commit();
         });
 
+        navDownload.setOnClickListener(v->
+        {
+            activateTab((1));
+            startActivity(new Intent(FacultyHomeActivity.this, FacultyDownloadActivity.class));
+        });
+
         navPasses.setOnClickListener(v        -> activateTab(3));
         navProfile.setOnClickListener(v -> {
             activateTab(4);
@@ -108,15 +122,46 @@ public class FacultyHomeActivity extends AppCompatActivity {
         });
 
         activateTab(0);
-    }
+        int pending = 0;
+        int approved = 0;
+        int rejected = 0;
 
+        refreshCounts();
+    }
+    /**
+     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
         activateTab(0);
+        refreshCounts();
     }
+    /**
+     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     */
+    private void refreshCounts() {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
 
+        FirebaseFirestore.getInstance().collection("requests")
+                .whereEqualTo("requesterUid", uid)
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    int pending = 0, approved = 0, rejected = 0;
+                    for (QueryDocumentSnapshot doc : snapshots) {
+                        Request r = doc.toObject(Request.class);
+                        String status = r.getRequestStatus();
+                        if ("Pending".equals(status)) pending++;
+                        else if ("Approved".equals(status)) approved++;
+                        else if ("Rejected".equals(status)) rejected++;
+                    }
+                    tvPendingCount.setText(String.valueOf(pending));
+                    tvApprovedCount.setText(String.valueOf(approved));
+                    tvRejectedCount.setText(String.valueOf(rejected));
+                });
+    }
     private void activateTab(int tab) {
         int[] outlineIcons = {
             R.drawable.home,

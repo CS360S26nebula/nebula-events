@@ -279,6 +279,9 @@ public class Request {
         return rejectedAtMillis;
     }
 
+    /**
+     * @return check-in timestamp in ms; non-positive means "not checked in yet"
+     */
     public long getCheckedInAtMillis() {return checkedInAtMillis; }
 
     /**
@@ -289,9 +292,8 @@ public class Request {
     }
 
     /**
-     * @param checkedInAtMillis checked in time; any long
+     * @param checkedInAtMillis check-in timestamp in ms; values <= 0 mean "not checked in yet"
      */
-
     public void setCheckedInAtMillis(long checkedInAtMillis) {
         this.checkedInAtMillis = checkedInAtMillis;
     }

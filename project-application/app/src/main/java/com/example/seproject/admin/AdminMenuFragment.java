@@ -9,10 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.seproject.CreateVisitorEntry;
 import com.example.seproject.R;
 
 /**
- * Root admin menu tiles (manage users, blacklist, restrict entry).
+ * Root admin menu tiles (manage users, user settings, gate timings, restrict entry, create visitor).
  *
  * @author Moiz Imran
  * @version 1.0
@@ -37,5 +38,11 @@ public class AdminMenuFragment extends Fragment {
                 ((AdminMenuHostActivity) requireActivity()).navigateTo(new ManageUsersAdminFragment(), true));
         view.findViewById(R.id.card_restrict_visitor).setOnClickListener(v ->
                 ((AdminMenuHostActivity) requireActivity()).navigateTo(new RestrictEntryAdminFragment(), true));
+        view.findViewById(R.id.card_create_visitor_entry).setOnClickListener(v ->
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(new CreateVisitorEntry(), true));
+
+        // Umer: Added navigation for Gate Timings
+        view.findViewById(R.id.card_gate_timings).setOnClickListener(v ->
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(new AdminGateTimingsFragment(), true));
     }
 }

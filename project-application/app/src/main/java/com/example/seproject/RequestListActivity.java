@@ -134,10 +134,9 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     }
 
     /**
-     * Sets up the RecyclerView and assigns the suitable adapter
-     * on the basis of role of the user as well as the request status
+     * Creates and attaches the correct adapter for the current request status and user role.
+     * Pending uses the pending adapter, while Pre-Approved and Approved use the pre-approved adapter in different modes.
      */
-
     private void setupRecyclerView() {
         RecyclerView rv = findViewById(R.id.rv_requests);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -191,9 +190,9 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     }
 
     /**
-     * Attaches a Firestore snapshot listener for request data retrieval in real-time
+     * Attaches a Firestore snapshot listener and keeps the current request list screen updated with live data.
+     * Staff users are filtered by request status, while faculty users are filtered by requester uid and then matched to the selected tab.
      */
-
     private void attachDatabaseListener() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -287,9 +286,8 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     }
 
     /**
-     * Clears adapter data and displays empty state.
+     * Pushes an empty list into the current adapter so the screen stays in a clean empty state when no data can be shown.
      */
-
     private void pushEmptyToAdapter() {
         if (adapter instanceof PendingRequestsAdapter) {
             ((PendingRequestsAdapter) adapter).setItems(new ArrayList<>(), new ArrayList<>());
@@ -362,12 +360,12 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     }
 
     /**
-     * Marks a visitor as checked in.
+     * Checks in a pre-approved visitor by updating the request status to Approved
+     * and saving the check-in time in Firestore.
      *
-     * @param request Row being checked in
-     * @param documentId Firestore document id
+     * @param request selected visitor request
+     * @param documentId Firestore document id for that request
      */
-
     @Override
     public void onCheckIn(@NonNull Request request, @NonNull String documentId) {
         boolean staff = "Guard".equals(role) || "Admin".equals(role);
