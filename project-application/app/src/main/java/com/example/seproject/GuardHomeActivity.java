@@ -148,7 +148,7 @@ public class GuardHomeActivity extends AppCompatActivity {
     }
 
     /**
-     * Resets the bottom navigation highlight when the guard returns to this dashboard screen.
+     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
      */
 
     @Override
@@ -158,7 +158,9 @@ public class GuardHomeActivity extends AppCompatActivity {
         refreshCounts();
         activateTab(0);
     }
-
+    /**
+     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     */
     private void refreshCounts() {
 
         FirebaseFirestore.getInstance().collection("requests")
