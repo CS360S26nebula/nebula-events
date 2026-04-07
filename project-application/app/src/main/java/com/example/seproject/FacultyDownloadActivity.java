@@ -85,18 +85,28 @@ public class FacultyDownloadActivity extends AppCompatActivity {
             h.id.setText(r.getPassId());
             h.name.setText(r.getVisitorName());
             h.date.setText(r.getVisitDate());
+            h.phoneNumber.setText((r.getVisitorMobileNumber()));
+            h.purposeOfVisit.setText(r.getVisitReason());
+            h.invitorType.setText((r.getInvitorType()));
+            h.invitorName.setText(r.getInvitorName());
+            h.cnic.setText(r.getVisitorCnic());
             h.btn.setOnClickListener(v -> downloadQR(r.getPassId(), r.getVisitorName()));
         }
 
         @Override public int getItemCount() { return list.size(); }
 
         class VH extends RecyclerView.ViewHolder {
-            TextView id, name, date; View btn;
+            TextView id, name, date, cnic, phoneNumber, purposeOfVisit, invitorType, invitorName; View btn;
             VH(View v) { super(v);
                 id = v.findViewById(R.id.tv_request_id);
                 name = v.findViewById(R.id.tv_visitor_name);
                 date = v.findViewById(R.id.tv_visit_date);
                 btn = v.findViewById(R.id.btn_download_pass);
+                cnic = v.findViewById(R.id.tv_visitor_cnic);
+                phoneNumber = v.findViewById(R.id.tv_visitor_phone);
+                purposeOfVisit = v.findViewById(R.id.tv_visit_reason);
+                invitorType = v.findViewById(R.id.tv_invitor_type);
+                invitorName = v.findViewById(R.id.tv_invitor_name);
             }
         }
     }

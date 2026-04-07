@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation(libs.camera.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
