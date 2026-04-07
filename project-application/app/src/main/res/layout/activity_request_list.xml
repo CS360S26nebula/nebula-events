@@ -60,12 +60,14 @@
             android:paddingEnd="12dp">
 
             <EditText
+                android:id = "@+id/et_search"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
-                android:enabled="false"
+                android:enabled="true"
                 android:hint="Search"
+                android:singleLine="true"
                 android:textColorHint="#AAAAAA"
                 android:textSize="14sp" />
 

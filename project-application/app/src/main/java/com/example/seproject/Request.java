@@ -33,6 +33,7 @@ public class Request {
     private String passId;
     private String rejectionReason;
     private long rejectedAtMillis;
+    private long checkedInAtMillis;
 
     /**
      * No-arg constructor for Firestore and default construction.
@@ -78,6 +79,7 @@ public class Request {
         this.passId = passId;
         this.rejectionReason = rejectionReason;
         this.rejectedAtMillis = 0L;
+        this.checkedInAtMillis = 0L;
     }
 
     /**
@@ -275,10 +277,22 @@ public class Request {
     }
 
     /**
+     * @return check-in timestamp in ms; non-positive means "not checked in yet"
+     */
+    public long getCheckedInAtMillis() {return checkedInAtMillis; }
+
+    /**
      * @param rejectedAtMillis any long; values {@code <= 0} fall back to visit date/time in UI
      */
     public void setRejectedAtMillis(long rejectedAtMillis) {
         this.rejectedAtMillis = rejectedAtMillis;
+    }
+
+    /**
+     * @param checkedInAtMillis check-in timestamp in ms; values <= 0 mean "not checked in yet"
+     */
+    public void setCheckedInAtMillis(long checkedInAtMillis) {
+        this.checkedInAtMillis = checkedInAtMillis;
     }
 
     /**

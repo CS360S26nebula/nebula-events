@@ -101,6 +101,12 @@ public class FacultyHomeActivity extends AppCompatActivity {
                     .commit();
         });
 
+        navDownload.setOnClickListener(v->
+        {
+            activateTab((1));
+            startActivity(new Intent(FacultyHomeActivity.this, FacultyDownloadActivity.class));
+        });
+
         navPasses.setOnClickListener(v        -> activateTab(3));
         navProfile.setOnClickListener(v -> {
             activateTab(4);
