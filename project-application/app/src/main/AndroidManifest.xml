@@ -51,6 +51,9 @@
         <activity
             android:name=".RequestListActivity"
             android:exported="false" />
+        <activity
+            android:name=".ActiveEmergencyEntriesActivity"
+            android:exported="false" />
 
         <activity android:name=".FacultyDownloadActivity" />
         <activity

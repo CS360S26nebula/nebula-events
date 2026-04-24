@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Admin flow to register a new user via secondary Firebase app and Firestore profile.
@@ -187,8 +188,10 @@ public class AddUserAdminFragment extends Fragment {
 
     private void writeUserDocument(String uid, String fullName, String role, String dobString, String email,
                                    String phone, String cnic) {
-        User newUser = new User(fullName, role, dobString, email, phone, cnic);
+        String generatedUserId = buildCompactUserId();
+        User newUser = new User(generatedUserId, fullName, role, dobString, email, phone, cnic);
         Map<String, Object> userMap = new HashMap<>();
+        userMap.put("userId", newUser.getUserId());
         userMap.put("fullName", newUser.getFullName());
         userMap.put("role", newUser.getRole());
         userMap.put("dateOfBirth", newUser.getDateOfBirth());
@@ -208,6 +211,11 @@ public class AddUserAdminFragment extends Fragment {
                     String message = error.getMessage();
                     toast(message == null ? "Could not save user profile." : message);
                 });
+    }
+
+    private String buildCompactUserId() {
+        String shortUuid = UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+        return "USR-" + shortUuid;
     }
 
     private void cleanupAuthUser(String uid) {

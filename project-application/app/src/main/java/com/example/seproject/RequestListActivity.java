@@ -36,7 +36,7 @@ import java.util.UUID;
  * @author Moiz Imran
  * @version 2.0
  */
-public class RequestListActivity extends AppCompatActivity implements PendingRequestsAdapter.ActionListener, PreApprovedRequestsAdapter.ActionListener, ApprovedRequestsAdapter.ActionListener {
+public class RequestListActivity extends AppCompatActivity implements PendingRequestsAdapter.ActionListener, PreApprovedRequestsAdapter.ActionListener, ApprovedRequestsAdapter.ActionListener, RejectedRequestsAdapter.ActionListener {
 
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_SUBTITLE = "extra_subtitle";
@@ -174,11 +174,11 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                 break;
             case STATUS_REJECTED:
                 if (staff) {
-                    adapter = new RejectedRequestsAdapter(new ArrayList<>());
+                    adapter = new RejectedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this);
                 } else if (faculty) {
                     adapter = new FacultyRejectedRequestsAdapter(new ArrayList<>());
                 } else {
-                    adapter = new RejectedRequestsAdapter(new ArrayList<>());
+                    adapter = new RejectedRequestsAdapter(new ArrayList<>(), new ArrayList<>(), this);
                 }
                 break;
             default:
@@ -258,7 +258,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
             } else if (adapter instanceof FacultyPendingRequestsAdapter) {
                 ((FacultyPendingRequestsAdapter) adapter).setItems(list);
             } else if (adapter instanceof RejectedRequestsAdapter) {
-                ((RejectedRequestsAdapter) adapter).setItems(list);
+                ((RejectedRequestsAdapter) adapter).setItems(list, ids);
             } else if (adapter instanceof FacultyRejectedRequestsAdapter) {
                 ((FacultyRejectedRequestsAdapter) adapter).setItems(list);
             }
@@ -300,7 +300,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
         } else if (adapter instanceof FacultyPendingRequestsAdapter) {
             ((FacultyPendingRequestsAdapter) adapter).setItems(new ArrayList<>());
         } else if (adapter instanceof RejectedRequestsAdapter) {
-            ((RejectedRequestsAdapter) adapter).setItems(new ArrayList<>());
+            ((RejectedRequestsAdapter) adapter).setItems(new ArrayList<>(), new ArrayList<>());
         } else if (adapter instanceof FacultyRejectedRequestsAdapter) {
             ((FacultyRejectedRequestsAdapter) adapter).setItems(new ArrayList<>());
         }
@@ -330,17 +330,33 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
             return;
         }
         String generatedPassId = "PASS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Unable to identify approver.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        FirebaseFirestore.getInstance()
-                .collection("requests")
-                .document(documentId)
-                .update(
-                        "requestStatus", STATUS_PRE_APPROVED,
-                        "passId", generatedPassId
-                )
-                .addOnSuccessListener(unused ->
-                        Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed to approve", Toast.LENGTH_SHORT).show());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String approverUid = currentUser.getUid();
+        db.collection("users").document(approverUid).get()
+                .addOnSuccessListener(userDoc -> {
+                    String approverName = userDoc.getString("fullName");
+                    String approverId = userDoc.getString("userId");
+                    db.collection("requests")
+                            .document(documentId)
+                            .update(
+                                    "requestStatus", STATUS_PRE_APPROVED,
+                                    "passId", generatedPassId,
+                                    "approvedByUid", approverUid,
+                                    "approvedByName", approverName == null ? "" : approverName,
+                                    "approvedByUserId", approverId == null ? "" : approverId
+                            )
+                            .addOnSuccessListener(unused ->
+                                    Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(e -> Toast.makeText(this, "Failed to approve", Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to load approver details.", Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -440,5 +456,25 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                         Toast.makeText(this, R.string.visitor_checked_out, Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(this, R.string.checkout_failed, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void onReissue(@NonNull Request request, @NonNull String documentId) {
+        boolean staff = "Guard".equals(role) || "Admin".equals(role);
+        if (!staff || !STATUS_REJECTED.equals(targetStatus)) {
+            return;
+        }
+        String generatedPassId = "PASS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        FirebaseFirestore.getInstance()
+                .collection("requests")
+                .document(documentId)
+                .update(
+                        "requestStatus", STATUS_PRE_APPROVED,
+                        "passId", generatedPassId
+                )
+                .addOnSuccessListener(unused ->
+                        Toast.makeText(this, "Pass reissued to Pre-Approved.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to reissue pass.", Toast.LENGTH_SHORT).show());
     }
 }
