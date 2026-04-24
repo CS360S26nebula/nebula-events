@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Profile screen with toggles, call admin, and logout.
@@ -22,6 +26,10 @@ import com.google.firebase.auth.FirebaseAuth;
  * @version 1.0
  */
 public class ProfileFragment extends Fragment {
+
+    private TextView tvProfileName;
+    private TextView tvAssignedId;
+    private TextView tvShiftDetails;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +47,11 @@ public class ProfileFragment extends Fragment {
         View backButton = view.findViewById(R.id.btn_back);
         View callAdminButton = view.findViewById(R.id.btn_call_admin);
         View logoutButton = view.findViewById(R.id.btn_logout);
+        tvProfileName = view.findViewById(R.id.rl7asvxhvmst);
+        tvAssignedId = view.findViewById(R.id.rm2ll5tptppq);
+        tvShiftDetails = view.findViewById(R.id.r61hqqp5ho2);
+
+        bindCurrentUserDetails();
 
         if (backButton != null) {
             backButton.setOnClickListener(v -> requireActivity().finish());
@@ -99,5 +112,80 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void bindCurrentUserDetails() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            setProfileFallbackValues();
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(currentUser.getUid())
+                .get()
+                .addOnSuccessListener(this::applyProfileDetails)
+                .addOnFailureListener(e -> setProfileFallbackValues());
+    }
+
+    private void applyProfileDetails(DocumentSnapshot snapshot) {
+        if (!snapshot.exists()) {
+            setProfileFallbackValues();
+            return;
+        }
+
+        User user = snapshot.toObject(User.class);
+        String fullName = user != null ? user.getFullName() : null;
+        String role = user != null ? user.getRole() : null;
+        String assignedId = user != null ? user.getUserId() : null;
+        if (assignedId == null || assignedId.trim().isEmpty()) {
+            assignedId = snapshot.getString("userId");
+        }
+        assignedId = normalizeUserId(assignedId);
+
+        if (tvProfileName != null) {
+            tvProfileName.setText(valueOrDefault(fullName, "Unknown User"));
+        }
+        if (tvAssignedId != null) {
+            tvAssignedId.setText(valueOrDefault(assignedId, "-"));
+        }
+        if (tvShiftDetails != null) {
+            tvShiftDetails.setText(role == null || role.trim().isEmpty() ? "-" : role);
+        }
+    }
+
+    private void setProfileFallbackValues() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (tvProfileName != null && user != null && user.getDisplayName() != null) {
+            tvProfileName.setText(user.getDisplayName());
+        } else if (tvProfileName != null) {
+            tvProfileName.setText("Unknown User");
+        }
+        if (tvAssignedId != null) {
+            tvAssignedId.setText("-");
+        }
+        if (tvShiftDetails != null) {
+            tvShiftDetails.setText("-");
+        }
+    }
+
+    private String valueOrDefault(String value, String fallback) {
+        return (value == null || value.trim().isEmpty()) ? fallback : value;
+    }
+
+    private String normalizeUserId(String rawUserId) {
+        if (rawUserId == null) {
+            return null;
+        }
+        String cleaned = rawUserId.trim().toUpperCase();
+        if (cleaned.startsWith("USR-") && cleaned.length() >= 12) {
+            return cleaned.substring(0, 12);
+        }
+        String alnum = cleaned.replaceAll("[^A-Z0-9]", "");
+        if (alnum.length() >= 8) {
+            return "USR-" + alnum.substring(0, 8);
+        }
+        return null;
     }
 }

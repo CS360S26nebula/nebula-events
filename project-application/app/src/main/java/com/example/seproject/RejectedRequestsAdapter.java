@@ -22,21 +22,34 @@ import java.util.List;
 public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedRequestsAdapter.ViewHolder> {
 
     private final List<Request> items = new ArrayList<>();
+    private final List<String> documentIds = new ArrayList<>();
+    private final ActionListener actionListener;
+
+    public interface ActionListener {
+        void onReissue(@NonNull Request request, @NonNull String documentId);
+    }
 
     /**
      * @param initialItems starting rows
      */
-    public RejectedRequestsAdapter(@NonNull List<Request> initialItems) {
+    public RejectedRequestsAdapter(@NonNull List<Request> initialItems,
+                                   @NonNull List<String> initialDocumentIds,
+                                   @NonNull ActionListener actionListener) {
+        this.actionListener = actionListener;
         items.clear();
         items.addAll(initialItems);
+        documentIds.clear();
+        documentIds.addAll(initialDocumentIds);
     }
 
     /**
      * @param newItems replaces all rows
      */
-    public void setItems(@NonNull List<Request> newItems) {
+    public void setItems(@NonNull List<Request> newItems, @NonNull List<String> newDocumentIds) {
         items.clear();
         items.addAll(newItems);
+        documentIds.clear();
+        documentIds.addAll(newDocumentIds);
         notifyDataSetChanged();
     }
 
@@ -51,6 +64,7 @@ public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedReques
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Request request = items.get(position);
+        String documentId = documentIds.get(position);
 
         holder.tvRejectionReason.setText(RequestDisplayFormatter.dashIfEmpty(request.getRejectionReason()));
         holder.tvVisitorName.setText(RequestDisplayFormatter.dashIfEmpty(request.getVisitorName()));
@@ -62,6 +76,7 @@ public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedReques
         holder.tvRejectedDate.setText(RequestDisplayFormatter.formatRejectedOn(request));
 
         holder.btnReissue.setVisibility(View.VISIBLE);
+        holder.btnReissue.setOnClickListener(v -> actionListener.onReissue(request, documentId));
     }
 
     @Override

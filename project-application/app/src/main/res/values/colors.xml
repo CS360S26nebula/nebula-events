@@ -17,5 +17,7 @@
     <color name="blacklisted_text">#666666</color>
     <color name="pending_bg">#FFF3D9</color>
     <color name="pending_text">#8D6E1F</color>
+    <color name="emergency_bg">#FFE7CE</color>
+    <color name="emergency_text">#A14A00</color>
     <color name="search_bg">#FFFFFF</color>
 </resources>

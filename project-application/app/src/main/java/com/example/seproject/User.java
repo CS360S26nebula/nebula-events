@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
  */
 public class User {
 
+    private String userId;
     private String fullName;
     private String role;
     private String dateOfBirth;
@@ -35,15 +36,25 @@ public class User {
      * @param phoneNumber phone; may be null
      * @param cnicNumber  CNIC; may be null
      */
-    public User(@Nullable String fullName, @Nullable String role, @Nullable String dobString,
+    public User(@Nullable String userId, @Nullable String fullName, @Nullable String role, @Nullable String dobString,
                 @Nullable String email,
                 @Nullable String phoneNumber, @Nullable String cnicNumber) {
+        this.userId = userId;
         this.fullName = fullName;
         this.role = role;
         this.dateOfBirth = dobString;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.cnicNumber = cnicNumber;
+    }
+
+    @Nullable
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(@Nullable String userId) {
+        this.userId = userId;
     }
 
     /**
