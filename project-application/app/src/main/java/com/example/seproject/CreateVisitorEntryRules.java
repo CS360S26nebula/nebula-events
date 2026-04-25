@@ -39,6 +39,13 @@ public final class CreateVisitorEntryRules {
     }
 
     /**
+     * @return fixed status used when admin/guard creates an entry
+     */
+    @NonNull
+    public static String statusForAdhocEntry() {
+        return "Pending";
+    }
+    /**
      * @return pass id with {@code PASS-XXXXXXXX} format (8 uppercase chars)
      */
     @NonNull

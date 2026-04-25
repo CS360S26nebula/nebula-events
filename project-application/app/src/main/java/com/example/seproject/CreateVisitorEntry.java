@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
+ *
  * Admin/Guard form to register a visitor in Firestore {@code requests}. Documents are written as
  * {@code Approved} with a generated {@code passId}. Validation and id/status generation are
  * delegated to {@link CreateVisitorEntryRules}. {@code requesterUid} and
@@ -40,24 +41,40 @@ import java.util.function.BiConsumer;
  *
  * @author Moiz Imran
  * @version 1.1
+ *
+ *
+ * Class acts as a template class for {@link CreateAdhocEntry}, data fields are protected to allow access
+ * @author Ali Azhar
+ * @version  1.2
  */
 public class CreateVisitorEntry extends Fragment {
-    private EditText editGuestName;
-    private EditText editInvitorName;
-    private EditText editInvitorEmail;
-    private EditText editPhone;
-    private EditText editCnic;
-    private EditText editVisitDate;
-    private Spinner spVisitTime;
-    private Spinner spVisitorType;
-    private EditText editVisitReason;
-    private MaterialButton btnSubmitRequest;
-    private FirebaseFirestore firestore;
+    protected EditText editGuestName;
+    protected EditText editInvitorName;
+    protected EditText editInvitorEmail;
+    protected EditText editPhone;
+    protected EditText editCnic;
+    protected EditText editVisitDate;
+    protected Spinner spVisitTime;
+    protected Spinner spVisitorType;
+    protected EditText editVisitReason;
+    protected MaterialButton btnSubmitRequest;
+    protected FirebaseFirestore firestore;
 
     public CreateVisitorEntry() {
         super(R.layout.create_visitor_entry_fragment);
     }
 
+    public String getRequestStatus() {
+        return CreateVisitorEntryRules.statusForStaffCreatedEntry();
+    }
+
+    protected String getPassId() {
+        return CreateVisitorEntryRules.buildPassId();
+    }
+
+    protected boolean isAdhocEntry() {
+        return false;
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -177,7 +194,7 @@ public class CreateVisitorEntry extends Fragment {
                                     @NonNull String facultyUid, @NonNull String facultyEmail,
                                     @NonNull String invitorEmailEntered) {
         String requestId = "ID-" + System.currentTimeMillis();
-        String passId = CreateVisitorEntryRules.buildPassId();
+        String passId = getPassId();
         String rejectionReason = "";
         Request requestObj = new Request(
                 requestId,
@@ -189,10 +206,11 @@ public class CreateVisitorEntry extends Fragment {
                 visitTime,
                 invitorName,
                 visitorType,
-                CreateVisitorEntryRules.statusForStaffCreatedEntry(),
+                getRequestStatus(),
                 System.currentTimeMillis(),
                 passId,
-                rejectionReason
+                rejectionReason,
+                isAdhocEntry()
 
         );
         Map<String, Object> requestMap = new HashMap<>();
@@ -213,7 +231,7 @@ public class CreateVisitorEntry extends Fragment {
         requestMap.put("requesterUid", facultyUid);
         requestMap.put("requesterEmail", facultyEmail);
         requestMap.put("invitorEmail", invitorEmailEntered);
-
+        requestMap.put("isAdhoc", isAdhocEntry());
         FirebaseUser staff = FirebaseAuth.getInstance().getCurrentUser();
         if (staff != null) {
             requestMap.put("createdByUid", staff.getUid());

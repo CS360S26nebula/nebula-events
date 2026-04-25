@@ -37,6 +37,8 @@ public class Request {
 
     private long checkedOutAtMillis;
 
+    private boolean isAdhoc;
+
     /**
      * No-arg constructor for Firestore and default construction.
      */
@@ -83,8 +85,34 @@ public class Request {
         this.rejectedAtMillis = 0L;
         this.checkedInAtMillis = 0L;
         this.checkedOutAtMillis = 0L;
+        this.isAdhoc = false;
     }
 
+    public Request(@Nullable String requestId, @Nullable String visitorName, @Nullable String visitorCnic,
+                   @Nullable String visitorMobileNumber,
+                   @Nullable String visitReason, @Nullable String visitDate, @Nullable String visitTime,
+                   @Nullable String invitorName, @Nullable String invitorType,
+                   @Nullable String requestStatus, long createdAtMillis, @Nullable String passId,
+                   @Nullable String rejectionReason, @Nullable boolean isAdhoc)
+    {
+        this.requestId = requestId;
+        this.visitorName = visitorName;
+        this.visitorCnic = visitorCnic;
+        this.visitorMobileNumber = visitorMobileNumber;
+        this.visitReason = visitReason;
+        this.visitDate = visitDate;
+        this.visitTime = visitTime;
+        this.invitorName = invitorName;
+        this.invitorType = invitorType;
+        this.requestStatus = requestStatus;
+        this.createdAtMillis = createdAtMillis;
+        this.passId = passId;
+        this.rejectionReason = rejectionReason;
+        this.rejectedAtMillis = 0L;
+        this.checkedInAtMillis = 0L;
+        this.checkedOutAtMillis = 0L;
+        this.isAdhoc = isAdhoc;
+    }
     /**
      * @return request id or null
      */
