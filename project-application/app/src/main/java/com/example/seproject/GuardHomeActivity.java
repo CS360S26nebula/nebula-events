@@ -202,7 +202,7 @@ public class GuardHomeActivity extends AppCompatActivity {
 
                         Request r = doc.toObject(Request.class);
                         String status = r.getRequestStatus();
-                        if ("Pending".equals(status)) pending++;
+                        if ("Pending".equals(status) && !r.getIsAdhoc()) pending++;
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;

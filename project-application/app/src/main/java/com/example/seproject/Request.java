@@ -342,4 +342,9 @@ public class Request {
     public void setCheckedOutAtMillis(long checkedOutAtMillis) {
         this.checkedOutAtMillis = checkedOutAtMillis;
     }
+
+    public boolean getIsAdhoc()
+    {
+        return this.isAdhoc;
+    }
 }

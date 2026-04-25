@@ -233,6 +233,10 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                     r.setRequestId(doc.getId());
                 }
 
+                if (STATUS_PENDING.equals(targetStatus) && r.getIsAdhoc()) {
+                    continue;
+                }
+
                 if (faculty && !matchesFacultyTargetStatus(r.getRequestStatus())) {
                     continue;
                 }
