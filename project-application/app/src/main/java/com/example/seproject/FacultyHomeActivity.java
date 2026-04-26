@@ -29,7 +29,7 @@ public class FacultyHomeActivity extends AppCompatActivity {
     private static final int COLOR_INACTIVE = 0xFF111111;
 
     private ImageView navHomeIcon, navDownloadIcon, navPassesIcon, navProfileIcon;
-    private TextView  navHomeText, navDownloadText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount;
+    private TextView  navHomeText, navDownloadText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount, tvadhocRequests;
     private FrameLayout facultyFragmentOverlay;
 
     @Override
@@ -62,7 +62,7 @@ public class FacultyHomeActivity extends AppCompatActivity {
         navPassesText   = findViewById(R.id.navPassesText);
         navProfileText  = findViewById(R.id.navProfileText);
 
-
+        tvadhocRequests = findViewById(R.id.viewAdHocBtn);
         tvPendingCount = findViewById(R.id.tv_pending_count);
         tvApprovedCount = findViewById(R.id.tv_approved_count);
         tvRejectedCount = findViewById(R.id.tv_rejected_count);
@@ -75,6 +75,15 @@ public class FacultyHomeActivity extends AppCompatActivity {
         View rejectedBox = findViewById(R.id.rejectedBox);
         View pendingBox = findViewById(R.id.pendingBox);
 
+        tvadhocRequests.setOnClickListener((v ->{
+                Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
+                intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
+                intent.putExtra(RequestListActivity.EXTRA_IS_ADHOC, true);
+                intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.adhoc_requests_title));
+                intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "View Adhoc Requests From your guests");
+                intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
+                startActivity(intent);
+        }));
         pendingBox.setOnClickListener(v -> {
             Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
             intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
@@ -153,7 +162,7 @@ public class FacultyHomeActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : snapshots) {
                         Request r = doc.toObject(Request.class);
                         String status = r.getRequestStatus();
-                        if ("Pending".equals(status)) pending++;
+                        if ("Pending".equals(status) && !r.getIsAdhoc()) pending++;
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                     }

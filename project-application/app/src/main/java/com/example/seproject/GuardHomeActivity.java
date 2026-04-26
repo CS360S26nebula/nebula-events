@@ -202,7 +202,7 @@ public class GuardHomeActivity extends AppCompatActivity {
 
                         Request r = doc.toObject(Request.class);
                         String status = r.getRequestStatus();
-                        if ("Pending".equals(status)) pending++;
+                        if ("Pending".equals(status) && !r.getIsAdhoc()) pending++;
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;
@@ -379,7 +379,10 @@ public class GuardHomeActivity extends AppCompatActivity {
 
         content.findViewById(R.id.row_ad_hoc_entry).setOnClickListener(v -> {
             dialog.dismiss();
-            Toast.makeText(this, "add listener for row_ad_hoc_entry", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.visitor_entry_overlay, new CreateAdhocEntry())
+                    .addToBackStack(null)
+                    .commit();
         });
 
         dialog.show();

@@ -2,6 +2,7 @@
     <string name="app_name">SE project</string>
     <string name="plus">+</string>
     <string name="pending_requests_title">Pending Requests</string>
+    <string name="adhoc_requests_title">Adhoc Requests</string>
     <string name="pending_requests_subtitle">Approve/Reject Visitor Requests</string>
     <string name="preapproved_requests_title">Pre-Approved Requests</string>
     <string name="preapproved_requests_subtitle">View Pre-Approved Visitor Requests</string>
