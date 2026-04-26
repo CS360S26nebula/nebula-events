@@ -49,12 +49,15 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
 
     private ListenerRegistration registration;
 
+    public static final String EXTRA_IS_ADHOC = "EXTRA_IS_ADHOC";
+
     private RecyclerView.Adapter adapter;
     private String targetStatus;
     private String role;
     private TextView tvEmpty;
     private EditText etSearch;
 
+    private boolean targetIsAdhoc;
     /**
      * Reads intent extras, registers the reject-confirmation result listener, builds the list
      * adapter, and attaches the Firestore snapshot listener.
@@ -65,7 +68,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-
+        targetIsAdhoc = getIntent().getBooleanExtra(EXTRA_IS_ADHOC, false);
         targetStatus = getIntent().getStringExtra(EXTRA_STATUS);
         if (TextUtils.isEmpty(targetStatus)) {
             targetStatus = STATUS_PENDING;
@@ -147,6 +150,8 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
         switch (targetStatus) {
             case STATUS_PENDING:
                 if (staff) {
+                    adapter = new PendingRequestsAdapter(this);
+                } else if (faculty && targetIsAdhoc) {
                     adapter = new PendingRequestsAdapter(this);
                 } else if (faculty) {
                     adapter = new FacultyPendingRequestsAdapter(new ArrayList<>());
@@ -233,7 +238,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                     r.setRequestId(doc.getId());
                 }
 
-                if (STATUS_PENDING.equals(targetStatus) && r.getIsAdhoc()) {
+                if (STATUS_PENDING.equals(targetStatus) && r.getIsAdhoc() != targetIsAdhoc) {
                     continue;
                 }
 
@@ -330,9 +335,12 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     @Override
     public void onApprove(@NonNull Request request, @NonNull String documentId) {
         boolean staff = "Guard".equals(role) || "Admin".equals(role);
-        if (!staff || !STATUS_PENDING.equals(targetStatus)) {
+        boolean isFacultyApprovingAdhoc = "Faculty".equals(role) && request.getIsAdhoc();
+
+        if (!(staff || isFacultyApprovingAdhoc) || !STATUS_PENDING.equals(targetStatus)) {
             return;
         }
+        String finalStatus = isFacultyApprovingAdhoc ? STATUS_APPROVED : STATUS_PRE_APPROVED;
         String generatedPassId = "PASS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
@@ -349,7 +357,7 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                     db.collection("requests")
                             .document(documentId)
                             .update(
-                                    "requestStatus", STATUS_PRE_APPROVED,
+                                    "requestStatus", finalStatus,
                                     "passId", generatedPassId,
                                     "approvedByUid", approverUid,
                                     "approvedByName", approverName == null ? "" : approverName,
@@ -372,7 +380,8 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
     @Override
     public void onReject(@NonNull Request request, @NonNull String documentId) {
         boolean staff = "Guard".equals(role) || "Admin".equals(role);
-        if (!staff || !STATUS_PENDING.equals(targetStatus)) {
+        boolean isFacultyRejectingAdhoc = "Faculty".equals(role) && request.getIsAdhoc();
+        if (!(staff || isFacultyRejectingAdhoc) || !STATUS_PENDING.equals(targetStatus)) {
             return;
         }
         RejectRequestConfirmationFragment.newInstance(documentId)
