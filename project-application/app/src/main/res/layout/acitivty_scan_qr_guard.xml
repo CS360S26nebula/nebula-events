@@ -145,7 +145,7 @@
                     android:id="@+id/btn_validate_code"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="#27374D"
+                    android:background="@color/btn_primary"
                     android:text="Validate"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"

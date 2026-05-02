@@ -143,13 +143,13 @@
         <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_remove"
         android:layout_width="match_parent"
-            android:layout_height="46dp"
+        android:layout_height="46dp"
         android:layout_marginTop="26dp"
         android:text="Remove"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:backgroundTint="#27374D"
+        app:backgroundTint="@color/btn_primary"
         app:cornerRadius="6dp" />
 
     </LinearLayout>
