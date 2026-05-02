@@ -174,7 +174,7 @@
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            app:backgroundTint="#1B2E3C"
+            app:backgroundTint="@color/btn_primary"
             app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -98,7 +98,7 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
-        app:backgroundTint="#27374D"
+        app:backgroundTint="@color/btn_primary"
         app:cornerRadius="8dp" />
 
 </LinearLayout>

@@ -284,7 +284,7 @@
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                app:backgroundTint="#27374D"
+                app:backgroundTint="@color/btn_primary"
                 app:cornerRadius="6dp" />
         </LinearLayout>
     </ScrollView>

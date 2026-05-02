@@ -251,7 +251,7 @@
                     android:textAllCaps="false"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    app:backgroundTint="#27374D"
+                    app:backgroundTint="@color/btn_primary"
                     app:cornerRadius="8dp" />
             </LinearLayout>
 
@@ -445,7 +445,7 @@
                         android:textAllCaps="false"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        app:backgroundTint="#DDE1E7"
+                        app:backgroundTint="@color/btn_secondary"
                         app:strokeColor="#B2B8C2"
                         app:strokeWidth="1dp"
                         app:cornerRadius="8dp" />
