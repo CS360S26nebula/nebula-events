@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main"
+    android:background="?android:attr/colorBackground"
     android:clipChildren="false"
     android:clipToPadding="false">
 
@@ -51,7 +51,7 @@
                         android:layout_marginLeft="10sp"
                         android:layout_marginTop="20sp"
                         android:textStyle="bold"
-                        android:textColor="#111111" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/greeting"
@@ -61,7 +61,7 @@
                         android:textSize="14sp"
                         android:layout_marginLeft="10sp"
 
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:layout_marginTop="2dp" />
                 </LinearLayout>
 
@@ -103,7 +103,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_check_circle"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Approved"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
@@ -122,7 +122,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -144,7 +144,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_cancel"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rejected"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
@@ -163,7 +163,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -191,7 +191,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_person_add"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -202,7 +202,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pre-Approved"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="13sp" />
                             <TextView
@@ -210,7 +210,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -232,7 +232,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_block"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -243,7 +243,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Black-listed"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
@@ -251,7 +251,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -279,7 +279,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_clock"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -290,7 +290,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pending"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="14sp" />
                             <TextView
@@ -298,7 +298,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -320,7 +320,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_cancel"
-                            android:tint="#111111" />
+                            android:tint="?attr/colorOnSurface" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -331,7 +331,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Emergency Entries"
-                                android:textColor="#111111"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textStyle="bold"
                                 android:textSize="13sp" />
                             <TextView
@@ -339,7 +339,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
-                                android:textColor="#333333"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp"
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
@@ -356,7 +356,7 @@
                 android:text="Recent Activity"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:textColor="#111111"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="22dp" />
 
@@ -381,7 +381,7 @@
                     android:hint="Search"
                     android:background="@null"
                     android:textSize="14sp"
-                    android:textColor="#111111"
+                    android:textColor="?attr/colorOnSurface"
                     android:textColorHint="#AAAAAA"
                     android:singleLine="true"
                     android:importantForAutofill="no" />
@@ -389,21 +389,21 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="20dp"
-                    android:background="#DDDDDD"
+                    android:background="@color/divider_color"
                     android:layout_marginEnd="10dp" />
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/ic_filter"
-                    android:tint="#888888"
+                    android:tint="?attr/colorOnSurfaceVariant"
                     android:layout_marginEnd="12dp" />
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/ic_search"
-                    android:tint="#888888" />
+                    android:tint="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <TextView
@@ -415,7 +415,7 @@
                 android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:text="No recent activity."
-                android:textColor="#666666"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 android:visibility="gone" />
 
@@ -437,7 +437,7 @@
         android:layout_width="0dp"
         android:layout_height="72dp"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:elevation="10dp"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -460,7 +460,7 @@
                 android:layout_width="31dp"
                 android:layout_height="31dp"
                 android:src="@drawable/home"
-                android:tint="#27374D" />
+                android:tint="@color/bottom_nav_active" />
 
             <TextView
                 android:id="@+id/navHomeText"
@@ -468,7 +468,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Home"
-                android:textColor="#27374D"
+                android:textColor="@color/bottom_nav_active"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -488,7 +488,7 @@
                 android:layout_width="31dp"
                 android:layout_height="31dp"
                 android:src="@drawable/qr_code_scanner"
-                android:tint="#000000" />
+                android:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/navScanText"
@@ -496,7 +496,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Scan"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -523,7 +523,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:text="Admin Menu"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -543,7 +543,7 @@
                 android:layout_width="31dp"
                 android:layout_height="31dp"
                 android:src="@drawable/file"
-                android:tint="#111111" />
+                android:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/navPassesText"
@@ -551,7 +551,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Passes"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -571,7 +571,7 @@
                 android:layout_width="31dp"
                 android:layout_height="31dp"
                 android:src="@drawable/ic_profile"
-                android:tint="#111111" />
+                android:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/navProfileText"
@@ -579,7 +579,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Profile"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

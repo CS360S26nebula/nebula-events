@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Request ID:"
-            android:textColor="#111111"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="27sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="7dp"
             android:text="Pending"
-            android:textColor="#8D6E1F"
+            android:textColor="@color/pending_text"
             android:textSize="11sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textColor="#222222"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="20sp" />
 
     <View
@@ -52,7 +52,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="14dp"
-        android:background="#D6D6D6" />
+        android:background="@color/divider_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Visitor Information"
-                android:textColor="#111111"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Invitor Information"
-                android:textColor="#111111"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -193,7 +193,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#D6D6D6" />
+        android:background="@color/divider_color" />
 
     <LinearLayout
         android:id="@+id/layout_qr_download"
@@ -219,9 +219,9 @@
             android:insetBottom="0dp"
             android:text="Download"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="12sp"
-            app:backgroundTint="#3A5468"
+            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="8dp" />
     </LinearLayout>
 
@@ -235,22 +235,26 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_approve"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="44dp"
             android:layout_marginEnd="12dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Approve"
             android:textAllCaps="false"
-            android:textColor="#111111"
-            app:backgroundTint="#CAEED2"
+            android:textColor="@color/approved_text"
+            app:backgroundTint="@color/approved_bg"
             app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_reject"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="44dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Reject"
             android:textAllCaps="false"
-            android:textColor="#111111"
-            app:backgroundTint="#F4D4D4"
+            android:textColor="@color/rejected_text"
+            app:backgroundTint="@color/rejected_bg"
             app:cornerRadius="8dp" />
     </LinearLayout>
 </LinearLayout>

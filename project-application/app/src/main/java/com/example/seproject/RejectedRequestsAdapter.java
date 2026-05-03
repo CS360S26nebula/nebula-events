@@ -22,7 +22,9 @@ import java.util.List;
 public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedRequestsAdapter.ViewHolder> {
 
     private final List<Request> items = new ArrayList<>();
+    private final List<Request> allItems = new ArrayList<>();
     private final List<String> documentIds = new ArrayList<>();
+    private final List<String> allDocumentIds = new ArrayList<>();
     private final ActionListener actionListener;
 
     public interface ActionListener {
@@ -36,10 +38,10 @@ public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedReques
                                    @NonNull List<String> initialDocumentIds,
                                    @NonNull ActionListener actionListener) {
         this.actionListener = actionListener;
-        items.clear();
         items.addAll(initialItems);
-        documentIds.clear();
+        allItems.addAll(initialItems);
         documentIds.addAll(initialDocumentIds);
+        allDocumentIds.addAll(initialDocumentIds);
     }
 
     /**
@@ -48,8 +50,44 @@ public class RejectedRequestsAdapter extends RecyclerView.Adapter<RejectedReques
     public void setItems(@NonNull List<Request> newItems, @NonNull List<String> newDocumentIds) {
         items.clear();
         items.addAll(newItems);
+        allItems.clear();
+        allItems.addAll(newItems);
         documentIds.clear();
         documentIds.addAll(newDocumentIds);
+        allDocumentIds.clear();
+        allDocumentIds.addAll(newDocumentIds);
+        notifyDataSetChanged();
+    }
+
+    public void filter(@NonNull String query) {
+        items.clear();
+        documentIds.clear();
+
+        if (query == null || query.trim().isEmpty()) {
+            items.addAll(allItems);
+            documentIds.addAll(allDocumentIds);
+            notifyDataSetChanged();
+            return;
+        }
+
+        String searchText = query.trim().toLowerCase();
+
+        for (int i = 0; i < allItems.size(); i++) {
+            Request r = allItems.get(i);
+            String docId = allDocumentIds.get(i);
+
+            String visitorName = r.getVisitorName() == null ? "" : r.getVisitorName().toLowerCase();
+            String visitorCnic = r.getVisitorCnic() == null ? "" : r.getVisitorCnic().toLowerCase();
+            String invitorName = r.getInvitorName() == null ? "" : r.getInvitorName().toLowerCase();
+
+            if (visitorName.contains(searchText)
+                    || visitorCnic.contains(searchText)
+                    || invitorName.contains(searchText)) {
+                items.add(r);
+                documentIds.add(docId);
+            }
+        }
+
         notifyDataSetChanged();
     }
 

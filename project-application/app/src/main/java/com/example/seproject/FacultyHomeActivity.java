@@ -1,9 +1,14 @@
 package com.example.seproject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Comparator;
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,12 +30,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
  */
 public class FacultyHomeActivity extends AppCompatActivity {
 
-    private static final int COLOR_ACTIVE   = 0xFF27374D;
-    private static final int COLOR_INACTIVE = 0xFF111111;
-
     private ImageView navHomeIcon, navDownloadIcon, navPassesIcon, navProfileIcon;
     private TextView  navHomeText, navDownloadText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount, tvadhocRequests;
     private FrameLayout facultyFragmentOverlay;
+    private LinearLayout recentActivityContainer;
+    private TextView tvRecentEmpty;
+    private android.widget.EditText searchBox;
+    private List<Request> allRecentItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +141,25 @@ public class FacultyHomeActivity extends AppCompatActivity {
         int approved = 0;
         int rejected = 0;
 
+        recentActivityContainer = findViewById(R.id.recent_activity_container);
+        tvRecentEmpty = findViewById(R.id.tv_recent_empty);
+        searchBox = findViewById(R.id.searchBox);
+
+        searchBox.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterRecentActivity(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
         refreshCounts();
+        loadRecentActivity();
     }
     /**
      * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
@@ -171,6 +195,93 @@ public class FacultyHomeActivity extends AppCompatActivity {
                     tvRejectedCount.setText(String.valueOf(rejected));
                 });
     }
+
+    private void loadRecentActivity() {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
+
+        FirebaseFirestore.getInstance().collection("requests")
+                .whereEqualTo("requesterUid", uid)
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    List<Request> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : snapshots) {
+                        Request r = doc.toObject(Request.class);
+                        if (r != null && "Approved".equals(r.getRequestStatus())) {
+                            list.add(r);
+                        }
+                    }
+                    // Sort by time (checked-in or created)
+                    list.sort((a, b) -> {
+                        long tA = a.getCheckedInAtMillis() > 0 ? a.getCheckedInAtMillis() : a.getCreatedAtMillis();
+                        long tB = b.getCheckedInAtMillis() > 0 ? b.getCheckedInAtMillis() : b.getCreatedAtMillis();
+                        return Long.compare(tB, tA);
+                    });
+
+                    if (list.size() > 10) {
+                        list = list.subList(0, 10);
+                    }
+
+                    allRecentItems = new ArrayList<>(list);
+                    renderRecentActivity(allRecentItems);
+                    tvRecentEmpty.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+                });
+    }
+
+    private void filterRecentActivity(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            renderRecentActivity(allRecentItems);
+            tvRecentEmpty.setVisibility(allRecentItems.isEmpty() ? View.VISIBLE : View.GONE);
+            return;
+        }
+
+        String lowerQuery = query.toLowerCase().trim();
+        List<Request> filtered = new ArrayList<>();
+        for (Request r : allRecentItems) {
+            boolean match = (r.getPassId() != null && r.getPassId().toLowerCase().contains(lowerQuery))
+                    || (r.getVisitorName() != null && r.getVisitorName().toLowerCase().contains(lowerQuery));
+            if (match) {
+                filtered.add(r);
+            }
+        }
+        renderRecentActivity(filtered);
+        tvRecentEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private void renderRecentActivity(List<Request> items) {
+        recentActivityContainer.removeAllViews();
+        android.view.LayoutInflater inflater = android.view.LayoutInflater.from(this);
+        for (Request r : items) {
+            View card = inflater.inflate(R.layout.item_recent_activity_card, recentActivityContainer, false);
+            TextView tvIdValue = card.findViewById(R.id.tv_id_value);
+            TextView tvStatusBadge = card.findViewById(R.id.tv_status_badge);
+            TextView tvDateValue = card.findViewById(R.id.tv_date_value);
+            TextView tvNameValue = card.findViewById(R.id.tv_name_value);
+            com.google.android.material.button.MaterialButton btnAction = card.findViewById(R.id.btn_action);
+
+            tvIdValue.setText(r.getPassId() == null ? "-" : r.getPassId());
+            tvStatusBadge.setText("Approved");
+            tvStatusBadge.setBackgroundResource(R.drawable.bage_active_visitor);
+            
+            long millis = r.getCheckedInAtMillis() > 0 ? r.getCheckedInAtMillis() : r.getCreatedAtMillis();
+            tvDateValue.setText(formatTime(millis));
+            tvNameValue.setText(r.getVisitorName() == null ? "-" : r.getVisitorName());
+
+            btnAction.setText("View Details");
+            btnAction.setOnClickListener(v -> {
+                // For now, just show a message or navigate if there's a details screen
+                android.widget.Toast.makeText(this, "Details for: " + r.getVisitorName(), android.widget.Toast.LENGTH_SHORT).show();
+            });
+            
+            recentActivityContainer.addView(card);
+        }
+    }
+
+    private String formatTime(long millis) {
+        if (millis <= 0) return "-";
+        return new java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.ENGLISH)
+                .format(new java.util.Date(millis));
+    }
     private void activateTab(int tab) {
         int[] outlineIcons = {
             R.drawable.home,
@@ -194,9 +305,9 @@ public class FacultyHomeActivity extends AppCompatActivity {
             boolean isActive = (i == iconIndex);
             icons[i].setImageResource(isActive ? filledIcons[i] : outlineIcons[i]);
             icons[i].setColorFilter(
-                new PorterDuffColorFilter(isActive ? COLOR_ACTIVE : COLOR_INACTIVE,
+                new PorterDuffColorFilter(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive),
                     PorterDuff.Mode.SRC_IN));
-            texts[i].setTextColor(isActive ? COLOR_ACTIVE : COLOR_INACTIVE);
+            texts[i].setTextColor(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive));
         }
     }
 }

@@ -7,7 +7,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_overlay" />
+        android:background="#73000000" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/dialog_body"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="15dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="6.5dp"
         app:cardElevation="12dp"
         app:strokeColor="#D9D9D9"
@@ -39,7 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Confirm Remove User"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/btn_close_dialog"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Are you sure you want to remove this user?"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_dialog_title" />
@@ -72,10 +72,10 @@
                     android:layout_marginEnd="13dp"
                     android:text="No"
                     android:textAllCaps="false"
-                    android:textColor="#1E1E1E"
-                    app:backgroundTint="#E3E3E3"
+                    android:textColor="?attr/colorOnSurface"
+                    app:backgroundTint="?attr/colorSurfaceVariant"
                     app:cornerRadius="6.5dp"
-                    app:strokeColor="#767676" />
+                    app:strokeColor="@color/divider_color" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_yes"
@@ -83,10 +83,10 @@
                     android:layout_height="wrap_content"
                     android:text="Yes"
                     android:textAllCaps="false"
-                    android:textColor="#F5F5F5"
-                    app:backgroundTint="@color/btn_primary"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:backgroundTint="?attr/colorPrimary"
                     app:cornerRadius="6.5dp"
-                    app:strokeColor="#202F42" />
+                    app:strokeColor="?attr/colorPrimary" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

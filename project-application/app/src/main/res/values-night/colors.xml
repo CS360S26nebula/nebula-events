@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme semantic colors (Dark Mode) -->
+    <color name="theme_background">#242424</color>
+    <color name="theme_surface">#333333</color>
+    <color name="theme_on_background">#FFFFFF</color>
+    <color name="theme_on_surface">#FFFFFF</color>
+    <color name="theme_on_surface_variant">#AAAAAA</color>
+    
+    <!-- Adjusting card background for dark mode if it relies on this directly -->
+    <color name="card_bg">#2C2C2C</color>
+    <color name="search_bg">#333333</color>
+    <color name="bg_main">#242424</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
+    <color name="btn_primary">#4B6584</color>
+
+    <color name="approved_bg">#427130</color>
+    <color name="approved_text">#A5D6A7</color>
+    <color name="rejected_bg">#6A3131</color>
+    <color name="rejected_text">#EF9A9A</color>
+    <color name="preapproved_bg">#335075</color>
+    <color name="preapproved_text">#90CAF9</color>
+    <color name="blacklisted_bg">#505050</color>
+    <color name="blacklisted_text">#AAAAAA</color>
+    <color name="pending_bg">#786230</color>
+    <color name="pending_text">#FFE082</color>
+    <color name="emergency_bg">#7E4125</color>
+    <color name="emergency_text">#FFB74D</color>
+    <color name="divider_color">#333333</color>
+    <color name="white_fixed">#FFFFFF</color>
+    <color name="bottom_nav_active">#6DA2C4</color>
+    <color name="bottom_nav_inactive">#D3D3D3</color>
+</resources>

@@ -118,13 +118,22 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString();
                 if (STATUS_APPROVED.equals(targetStatus) && adapter instanceof ApprovedRequestsAdapter) {
-                    ((ApprovedRequestsAdapter) adapter).filter(s.toString());
+                    ((ApprovedRequestsAdapter) adapter).filter(query);
                     tvEmpty.setVisibility(((ApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
                 }
                 else if (STATUS_PRE_APPROVED.equals(targetStatus) && adapter instanceof PreApprovedRequestsAdapter) {
-                    ((PreApprovedRequestsAdapter) adapter).filter(s.toString());
+                    ((PreApprovedRequestsAdapter) adapter).filter(query);
                     tvEmpty.setVisibility(((PreApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+                else if (STATUS_PENDING.equals(targetStatus) && adapter instanceof PendingRequestsAdapter) {
+                    ((PendingRequestsAdapter) adapter).filter(query);
+                    tvEmpty.setVisibility(((PendingRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+                else if (STATUS_REJECTED.equals(targetStatus) && adapter instanceof RejectedRequestsAdapter) {
+                    ((RejectedRequestsAdapter) adapter).filter(query);
+                    tvEmpty.setVisibility(((RejectedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
                 }
             }
 

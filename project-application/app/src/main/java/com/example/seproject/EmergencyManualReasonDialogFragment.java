@@ -16,6 +16,9 @@ import androidx.fragment.app.DialogFragment;
 
 /**
  * Dialog used to capture a required reason for emergency manual override.
+ *
+ * @author Moiz Imran
+ * @version 1.0
  */
 public class EmergencyManualReasonDialogFragment extends DialogFragment {
 
@@ -25,6 +28,9 @@ public class EmergencyManualReasonDialogFragment extends DialogFragment {
     public EmergencyManualReasonDialogFragment() {
         super();
     }
+    /**
+     * Default constructor required for DialogFragment instantiation.
+     */
 
     @Nullable
     @Override
@@ -32,6 +38,15 @@ public class EmergencyManualReasonDialogFragment extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.emergency_manual_reason_popup_fragment, container, false);
     }
+
+    /**
+     * Inflate the dialog's view hierarchy.
+     *
+     * @param inflater           layout inflater
+     * @param container          optional parent view
+     * @param savedInstanceState optional saved state
+     * @return the inflated view
+     */
 
     @Override
     public void onStart() {
@@ -43,7 +58,18 @@ public class EmergencyManualReasonDialogFragment extends DialogFragment {
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }
     }
+    /**
+     * Configure full-screen window parameters when the dialog becomes visible.
+     */
 
+    /**
+     * Initialize view bindings and handle confirm/cancel interactions.
+     * The confirm action validates that a non-empty reason is provided and
+     * returns it to the parent via FragmentResult API.
+     *
+     * @param view               inflated view
+     * @param savedInstanceState optional saved state
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         EditText reasonInput = view.findViewById(R.id.et_emergency_reason);

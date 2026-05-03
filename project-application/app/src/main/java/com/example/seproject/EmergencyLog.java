@@ -12,6 +12,9 @@ import java.util.UUID;
 
 /**
  * Lightweight model for emergency entries that bypass regular visitor request flow.
+ *
+ * @author Moiz Imran
+ * @version 1.0
  */
 public class EmergencyLog {
 
@@ -25,6 +28,12 @@ public class EmergencyLog {
         // Required empty constructor for Firestore deserialization.
     }
 
+    /**
+     * Construct an emergency log with guard id and type. Reason defaults to null.
+     *
+     * @param guardId       identifier of the guard creating the log
+     * @param emergencyType type/category of the emergency
+     */
     public EmergencyLog(@NonNull String guardId, @NonNull String emergencyType) {
         this(guardId, emergencyType, null);
     }
@@ -37,31 +46,61 @@ public class EmergencyLog {
         this.timestamp = System.currentTimeMillis();
     }
 
+    /**
+     * @return unique log id generated for this emergency
+     */
     public String getLogId() {
         return logId;
     }
 
+    /**
+     * @return guard id that created the emergency log
+     */
     public String getGuardId() {
         return guardId;
     }
 
+    /**
+     * @return emergency type/category
+     */
     public String getEmergencyType() {
         return emergencyType;
     }
 
+    /**
+     * @return optional human-entered reason; may be empty string
+     */
     public String getReason() {
         return reason;
     }
 
+    /**
+     * @return epoch milliseconds when the emergency was created
+     */
     public long getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * Callback interface for asynchronous save operations.
+     */
     public interface SaveCallback {
+        /** Called when the save operation succeeds. */
         void onSuccess();
+
+        /**
+         * Called when the save operation fails.
+         *
+         * @param errorMessage human-readable error description
+         */
         void onFailure(@NonNull String errorMessage);
     }
 
+    /**
+     * Persist the emergency log document under the "emergencyLogs" collection.
+     *
+     * @param callback callback invoked on success or failure
+     */
     public void saveToDatabase(@NonNull SaveCallback callback) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("logId", logId);
@@ -81,6 +120,11 @@ public class EmergencyLog {
                         e.getMessage() == null ? "Failed to log emergency." : e.getMessage()));
     }
 
+    /**
+     * Save the emergency as an active emergency in the "activeEmergencies" collection.
+     *
+     * @param callback callback invoked on success or failure
+     */
     public void saveAsActiveEmergency(@NonNull SaveCallback callback) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("logId", logId);

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main"
+    android:background="?android:attr/colorBackground"
     android:paddingHorizontal="28dp"
     android:paddingTop="54dp">
 
@@ -14,7 +14,8 @@
         android:contentDescription="Back"
         android:src="@drawable/keyboard_backspace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" 
+        app:tint="?attr/colorOnSurface" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Manage Users"
-        android:textColor="#27374D"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btn_back"
@@ -70,7 +71,7 @@
                     android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:text="+"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </FrameLayout>
@@ -80,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Add User"
-                android:textColor="#FFFFFF"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -113,7 +114,7 @@
                     android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:text="-"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </FrameLayout>
@@ -123,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Remove User"
-                android:textColor="#FFFFFF"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -167,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Black-List User"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
