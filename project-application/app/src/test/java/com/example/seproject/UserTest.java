@@ -20,6 +20,7 @@ public class UserTest {
     @Before
     public void setUp() {
         user = new User(
+                "USER-1",
                 "Ada Lovelace",
                 "Faculty",
                 "10/12/1815",
@@ -55,7 +56,7 @@ public class UserTest {
 
     @Test
     public void nullConstructorArgs_stored() {
-        User u = new User(null, null, null, null, null, null);
+        User u = new User(null, null, null, null, null, null, null);
         assertNull(u.getFullName());
         assertNotNull(u);
     }

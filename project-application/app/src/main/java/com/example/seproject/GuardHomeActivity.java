@@ -104,6 +104,7 @@ public class GuardHomeActivity extends AppCompatActivity {
         View preapprovedBox = findViewById(R.id.preapprovedBox);
         View rejectedBox = findViewById(R.id.rejectedBox);
         View approvedBox = findViewById(R.id.approvedBox);
+        View blacklistedBox = findViewById(R.id.blacklistedBox);
         View emergencyBox = findViewById(R.id.emergencyBox);
 
         pendingBox.setOnClickListener(v -> {
@@ -141,6 +142,12 @@ public class GuardHomeActivity extends AppCompatActivity {
             intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
             startActivity(intent);
         });
+
+        blacklistedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, BlacklistedIndividualsActivity.class);
+            startActivity(intent);
+        });
+
         emergencyBox.setOnClickListener(v ->
                 startActivity(new Intent(GuardHomeActivity.this, ActiveEmergencyEntriesActivity.class)));
 
@@ -190,14 +197,15 @@ public class GuardHomeActivity extends AppCompatActivity {
         activateTab(0);
     }
     /**
-     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     * Counts request statuses, active emergencies, and active blacklist records
+     * to update the guard dashboard summary cards.
      */
     private void refreshCounts() {
 
         FirebaseFirestore.getInstance().collection("requests")
                 .get()
                 .addOnSuccessListener(snapshots -> {
-                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    int pending = 0, approved = 0, rejected = 0, PreApproved = 0;
                     for (QueryDocumentSnapshot doc : snapshots) {
 
                         Request r = doc.toObject(Request.class);
@@ -206,19 +214,21 @@ public class GuardHomeActivity extends AppCompatActivity {
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;
-                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
-                            Blacklisted++;
-                        }
                     }
                     tvPendingCount.setText(String.valueOf(pending));
                     tvApprovedCount.setText(String.valueOf(approved));
                     tvRejectedCount.setText(String.valueOf(rejected));
                     tvPreApprovedCount.setText(String.valueOf(PreApproved));
-                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
                 });
         FirebaseFirestore.getInstance().collection("activeEmergencies")
                 .get()
                 .addOnSuccessListener(snapshots -> tvEmergencyCount.setText(String.valueOf(snapshots.size())));
+
+        FirebaseFirestore.getInstance().collection("blacklistedIndividuals")
+                .whereEqualTo("isActive", true)
+                .get()
+                .addOnSuccessListener(snapshots ->
+                        tvBlacklistedCount.setText(String.valueOf(snapshots.size())));
     }
 
     private void loadRecentActivity() {

@@ -44,15 +44,15 @@ public class AdminHomeActivity extends AppCompatActivity {
     private final Map<String, String> userNameByUid = new HashMap<>();
     private final Map<String, String> userIdByUid = new HashMap<>();
 
-    /**
-     * Sets up the admin dashboard screen, connects navigation views, and opens the correct request list when a dashboard status is tapped.
-     * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
-     *
-     * @param savedInstanceState previous state if the activity is being recreated
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * Sets up the admin dashboard screen, connects navigation views, and opens the correct request list when a dashboard status is tapped.
+         * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
+         *
+         * @param savedInstanceState previous state if the activity is being recreated
+         */
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
 
@@ -113,6 +113,12 @@ public class AdminHomeActivity extends AppCompatActivity {
             intent.putExtra(RequestListActivity.EXTRA_ROLE, "Admin");
             startActivity(intent);
         });
+
+        blacklistedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminHomeActivity.this, BlacklistedIndividualsActivity.class);
+            startActivity(intent);
+        });
+
         emergencyBox.setOnClickListener(v ->
                 startActivity(new Intent(AdminHomeActivity.this, ActiveEmergencyEntriesActivity.class)));
 
@@ -156,12 +162,12 @@ public class AdminHomeActivity extends AppCompatActivity {
         loadRecentActivity();
     }
 
-    /**
-     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
-     */
-
     @Override
     protected void onResume() {
+        /**
+         * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
+         */
+
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
         activateTab(0);
@@ -169,15 +175,16 @@ public class AdminHomeActivity extends AppCompatActivity {
         loadRecentActivity();
     }
 
-    /**
-     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
-     */
     private void refreshCounts() {
+        /**
+         * Counts request statuses, active emergencies, and active blacklist records
+         * to update the dashboard summary cards.
+         */
 
         FirebaseFirestore.getInstance().collection("requests")
                 .get()
                 .addOnSuccessListener(snapshots -> {
-                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    int pending = 0, approved = 0, rejected = 0, PreApproved = 0;
                     for (QueryDocumentSnapshot doc : snapshots) {
 
                         Request r = doc.toObject(Request.class);
@@ -186,19 +193,21 @@ public class AdminHomeActivity extends AppCompatActivity {
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;
-                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
-                            Blacklisted++;
-                        }
                     }
                     tvPendingCount.setText(String.valueOf(pending));
                     tvApprovedCount.setText(String.valueOf(approved));
                     tvRejectedCount.setText(String.valueOf(rejected));
                     tvPreApprovedCount.setText(String.valueOf(PreApproved));
-                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
                 });
         FirebaseFirestore.getInstance().collection("activeEmergencies")
                 .get()
                 .addOnSuccessListener(snapshots -> tvEmergencyCount.setText(String.valueOf(snapshots.size())));
+
+        FirebaseFirestore.getInstance().collection("blacklistedIndividuals")
+                .whereEqualTo("isActive", true)
+                .get()
+                .addOnSuccessListener(snapshots ->
+                        tvBlacklistedCount.setText(String.valueOf(snapshots.size())));
     }
 
     private void loadRecentActivity() {

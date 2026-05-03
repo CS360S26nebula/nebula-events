@@ -155,38 +155,104 @@ public class VisitorScannerActivity extends AppCompatActivity {
                         String documentId = querySnapshot.getDocuments().get(0).getId();
 
                         String currentStatus = document.getString("requestStatus");
+
                         if ("Approved".equals(currentStatus)) {
                             Snackbar.make(viewFinder, "Entry Already checked in!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
-//                            isScanning = true;
+                            resetScanningAfter(3000);
                             return;
                         }
+
                         if ("Expired".equals(currentStatus)) {
                             Snackbar.make(viewFinder, "Expired Visitor Pass!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
-//                            isScanning = true;
+                            resetScanningAfter(3000);
                             return;
                         }
-                        FirebaseFirestore.getInstance()
-                                .collection("requests")
-                                .document(documentId)
-                                .update("requestStatus", "Approved", "checkedInAtMillis", System.currentTimeMillis())
-                                .addOnSuccessListener(unused -> {
-                                    Snackbar.make(viewFinder, "Checked in Successfully!", 2000).setBackgroundTint(Color.GREEN).setTextColor(Color.WHITE).show();
-                                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
-//                                    isScanning = true;
-                                })
-                                .addOnFailureListener(e -> {
-                                    Snackbar.make(viewFinder, "Failed to Check In!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 3000);
-//                                    isScanning = true;
-                                });
+
+                        String visitorCnic = document.getString("visitorCnic");
+
+                        checkActiveBlacklist(visitorCnic, () -> {
+                            FirebaseFirestore.getInstance()
+                                    .collection("requests")
+                                    .document(documentId)
+                                    .update("requestStatus", "Approved", "checkedInAtMillis", System.currentTimeMillis())
+                                    .addOnSuccessListener(unused -> {
+                                        Snackbar.make(viewFinder, "Checked in Successfully!", 2000)
+                                                .setBackgroundTint(Color.GREEN)
+                                                .setTextColor(Color.WHITE)
+                                                .show();
+                                        resetScanningAfter(3000);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Snackbar.make(viewFinder, "Failed to Check In!", 2000)
+                                                .setBackgroundTint(Color.RED)
+                                                .setTextColor(Color.WHITE)
+                                                .show();
+                                        resetScanningAfter(3000);
+                                    });
+                        });
                     } else {
                         Snackbar.make(viewFinder, "Invalid Code!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
-                        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, 5000);
-//                        isScanning = true;
+                        resetScanningAfter(5000);
                     }
+                })
+                .addOnFailureListener(error -> {
+                    Snackbar.make(viewFinder, "Could not validate code!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                    resetScanningAfter(3000);
                 });
+    }
+
+    private void checkActiveBlacklist(String visitorCnic, Runnable onVisitorAllowed) {
+        String normalizedCnic = normalizeCnic(visitorCnic);
+
+        if (normalizedCnic.isEmpty()) {
+            Snackbar.make(viewFinder, "Visitor CNIC missing. Entry blocked!", 2500).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+            resetScanningAfter(3000);
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("blacklistedIndividuals")
+                .document(normalizedCnic)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        onVisitorAllowed.run();
+                        return;
+                    }
+
+                    Boolean isActive = documentSnapshot.getBoolean("isActive");
+                    Long startTimeMilliseconds = documentSnapshot.getLong("blacklistStartTimeMilliseconds");
+                    Long endTimeMilliseconds = documentSnapshot.getLong("blacklistEndTimeMilliseconds");
+                    long now = System.currentTimeMillis();
+
+                    if (isActive != null && isActive
+                            && startTimeMilliseconds != null
+                            && endTimeMilliseconds != null
+                            && now >= startTimeMilliseconds
+                            && now <= endTimeMilliseconds) {
+                        Snackbar.make(viewFinder, "Entry blocked. Visitor is blacklisted!", 2500).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                        resetScanningAfter(3000);
+                        return;
+                    }
+
+                    onVisitorAllowed.run();
+                })
+                .addOnFailureListener(error -> {
+                    Snackbar.make(viewFinder, "Could not check blacklist status!", 2000).setBackgroundTint(Color.RED).setTextColor(Color.WHITE).show();
+                    resetScanningAfter(3000);
+                });
+    }
+
+    private void resetScanningAfter(int milliseconds) {
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> isScanning = true, milliseconds);
+    }
+
+    private String normalizeCnic(String cnic) {
+        if (cnic == null) {
+            return "";
+        }
+
+        return cnic.replaceAll("[^0-9]", "");
     }
 
     @Override
