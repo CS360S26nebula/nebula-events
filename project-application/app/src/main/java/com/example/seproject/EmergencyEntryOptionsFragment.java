@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 
 /**
  * Full-screen emergency options UI with large grid actions.
+ *
+ * @author Moiz Imran
+ * @version 1.0
  */
 public class EmergencyEntryOptionsFragment extends Fragment {
 
@@ -19,6 +22,10 @@ public class EmergencyEntryOptionsFragment extends Fragment {
     public EmergencyEntryOptionsFragment() {
         super(R.layout.fragment_emergency_entry_options);
     }
+
+        /**
+         * Default constructor binding the fragment to its layout resource.
+         */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -43,6 +50,13 @@ public class EmergencyEntryOptionsFragment extends Fragment {
                 });
     }
 
+        /**
+         * Handle emergency option selection and listen for manual-reason results when needed.
+         *
+         * @param view               fragment's root view
+         * @param savedInstanceState optional saved state
+         */
+
     private void dispatchEmergencyAction(@NonNull String emergencyType, @NonNull String reason) {
         Bundle result = new Bundle();
         result.putString(BUNDLE_EMERGENCY_TYPE, emergencyType);
@@ -50,4 +64,12 @@ public class EmergencyEntryOptionsFragment extends Fragment {
         getParentFragmentManager().setFragmentResult(REQUEST_KEY_EMERGENCY_ACTION, result);
         requireActivity().getSupportFragmentManager().popBackStack();
     }
+
+        /**
+         * Dispatch the chosen emergency type and reason back to the activity via FragmentResult API
+         * and pop the fragment from the back stack.
+         *
+         * @param emergencyType emergency type label
+         * @param reason        optional reason text
+         */
 }

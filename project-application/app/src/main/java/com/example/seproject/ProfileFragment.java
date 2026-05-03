@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -95,8 +97,16 @@ public class ProfileFragment extends Fragment {
         }
 
         if (darkToggle != null) {
-            darkToggle.setTag("off");
-            darkToggle.setImageResource(R.drawable.toggleleft);
+            // Check current night mode state to set initial toggle image
+            int currentNightMode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+            if (currentNightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+                darkToggle.setTag("on");
+                darkToggle.setImageResource(R.drawable.toggleright);
+            } else {
+                darkToggle.setTag("off");
+                darkToggle.setImageResource(R.drawable.toggleleft);
+            }
+
             darkToggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -105,10 +115,13 @@ public class ProfileFragment extends Fragment {
                     if (tag != null && tag.equals("on")) {
                         iv.setImageResource(R.drawable.toggleleft);
                         iv.setTag("off");
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     } else {
                         iv.setImageResource(R.drawable.toggleright);
                         iv.setTag("on");
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
+                    requireActivity().recreate();
                 }
             });
         }

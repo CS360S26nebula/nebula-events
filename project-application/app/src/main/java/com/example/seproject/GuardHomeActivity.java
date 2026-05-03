@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,13 +37,12 @@ import java.util.List;
  */
 public class GuardHomeActivity extends AppCompatActivity {
 
-    private static final int COLOR_ACTIVE   = 0xFF27374D;
-    private static final int COLOR_INACTIVE = 0xFF111111;
-
     private ImageView navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon;
     private TextView  navHomeText, navScanText, navPassesText, navProfileText,tvPendingCount,tvRejectedCount, tvApprovedCount,tvPreApprovedCount,tvBlacklistedCount,tvEmergencyCount;
     private TextView tvRecentEmpty;
     private LinearLayout recentActivityContainer;
+    private android.widget.EditText searchBox;
+    private List<RecentActivityItem> allRecentItems = new ArrayList<>();
 
     /**
      * Sets up the guard dashboard screen, connects navigation views, and opens the correct request list when a dashboard status box is tapped.
@@ -105,6 +105,7 @@ public class GuardHomeActivity extends AppCompatActivity {
         View preapprovedBox = findViewById(R.id.preapprovedBox);
         View rejectedBox = findViewById(R.id.rejectedBox);
         View approvedBox = findViewById(R.id.approvedBox);
+        View blacklistedBox = findViewById(R.id.blacklistedBox);
         View emergencyBox = findViewById(R.id.emergencyBox);
 
         pendingBox.setOnClickListener(v -> {
@@ -142,6 +143,12 @@ public class GuardHomeActivity extends AppCompatActivity {
             intent.putExtra(RequestListActivity.EXTRA_ROLE, "Guard");
             startActivity(intent);
         });
+
+        blacklistedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(GuardHomeActivity.this, BlacklistedIndividualsActivity.class);
+            startActivity(intent);
+        });
+
         emergencyBox.setOnClickListener(v ->
                 startActivity(new Intent(GuardHomeActivity.this, ActiveEmergencyEntriesActivity.class)));
 
@@ -173,6 +180,20 @@ public class GuardHomeActivity extends AppCompatActivity {
         tvEmergencyCount = findViewById(R.id.tv_emergency_count);
         tvRecentEmpty = findViewById(R.id.tv_recent_empty);
         recentActivityContainer = findViewById(R.id.recent_activity_container);
+        searchBox = findViewById(R.id.searchBox);
+
+        searchBox.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterRecentActivity(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
 //        int pending = 0;
 //        int approved = 0;
 //        int rejected = 0;
@@ -194,14 +215,15 @@ public class GuardHomeActivity extends AppCompatActivity {
         activateTab(0);
     }
     /**
-     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
+     * Counts request statuses, active emergencies, and active blacklist records
+     * to update the guard dashboard summary cards.
      */
     private void refreshCounts() {
 
         FirebaseFirestore.getInstance().collection("requests")
                 .get()
                 .addOnSuccessListener(snapshots -> {
-                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    int pending = 0, approved = 0, rejected = 0, PreApproved = 0;
                     for (QueryDocumentSnapshot doc : snapshots) {
 
                         Request r = doc.toObject(Request.class);
@@ -210,19 +232,21 @@ public class GuardHomeActivity extends AppCompatActivity {
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;
-                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
-                            Blacklisted++;
-                        }
                     }
                     tvPendingCount.setText(String.valueOf(pending));
                     tvApprovedCount.setText(String.valueOf(approved));
                     tvRejectedCount.setText(String.valueOf(rejected));
                     tvPreApprovedCount.setText(String.valueOf(PreApproved));
-                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
                 });
         FirebaseFirestore.getInstance().collection("activeEmergencies")
                 .get()
                 .addOnSuccessListener(snapshots -> tvEmergencyCount.setText(String.valueOf(snapshots.size())));
+
+        FirebaseFirestore.getInstance().collection("blacklistedIndividuals")
+                .whereEqualTo("isActive", true)
+                .get()
+                .addOnSuccessListener(snapshots ->
+                        tvBlacklistedCount.setText(String.valueOf(snapshots.size())));
     }
 
     private void loadRecentActivity() {
@@ -273,9 +297,30 @@ public class GuardHomeActivity extends AppCompatActivity {
                                     if (merged.size() > 10) {
                                         merged = new ArrayList<>(merged.subList(0, 10));
                                     }
-                                    renderRecentActivity(merged);
+                                    allRecentItems = new ArrayList<>(merged);
+                                    renderRecentActivity(allRecentItems);
                                     tvRecentEmpty.setVisibility(merged.isEmpty() ? View.VISIBLE : View.GONE);
                                 }));
+    }
+
+    private void filterRecentActivity(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            renderRecentActivity(allRecentItems);
+            tvRecentEmpty.setVisibility(allRecentItems.isEmpty() ? View.VISIBLE : View.GONE);
+            return;
+        }
+
+        String lowerQuery = query.toLowerCase().trim();
+        List<RecentActivityItem> filtered = new ArrayList<>();
+        for (RecentActivityItem item : allRecentItems) {
+            boolean match = (item.getPrimaryId() != null && item.getPrimaryId().toLowerCase().contains(lowerQuery))
+                    || (item.getTitleValue() != null && item.getTitleValue().toLowerCase().contains(lowerQuery));
+            if (match) {
+                filtered.add(item);
+            }
+        }
+        renderRecentActivity(filtered);
+        tvRecentEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void renderRecentActivity(@NonNull List<RecentActivityItem> items) {
@@ -354,9 +399,9 @@ public class GuardHomeActivity extends AppCompatActivity {
             boolean isActive = (i == iconIndex);
             icons[i].setImageResource(isActive ? filledIcons[i] : outlineIcons[i]);
             icons[i].setColorFilter(
-                    new PorterDuffColorFilter(isActive ? COLOR_ACTIVE : COLOR_INACTIVE, PorterDuff.Mode.SRC_IN)
+                    new PorterDuffColorFilter(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive), PorterDuff.Mode.SRC_IN)
             );
-            texts[i].setTextColor(isActive ? COLOR_ACTIVE : COLOR_INACTIVE);
+            texts[i].setTextColor(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive));
         }
     }
 

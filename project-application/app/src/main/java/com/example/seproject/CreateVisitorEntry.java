@@ -277,44 +277,149 @@ public class CreateVisitorEntry extends Fragment {
     /* EDIT BY UMER:
     * editted function to check if requested time falls within gate times.
     * */
-private void submitRequest() {
-    String visitorName = editGuestName.getText().toString().trim();
-    String invitorName = editInvitorName.getText().toString().trim();
-    String invitorEmail = editInvitorEmail.getText().toString().trim();
-    String visitorPhoneNumber = editPhone.getText().toString().trim();
-    String visitorCnic = editCnic.getText().toString().trim();
-    String visitReason = editVisitReason.getText().toString().trim();
-    String visitorType = selectedValue(spVisitorType);
-    String visitDate = editVisitDate.getText().toString().trim();
-    String visitTime = selectedValue(spVisitTime);
+    private void submitRequest() {
+        /**
+         * Validates the visitor entry form, checks blacklist status for the planned visit time,
+         * validates gate timing, and then creates the visitor entry.
+         */
 
-    if (!validateInput(visitorName, invitorName, invitorEmail, visitorPhoneNumber, visitorCnic,
-            visitReason, visitorType, visitDate, visitTime)) {
-        return;
+        String visitorName = editGuestName.getText().toString().trim();
+        String invitorName = editInvitorName.getText().toString().trim();
+        String invitorEmail = editInvitorEmail.getText().toString().trim();
+        String visitorPhoneNumber = editPhone.getText().toString().trim();
+        String visitorCnic = editCnic.getText().toString().trim();
+        String visitReason = editVisitReason.getText().toString().trim();
+        String visitorType = selectedValue(spVisitorType);
+        String visitDate = editVisitDate.getText().toString().trim();
+        String visitTime = selectedValue(spVisitTime);
+
+        if (!validateInput(visitorName, invitorName, invitorEmail, visitorPhoneNumber, visitorCnic,
+                visitReason, visitorType, visitDate, visitTime)) {
+            return;
+        }
+
+        btnSubmitRequest.setEnabled(false);
+
+        checkActiveBlacklist(visitorCnic, visitDate, visitTime, () -> {
+            VisitorRequestTimerValidator.validate(visitDate, visitTime, (isValid, errorMessage) -> {
+                if (!isValid) {
+                    toast(errorMessage);
+                    btnSubmitRequest.setEnabled(true);
+                    return;
+                }
+
+                final String emailKey = invitorEmail;
+                lookupFacultyByEmail(emailKey,
+                        (facultyUid, facultyEmail) -> {
+                            createVisitorEntry(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason,
+                                    visitorType, visitDate, visitTime, facultyUid, facultyEmail, emailKey);
+                            btnSubmitRequest.setEnabled(true);
+                        },
+                        () -> {
+                            toast("No faculty account with this email exists");
+                            btnSubmitRequest.setEnabled(true);
+                        });
+            });
+        });
     }
 
-    btnSubmitRequest.setEnabled(false);
+    private void checkActiveBlacklist(String visitorCnic, String visitDate, String visitTime,
+                                      Runnable onVisitorAllowed) {
+        /**
+         * Checks whether the visitor CNIC is actively blacklisted for the planned visit time.
+         *
+         * @param visitorCnic      visitor CNIC entered in the form
+         * @param visitDate        planned visit date
+         * @param visitTime        planned visit time
+         * @param onVisitorAllowed action to run if the visitor is not blocked
+         */
 
-    VisitorRequestTimerValidator.validate(visitDate, visitTime, (isValid, errorMessage) -> {
-        if (!isValid) {
-            toast(errorMessage);
+        String normalizedCnic = normalizeCnic(visitorCnic);
+
+        if (normalizedCnic.isEmpty()) {
+            toast("Please enter a valid CNIC number.");
             btnSubmitRequest.setEnabled(true);
             return;
         }
 
-        final String emailKey = invitorEmail;
-        lookupFacultyByEmail(emailKey,
-                (facultyUid, facultyEmail) -> {
-                    createVisitorEntry(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason,
-                            visitorType, visitDate, visitTime, facultyUid, facultyEmail, emailKey);
-                    btnSubmitRequest.setEnabled(true); // Re-enable after finishing
-                },
-                () -> {
-                    toast("No faculty account with this email exists");
+        long visitTimeMilliseconds = parseVisitDateTimeMillis(visitDate, visitTime);
+
+        if (visitTimeMilliseconds < 0) {
+            toast("Please enter a valid visit date and time.");
+            btnSubmitRequest.setEnabled(true);
+            return;
+        }
+
+        firestore.collection("blacklistedIndividuals")
+                .document(normalizedCnic)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        onVisitorAllowed.run();
+                        return;
+                    }
+
+                    Boolean isActive = documentSnapshot.getBoolean("isActive");
+                    Long startTimeMilliseconds = documentSnapshot.getLong("blacklistStartTimeMilliseconds");
+                    Long endTimeMilliseconds = documentSnapshot.getLong("blacklistEndTimeMilliseconds");
+
+                    if (isActive != null && isActive
+                            && startTimeMilliseconds != null
+                            && endTimeMilliseconds != null
+                            && visitTimeMilliseconds >= startTimeMilliseconds
+                            && visitTimeMilliseconds <= endTimeMilliseconds) {
+                        toast("This person is blacklisted and therefore can't be entered");
+                        btnSubmitRequest.setEnabled(true);
+                        return;
+                    }
+
+                    onVisitorAllowed.run();
+                })
+                .addOnFailureListener(error -> {
+                    String message = error.getMessage();
+                    toast(message == null ? "Could not check blacklist status." : message);
                     btnSubmitRequest.setEnabled(true);
                 });
-    });
-}
+    }
+
+    private long parseVisitDateTimeMillis(String visitDate, String visitTime) {
+        /**
+         * Converts the planned visit date and time into milliseconds.
+         *
+         * @param visitDate planned visit date
+         * @param visitTime planned visit time
+         * @return visit date/time in milliseconds, or -1 if invalid
+         */
+
+        try {
+            String source = visitDate + " " + visitTime;
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH);
+            java.util.Date date = formatter.parse(source);
+
+            if (date == null) {
+                return -1L;
+            }
+
+            return date.getTime();
+        } catch (Exception ignored) {
+            return -1L;
+        }
+    }
+
+    private String normalizeCnic(String cnic) {
+        /**
+         * Removes non-numeric characters from a CNIC.
+         *
+         * @param cnic CNIC entered by the user
+         * @return CNIC containing digits only
+         */
+
+        if (cnic == null) {
+            return "";
+        }
+
+        return cnic.replaceAll("[^0-9]", "");
+    }
 
     private void clearForm() {
         editGuestName.setText("");

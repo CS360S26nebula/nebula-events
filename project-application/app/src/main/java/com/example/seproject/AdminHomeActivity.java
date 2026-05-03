@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,24 +38,23 @@ import java.util.Map;
  */
 public class AdminHomeActivity extends AppCompatActivity {
 
-    private static final int COLOR_ACTIVE   = 0xFF27374D;
-    private static final int COLOR_INACTIVE = 0xFF111111;
-
     private ImageView navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon;
     private TextView  navHomeText, navScanText, navPassesText, navProfileText, tvPendingCount,tvRejectedCount, tvApprovedCount,tvPreApprovedCount,tvBlacklistedCount,tvEmergencyCount,tvRecentEmpty;
     private LinearLayout recentActivityContainer;
     private final Map<String, String> userNameByUid = new HashMap<>();
     private final Map<String, String> userIdByUid = new HashMap<>();
-
-    /**
-     * Sets up the admin dashboard screen, connects navigation views, and opens the correct request list when a dashboard status is tapped.
-     * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
-     *
-     * @param savedInstanceState previous state if the activity is being recreated
-     */
+    private EditText searchBox;
+    private List<AdminRecentItem> allRecentItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * Sets up the admin dashboard screen, connects navigation views, and opens the correct request list when a dashboard status is tapped.
+         * This includes support for Pending, Pre-Approved, Approved, and Rejected request list navigation.
+         *
+         * @param savedInstanceState previous state if the activity is being recreated
+         */
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
 
@@ -114,6 +115,12 @@ public class AdminHomeActivity extends AppCompatActivity {
             intent.putExtra(RequestListActivity.EXTRA_ROLE, "Admin");
             startActivity(intent);
         });
+
+        blacklistedBox.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminHomeActivity.this, BlacklistedIndividualsActivity.class);
+            startActivity(intent);
+        });
+
         emergencyBox.setOnClickListener(v ->
                 startActivity(new Intent(AdminHomeActivity.this, ActiveEmergencyEntriesActivity.class)));
 
@@ -145,6 +152,20 @@ public class AdminHomeActivity extends AppCompatActivity {
         tvEmergencyCount = findViewById(R.id.tv_emergency_count);
         tvRecentEmpty = findViewById(R.id.tv_recent_empty);
         recentActivityContainer = findViewById(R.id.recent_activity_container);
+        searchBox = findViewById(R.id.searchBox);
+
+        searchBox.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterRecentActivity(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
 
         getSupportFragmentManager().setFragmentResultListener(
                 CheckOutConfirmationFragment.REQUEST_KEY_CHECKOUT_CONFIRM,
@@ -160,12 +181,12 @@ public class AdminHomeActivity extends AppCompatActivity {
         loadRecentActivity();
     }
 
-    /**
-     * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
-     */
-
     @Override
     protected void onResume() {
+        /**
+         * Resets the bottom navigation highlight and reloads count of all requests when the admin returns to this dashboard screen.
+         */
+
         super.onResume();
         // Reset to dashboard tab when coming back from ProfileActivity.
         activateTab(0);
@@ -173,15 +194,16 @@ public class AdminHomeActivity extends AppCompatActivity {
         loadRecentActivity();
     }
 
-    /**
-     * Queries the database to count number of pending, approved, rejected, PreApproved and blacklisted requests to update UI display.
-     */
     private void refreshCounts() {
+        /**
+         * Counts request statuses, active emergencies, and active blacklist records
+         * to update the dashboard summary cards.
+         */
 
         FirebaseFirestore.getInstance().collection("requests")
                 .get()
                 .addOnSuccessListener(snapshots -> {
-                    int pending = 0, approved = 0, rejected = 0, PreApproved =0, Blacklisted =0;
+                    int pending = 0, approved = 0, rejected = 0, PreApproved = 0;
                     for (QueryDocumentSnapshot doc : snapshots) {
 
                         Request r = doc.toObject(Request.class);
@@ -190,19 +212,21 @@ public class AdminHomeActivity extends AppCompatActivity {
                         else if ("Approved".equals(status)) approved++;
                         else if ("Rejected".equals(status)) rejected++;
                         else if ("Pre-Approved".equals(status)) PreApproved++;
-                        if (doc.contains("isBlacklisted") && Boolean.TRUE.equals(doc.getBoolean("isBlacklisted"))) {
-                            Blacklisted++;
-                        }
                     }
                     tvPendingCount.setText(String.valueOf(pending));
                     tvApprovedCount.setText(String.valueOf(approved));
                     tvRejectedCount.setText(String.valueOf(rejected));
                     tvPreApprovedCount.setText(String.valueOf(PreApproved));
-                    tvBlacklistedCount.setText(String.valueOf(Blacklisted));
                 });
         FirebaseFirestore.getInstance().collection("activeEmergencies")
                 .get()
                 .addOnSuccessListener(snapshots -> tvEmergencyCount.setText(String.valueOf(snapshots.size())));
+
+        FirebaseFirestore.getInstance().collection("blacklistedIndividuals")
+                .whereEqualTo("isActive", true)
+                .get()
+                .addOnSuccessListener(snapshots ->
+                        tvBlacklistedCount.setText(String.valueOf(snapshots.size())));
     }
 
     private void loadRecentActivity() {
@@ -267,10 +291,31 @@ public class AdminHomeActivity extends AppCompatActivity {
                                         if (merged.size() > 10) {
                                             merged = new ArrayList<>(merged.subList(0, 10));
                                         }
-                                        renderRecentActivity(merged);
+                                        allRecentItems = new ArrayList<>(merged);
+                                        renderRecentActivity(allRecentItems);
                                         tvRecentEmpty.setVisibility(merged.isEmpty() ? View.VISIBLE : View.GONE);
                                     }));
         });
+    }
+
+    private void filterRecentActivity(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            renderRecentActivity(allRecentItems);
+            tvRecentEmpty.setVisibility(allRecentItems.isEmpty() ? View.VISIBLE : View.GONE);
+            return;
+        }
+
+        String lowerQuery = query.toLowerCase().trim();
+        List<AdminRecentItem> filtered = new ArrayList<>();
+        for (AdminRecentItem item : allRecentItems) {
+            boolean match = (item.getPrimaryId() != null && item.getPrimaryId().toLowerCase().contains(lowerQuery))
+                    || (item.getDisplayValue() != null && item.getDisplayValue().toLowerCase().contains(lowerQuery));
+            if (match) {
+                filtered.add(item);
+            }
+        }
+        renderRecentActivity(filtered);
+        tvRecentEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void renderRecentActivity(@NonNull List<AdminRecentItem> items) {
@@ -441,9 +486,9 @@ public class AdminHomeActivity extends AppCompatActivity {
             boolean isActive = (i == iconIndex);
             icons[i].setImageResource(isActive ? filledIcons[i] : outlineIcons[i]);
             icons[i].setColorFilter(
-                    new PorterDuffColorFilter(isActive ? COLOR_ACTIVE : COLOR_INACTIVE,
-                            PorterDuff.Mode.SRC_IN));
-            texts[i].setTextColor(isActive ? COLOR_ACTIVE : COLOR_INACTIVE);
+                new PorterDuffColorFilter(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive),
+                    PorterDuff.Mode.SRC_IN));
+            texts[i].setTextColor(isActive ? ContextCompat.getColor(this, R.color.bottom_nav_active) : ContextCompat.getColor(this, R.color.bottom_nav_inactive));
         }
     }
 }

@@ -118,13 +118,22 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString();
                 if (STATUS_APPROVED.equals(targetStatus) && adapter instanceof ApprovedRequestsAdapter) {
-                    ((ApprovedRequestsAdapter) adapter).filter(s.toString());
+                    ((ApprovedRequestsAdapter) adapter).filter(query);
                     tvEmpty.setVisibility(((ApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
                 }
                 else if (STATUS_PRE_APPROVED.equals(targetStatus) && adapter instanceof PreApprovedRequestsAdapter) {
-                    ((PreApprovedRequestsAdapter) adapter).filter(s.toString());
+                    ((PreApprovedRequestsAdapter) adapter).filter(query);
                     tvEmpty.setVisibility(((PreApprovedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+                else if (STATUS_PENDING.equals(targetStatus) && adapter instanceof PendingRequestsAdapter) {
+                    ((PendingRequestsAdapter) adapter).filter(query);
+                    tvEmpty.setVisibility(((PendingRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+                else if (STATUS_REJECTED.equals(targetStatus) && adapter instanceof RejectedRequestsAdapter) {
+                    ((RejectedRequestsAdapter) adapter).filter(query);
+                    tvEmpty.setVisibility(((RejectedRequestsAdapter) adapter).getItemCount() == 0 ? View.VISIBLE : View.GONE);
                 }
             }
 
@@ -350,25 +359,28 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String approverUid = currentUser.getUid();
-        db.collection("users").document(approverUid).get()
-                .addOnSuccessListener(userDoc -> {
-                    String approverName = userDoc.getString("fullName");
-                    String approverId = userDoc.getString("userId");
-                    db.collection("requests")
-                            .document(documentId)
-                            .update(
-                                    "requestStatus", finalStatus,
-                                    "passId", generatedPassId,
-                                    "approvedByUid", approverUid,
-                                    "approvedByName", approverName == null ? "" : approverName,
-                                    "approvedByUserId", approverId == null ? "" : approverId
-                            )
-                            .addOnSuccessListener(unused ->
-                                    Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show())
-                            .addOnFailureListener(e -> Toast.makeText(this, "Failed to approve", Toast.LENGTH_SHORT).show());
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to load approver details.", Toast.LENGTH_SHORT).show());
+
+        checkActiveBlacklistForRequestList(request.getVisitorCnic(), () -> {
+            db.collection("users").document(approverUid).get()
+                    .addOnSuccessListener(userDoc -> {
+                        String approverName = userDoc.getString("fullName");
+                        String approverId = userDoc.getString("userId");
+                        db.collection("requests")
+                                .document(documentId)
+                                .update(
+                                        "requestStatus", finalStatus,
+                                        "passId", generatedPassId,
+                                        "approvedByUid", approverUid,
+                                        "approvedByName", approverName == null ? "" : approverName,
+                                        "approvedByUserId", approverId == null ? "" : approverId
+                                )
+                                .addOnSuccessListener(unused ->
+                                        Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e -> Toast.makeText(this, "Failed to approve", Toast.LENGTH_SHORT).show());
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to load approver details.", Toast.LENGTH_SHORT).show());
+        });
     }
 
     /**
@@ -402,17 +414,19 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
             return;
         }
 
-        FirebaseFirestore.getInstance()
-                .collection("requests")
-                .document(documentId)
-                .update(
-                        "requestStatus", STATUS_APPROVED,
-                        "checkedInAtMillis", System.currentTimeMillis()
-                )
-                .addOnSuccessListener(unused ->
-                        Toast.makeText(this, "Visitor checked in successfully.", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to check in visitor.", Toast.LENGTH_SHORT).show());
+        checkActiveBlacklistForRequestList(request.getVisitorCnic(), () -> {
+            FirebaseFirestore.getInstance()
+                    .collection("requests")
+                    .document(documentId)
+                    .update(
+                            "requestStatus", STATUS_APPROVED,
+                            "checkedInAtMillis", System.currentTimeMillis()
+                    )
+                    .addOnSuccessListener(unused ->
+                            Toast.makeText(this, "Visitor checked in successfully.", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to check in visitor.", Toast.LENGTH_SHORT).show());
+        });
     }
 
     /**
@@ -478,16 +492,65 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
             return;
         }
         String generatedPassId = "PASS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+        checkActiveBlacklistForRequestList(request.getVisitorCnic(), () -> {
+            FirebaseFirestore.getInstance()
+                    .collection("requests")
+                    .document(documentId)
+                    .update(
+                            "requestStatus", STATUS_PRE_APPROVED,
+                            "passId", generatedPassId
+                    )
+                    .addOnSuccessListener(unused ->
+                            Toast.makeText(this, "Pass reissued to Pre-Approved.", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to reissue pass.", Toast.LENGTH_SHORT).show());
+        });
+    }
+
+    private void checkActiveBlacklistForRequestList(String visitorCnic, Runnable onVisitorAllowed) {
+        String normalizedCnic = normalizeCnic(visitorCnic);
+
+        if (normalizedCnic.isEmpty()) {
+            Toast.makeText(this, "Visitor CNIC missing. Action blocked.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         FirebaseFirestore.getInstance()
-                .collection("requests")
-                .document(documentId)
-                .update(
-                        "requestStatus", STATUS_PRE_APPROVED,
-                        "passId", generatedPassId
-                )
-                .addOnSuccessListener(unused ->
-                        Toast.makeText(this, "Pass reissued to Pre-Approved.", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to reissue pass.", Toast.LENGTH_SHORT).show());
+                .collection("blacklistedIndividuals")
+                .document(normalizedCnic)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        onVisitorAllowed.run();
+                        return;
+                    }
+
+                    Boolean isActive = documentSnapshot.getBoolean("isActive");
+                    Long startTimeMilliseconds = documentSnapshot.getLong("blacklistStartTimeMilliseconds");
+                    Long endTimeMilliseconds = documentSnapshot.getLong("blacklistEndTimeMilliseconds");
+                    long now = System.currentTimeMillis();
+
+                    if (isActive != null && isActive
+                            && startTimeMilliseconds != null
+                            && endTimeMilliseconds != null
+                            && now >= startTimeMilliseconds
+                            && now <= endTimeMilliseconds) {
+                        Toast.makeText(this, "Action blocked. Visitor is blacklisted.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    onVisitorAllowed.run();
+                })
+                .addOnFailureListener(error ->
+                        Toast.makeText(this, "Could not check blacklist status.", Toast.LENGTH_SHORT).show());
+    }
+
+    private String normalizeCnic(String cnic) {
+        if (cnic == null) {
+            return "";
+        }
+
+        return cnic.replaceAll("[^0-9]", "");
     }
 }

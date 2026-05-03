@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
         android:id="@+id/header_section"
@@ -27,15 +27,15 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="Back"
-                android:src="@drawable/keyboard_backspace"
-                app:tint="#374D5E" />
+                android:src="@drawable/keyboard_backspace" 
+        app:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:textColor="#111111"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="38sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="start"
-            android:textColor="#222222"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="15sp" />
 
         <LinearLayout
@@ -76,13 +76,13 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_filter"
-                android:tint="#666666" />
+                android:tint="?attr/colorOnSurfaceVariant" />
 
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_search"
-                android:tint="#666666" />
+                android:tint="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <TextView

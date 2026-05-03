@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,8 +27,8 @@
         android:layout_height="24dp"
 
         android:contentDescription="Back"
-        android:src="@drawable/keyboard_backspace"
-        app:tint="#374D5E" />
+        android:src="@drawable/keyboard_backspace" 
+        app:tint="?attr/colorOnSurface" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -38,7 +38,7 @@
         android:layout_marginBottom="25sp"
         android:gravity="center"
         android:text="Black-List User"
-        android:textColor="#27374D"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="28sp"
         android:textStyle="bold"
         />
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name of User"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <EditText
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="User Role"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <RelativeLayout
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CNIC Number"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <EditText
@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Black-list reason"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <EditText
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start Date"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -189,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Start Time\n(12:00am if not filled)"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
                 <RelativeLayout
                     android:layout_width="92dp"
@@ -236,7 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="End Date"
-                android:textColor="#1E1E1E"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -283,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="End Time\n(12:00am if not filled)"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
                 <RelativeLayout
                     android:layout_width="92dp"
@@ -325,16 +325,28 @@
             </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_blacklist"
-        android:layout_width="match_parent"
+            android:id="@+id/btn_blacklist"
+            android:layout_width="match_parent"
             android:layout_height="46dp"
-        android:layout_marginTop="24dp"
-        android:text="Black-List"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:backgroundTint="#27374D"
-        app:cornerRadius="6dp" />
+            android:layout_marginTop="24dp"
+            android:text="Black-List"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="6dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_remove_blacklist"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="12dp"
+            android:text="Remove"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:backgroundTint="?attr/colorError"
+            app:cornerRadius="6dp" />
 
     </LinearLayout>
     </ScrollView>

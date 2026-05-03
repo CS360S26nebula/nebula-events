@@ -17,6 +17,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that displays and manages active emergency entries, allowing guards to end emergencies.
+ *
+ * @author Moiz Imran
+ * @version 1.0
+ */
 public class ActiveEmergencyEntriesActivity extends AppCompatActivity implements ActiveEmergencyEntriesAdapter.ActionListener {
 
     private ListenerRegistration registration;
@@ -38,6 +44,10 @@ public class ActiveEmergencyEntriesActivity extends AppCompatActivity implements
         attachDatabaseListener();
     }
 
+    /**
+     * Attach a Firestore realtime listener to the "activeEmergencies" collection and
+     * update the adapter when documents change.
+     */
     private void attachDatabaseListener() {
         registration = FirebaseFirestore.getInstance()
                 .collection("activeEmergencies")
@@ -65,6 +75,13 @@ public class ActiveEmergencyEntriesActivity extends AppCompatActivity implements
                 });
     }
 
+    /**
+     * Called when the user requests to end an active emergency. Removes the active entry
+     * document and marks the corresponding emergency log as inactive.
+     *
+     * @param entry      the active emergency entry being ended
+     * @param documentId Firestore document id of the active emergency
+     */
     @Override
     public void onEndEmergency(@NonNull ActiveEmergencyEntry entry, @NonNull String documentId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -90,6 +107,9 @@ public class ActiveEmergencyEntriesActivity extends AppCompatActivity implements
                         Toast.makeText(this, "Failed to end emergency.", Toast.LENGTH_SHORT).show());
     }
 
+    /**
+     * Lifecycle cleanup to remove the Firestore listener when the activity is destroyed.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

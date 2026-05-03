@@ -20,4 +20,15 @@
     <color name="emergency_bg">#FFE7CE</color>
     <color name="emergency_text">#A14A00</color>
     <color name="search_bg">#FFFFFF</color>
+
+    <!-- Theme semantic colors -->
+    <color name="theme_background">#F8FAFC</color>
+    <color name="theme_surface">#FFFFFF</color>
+    <color name="theme_on_background">#27374D</color>
+    <color name="theme_on_surface">#000000</color>
+    <color name="theme_on_surface_variant">#666666</color>
+    <color name="divider_color">#D6D6D6</color>
+    <color name="white_fixed">#FFFFFF</color>
+    <color name="bottom_nav_active">#27374D</color>
+    <color name="bottom_nav_inactive">#111111</color>
 </resources>

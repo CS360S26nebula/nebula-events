@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
         android:id="@+id/header_row"
@@ -23,8 +23,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="Back"
-            android:src="@drawable/keyboard_backspace"
-            app:tint="#374D5E" />
+            android:src="@drawable/keyboard_backspace" 
+        app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:id="@+id/title"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:text="Emergency Entry"
-            android:textColor="#27374D"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="34sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -60,7 +60,7 @@
                 android:layout_height="170dp"
                 android:layout_weight="1"
                 android:layout_margin="6dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:strokeColor="#D9D9D9"
@@ -85,7 +85,7 @@
                         android:layout_marginTop="12dp"
                         android:gravity="center"
                         android:text="Ambulance"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -97,7 +97,7 @@
                 android:layout_height="170dp"
                 android:layout_weight="1"
                 android:layout_margin="6dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:strokeColor="#D9D9D9"
@@ -122,7 +122,7 @@
                         android:layout_marginTop="12dp"
                         android:gravity="center"
                         android:text="Police"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -140,7 +140,7 @@
                 android:layout_height="170dp"
                 android:layout_weight="1"
                 android:layout_margin="6dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:strokeColor="#D9D9D9"
@@ -165,7 +165,7 @@
                         android:layout_marginTop="12dp"
                         android:gravity="center"
                         android:text="Fire"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -177,7 +177,7 @@
                 android:layout_height="170dp"
                 android:layout_weight="1"
                 android:layout_margin="6dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:strokeColor="#D9D9D9"
@@ -202,7 +202,7 @@
                         android:layout_marginTop="12dp"
                         android:gravity="center"
                         android:text="Other / Manual Override"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>

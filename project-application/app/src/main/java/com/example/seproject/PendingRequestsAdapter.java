@@ -41,7 +41,9 @@ public class PendingRequestsAdapter extends RecyclerView.Adapter<PendingRequests
     }
 
     private final List<Request> requests = new ArrayList<>();
+    private final List<Request> allItems = new ArrayList<>();
     private final List<String> documentIds = new ArrayList<>();
+    private final List<String> allDocumentIds = new ArrayList<>();
     private final ActionListener actionListener;
 
     /**
@@ -59,9 +61,52 @@ public class PendingRequestsAdapter extends RecyclerView.Adapter<PendingRequests
      */
     public void setItems(@NonNull List<Request> newRequests, @NonNull List<String> newDocIds) {
         requests.clear();
-        documentIds.clear();
         requests.addAll(newRequests);
+        allItems.clear();
+        allItems.addAll(newRequests);
+
+        documentIds.clear();
         documentIds.addAll(newDocIds);
+        allDocumentIds.clear();
+        allDocumentIds.addAll(newDocIds);
+
+        notifyDataSetChanged();
+    }
+
+    /**
+     * @param query search string; may or may not be empty
+     */
+    public void filter(@NonNull String query) {
+        requests.clear();
+        documentIds.clear();
+
+        if (query == null || query.trim().isEmpty()) {
+            requests.addAll(allItems);
+            documentIds.addAll(allDocumentIds);
+            notifyDataSetChanged();
+            return;
+        }
+
+        String searchText = query.trim().toLowerCase();
+
+        for (int i = 0; i < allItems.size(); i++) {
+            Request r = allItems.get(i);
+            String docId = allDocumentIds.get(i);
+
+            String requestId = r.getRequestId() == null ? "" : r.getRequestId().toLowerCase();
+            String visitorName = r.getVisitorName() == null ? "" : r.getVisitorName().toLowerCase();
+            String visitorCnic = r.getVisitorCnic() == null ? "" : r.getVisitorCnic().toLowerCase();
+            String invitorName = r.getInvitorName() == null ? "" : r.getInvitorName().toLowerCase();
+
+            if (requestId.contains(searchText)
+                    || visitorName.contains(searchText)
+                    || visitorCnic.contains(searchText)
+                    || invitorName.contains(searchText)) {
+                requests.add(r);
+                documentIds.add(docId);
+            }
+        }
+
         notifyDataSetChanged();
     }
 

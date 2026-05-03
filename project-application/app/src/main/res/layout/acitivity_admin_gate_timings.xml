@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="?android:attr/colorBackground">
 
     <TextView
         android:id="@+id/btnBack"
@@ -12,7 +12,7 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="16dp"
         android:text="&#x2190;"
-        android:textColor="#333333"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="26sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gate Timings"
-        android:textColor="#111111"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
@@ -47,7 +47,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#666666" />
+                android:background="?attr/colorOnSurfaceVariant" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Monday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenMonday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +108,7 @@
                         android:id="@+id/cbGateOpenMonday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,7 +118,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeMonday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -134,12 +134,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenMonday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeMonday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -163,18 +163,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeMonday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -195,7 +195,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tuesday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -226,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenTuesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +236,7 @@
                         android:id="@+id/cbGateOpenTuesday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -246,7 +246,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeTuesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -262,12 +262,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenTuesday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -275,7 +275,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeTuesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -291,18 +291,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeTuesday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -323,7 +323,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Wednesday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -334,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -354,7 +354,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenWednesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -364,7 +364,7 @@
                         android:id="@+id/cbGateOpenWednesday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -374,7 +374,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeWednesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -390,12 +390,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenWednesday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -403,7 +403,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeWednesday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -419,18 +419,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeWednesday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -451,7 +451,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thursday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -462,7 +462,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -482,7 +482,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenThursday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -492,7 +492,7 @@
                         android:id="@+id/cbGateOpenThursday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -502,7 +502,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeThursday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -518,12 +518,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenThursday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -531,7 +531,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeThursday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -547,18 +547,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeThursday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -579,7 +579,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Friday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -590,7 +590,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -610,7 +610,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenFriday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -620,7 +620,7 @@
                         android:id="@+id/cbGateOpenFriday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -630,7 +630,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeFriday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -646,12 +646,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenFriday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -659,7 +659,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeFriday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -675,18 +675,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeFriday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -707,7 +707,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Saturday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -718,7 +718,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -738,7 +738,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenSaturday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -748,7 +748,7 @@
                         android:id="@+id/cbGateOpenSaturday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -758,7 +758,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeSaturday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -774,12 +774,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSaturday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -787,7 +787,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeSaturday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -803,18 +803,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSaturday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <LinearLayout
@@ -835,7 +835,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sunday"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -846,7 +846,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="&#x203A;"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -866,7 +866,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:text="Gate Open"
-                        android:textColor="#111111"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cbGateOpenSunday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -876,7 +876,7 @@
                         android:id="@+id/cbGateOpenSunday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="#333333"
+                        android:buttonTint="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -886,7 +886,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Opening Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnOpeningTimeSunday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -902,12 +902,12 @@
                         android:insetBottom="0dp"
                         android:text="10:00am"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cbGateOpenSunday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -915,7 +915,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="8dp"
                         android:text="Gate Closing Time"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnClosingTimeSunday"
                         app:layout_constraintStart_toStartOf="parent"
@@ -931,18 +931,18 @@
                         android:insetBottom="0dp"
                         android:text="10:00pm"
                         android:textAllCaps="false"
-                        android:textColor="#888888"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         app:cornerRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnOpeningTimeSunday"
-                        app:strokeColor="#DDDDDD" />
+                        app:strokeColor="@color/divider_color" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#666666" />
+                    android:background="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
         </LinearLayout>
@@ -966,11 +966,11 @@
             android:stateListAnimator="@null"
             android:text="Cancel"
             android:textAllCaps="false"
-            android:textColor="#111111"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="15sp"
-            app:backgroundTint="#FFFFFF"
+            app:backgroundTint="?attr/colorSurface"
             app:cornerRadius="8dp"
-            app:strokeColor="#DDDDDD"
+            app:strokeColor="@color/divider_color"
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -982,9 +982,9 @@
             android:stateListAnimator="@null"
             android:text="Save"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="15sp"
-            app:backgroundTint="#27374D"
+            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="8dp" />
     </LinearLayout>
 

@@ -62,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set up the password visibility toggle button. Toggles between visible and masked
+     * password input and updates the toggle icon accordingly.
+     */
     private void setupPasswordToggle() {
         isPasswordVisible = false;
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -79,6 +83,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Authenticate the user with Firebase Auth using email and password.
+     * On success, the user's Firestore profile will be loaded and used to redirect
+     * to the appropriate home screen.
+     *
+     * @param email    user's email address
+     * @param password user's password
+     */
     private void loginUser(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -92,6 +104,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Load the Firestore user document for {@code userId} and redirect to a role-specific
+     * home activity. Also checks blacklist status and clears expired blacklists.
+     *
+     * @param userId Firestore user document id (UID)
+     */
     private void fetchUserRoleAndRedirect(String userId) {
         db.collection("users").document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -128,6 +146,12 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show());
     }
 
+    /**
+     * Check whether the Firestore snapshot represents a currently active blacklist period.
+     *
+     * @param snapshot user document snapshot
+     * @return true if the user is currently blocked, false otherwise
+     */
     private boolean isUserCurrentlyBlocked(DocumentSnapshot snapshot) {
         Boolean isBlacklisted = snapshot.getBoolean("isBlacklisted");
         Long startMillis = snapshot.getLong("blacklistStartTimeMiliseconds");
@@ -144,6 +168,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If the user's blacklist has expired, clear blacklist-related fields in Firestore.
+     * This method is a no-op when the user is not blacklisted or the expiry time is missing.
+     *
+     * @param userId   Firestore document id for the user
+     * @param snapshot snapshot of the user document used to read blacklist fields
+     */
     private void clearExpiredBlacklistIfNeeded(String userId, DocumentSnapshot snapshot) {
         Boolean isBlacklisted = snapshot.getBoolean("isBlacklisted");
         Long endMillis = snapshot.getLong("blacklistEndTimeMilliseconds");

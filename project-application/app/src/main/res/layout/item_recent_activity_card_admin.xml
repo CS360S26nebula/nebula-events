@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pass ID:"
-                android:textColor="#666666"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="11sp" />
 
             <TextView
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textColor="#111111"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -48,7 +48,7 @@
             android:paddingEnd="12dp"
             android:paddingBottom="6dp"
             android:text="Approved"
-            android:textColor="#111111"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -58,14 +58,14 @@
         android:layout_height="1dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="14dp"
-        android:background="#C2C8D0" />
+        android:background="@color/divider_color" />
 
     <TextView
         android:id="@+id/tv_action_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Action By: -"
-        android:textColor="#111111"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#111111"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="13sp"
         android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#111111"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="13sp"
         android:textStyle="bold" />
 
@@ -96,9 +96,9 @@
         android:insetBottom="0dp"
         android:text="Check Out"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="12sp"
-        app:backgroundTint="#27374D"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="8dp" />
 
 </LinearLayout>
