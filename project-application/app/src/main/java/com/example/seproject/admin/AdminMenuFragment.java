@@ -1,5 +1,6 @@
 package com.example.seproject.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,8 @@ import com.example.seproject.CreateVisitorEntry;
 import com.example.seproject.R;
 
 /**
- * Root admin menu tiles (manage users, user settings, gate timings, restrict entry, create visitor).
+ * Root admin menu tiles (manage users, user settings, gate timings, restrict entry,
+ * create visitor, security audit).
  *
  * @author Moiz Imran
  * @version 1.0
@@ -34,15 +36,22 @@ public class AdminMenuFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         view.findViewById(R.id.btn_back).setOnClickListener(v -> requireActivity().finish());
+
         view.findViewById(R.id.card_manage_users).setOnClickListener(v ->
-                ((AdminMenuHostActivity) requireActivity()).navigateTo(new ManageUsersAdminFragment(), true));
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(
+                        new ManageUsersAdminFragment(), true));
+
         view.findViewById(R.id.card_restrict_visitor).setOnClickListener(v ->
-                ((AdminMenuHostActivity) requireActivity()).navigateTo(new RestrictEntryAdminFragment(), true));
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(
+                        new RestrictEntryAdminFragment(), true));
+
         view.findViewById(R.id.card_create_visitor_entry).setOnClickListener(v ->
-                ((AdminMenuHostActivity) requireActivity()).navigateTo(new CreateVisitorEntry(), true));
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(
+                        new CreateVisitorEntry(), true));
 
         // Umer: Added navigation for Gate Timings
         view.findViewById(R.id.card_gate_timings).setOnClickListener(v ->
-                ((AdminMenuHostActivity) requireActivity()).navigateTo(new AdminGateTimingsFragment(), true));
+                ((AdminMenuHostActivity) requireActivity()).navigateTo(
+                        new AdminGateTimingsFragment(), true));
     }
 }
