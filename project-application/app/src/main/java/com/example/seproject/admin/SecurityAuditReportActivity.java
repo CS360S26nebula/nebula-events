@@ -32,18 +32,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Shows the security audit report screen for roles of admin, guard, and faculty.
+ * <p>
+ * This activity loads audit-related records from Firestore, combines them into one timeline,
+ * and allows the user to filter results by log type, date range, and search text.
+ * </p>
+ *
+ * @author Abdullah Ahmad
+ * @version 1.0
+ */
+
 public class SecurityAuditReportActivity extends AppCompatActivity {
-
-    /**
-     * Optional Intent extra (String).
-     * When present, the report is scoped to only show records belonging to that faculty member
-     * (matched via the {@code requesterUid} field on requests).
-     * Emergency logs are excluded in faculty-scoped mode as they are not faculty-specific.
-     * Omit this extra (or pass null) for the full admin/guard view.
-     */
     public static final String EXTRA_FACULTY_UID = "EXTRA_FACULTY_UID";
-
-    /** Non-null when the screen was opened in faculty-scoped mode. */
     private String facultyUid = null;
 
     // Views
@@ -192,10 +193,6 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
                     final List<AuditLogItem> emergencyItems = new ArrayList<>();
                     final int[] done = {0};
 
-                    // Always fetch ALL requests (same as admin/guard), then client-side filter
-                    // by requesterUid in faculty mode. This guarantees count consistency:
-                    // the faculty sees exactly the subset of the full admin/guard list that
-                    // belongs to them, with no Firestore index or field-mismatch surprises.
                     final int totalTasks = (facultyUid != null) ? 1 : 2;
 
                     db.collection("requests").get()
@@ -204,65 +201,56 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
                                     Request r = d.toObject(Request.class);
                                     if (r == null) continue;
 
-                                    // FACULTY SCOPE FILTER: skip requests that do not belong
-                                    // to the logged-in faculty. This mirrors exactly how the
-                                    // admin/guard full list is built, then narrows it client-side
-                                    // to only Ali Sajjad's requests — guaranteeing the count
-                                    // Ali sees is a consistent subset of the admin/guard count.
-                                    String facultyOwnerUid = d.getString("requesterUid");
-                                    boolean isFacultyMode  = (facultyUid != null);
-                                    if (isFacultyMode && !facultyUid.equals(facultyOwnerUid)) {
-                                        continue;
-                                    }
+                                    boolean isFacultyMode = (facultyUid != null);
 
                                     if (r.getIsAdhoc()) {
-                                        String uid = isFacultyMode
-                                                ? facultyOwnerUid
-                                                : d.getString("createdByUid");
-                                        requestItems.add(AuditLogItem.adhocRequest(
-                                                nvl(r.getRequestId()),
-                                                nvl(r.getVisitorName()),
-                                                uid,
-                                                resolvedName(uid),
-                                                r.getCreatedAtMillis(),
-                                                r.getVisitReason(),
-                                                nvl(r.getRequestStatus())));
+                                        String uid = d.getString("createdByUid");
+                                        if (isFacultyMode && !facultyUid.equals(uid)) {
+                                            // skip — but still fall through to check entry/exit below
+                                        } else {
+                                            requestItems.add(AuditLogItem.adhocRequest(
+                                                    nvl(r.getRequestId()),
+                                                    nvl(r.getVisitorName()),
+                                                    uid,
+                                                    resolvedName(uid),
+                                                    r.getCreatedAtMillis(),
+                                                    r.getVisitReason(),
+                                                    nvl(r.getRequestStatus())));
+                                        }
                                     }
 
                                     if (r.getCheckedInAtMillis() > 0) {
-                                        String uid;
-                                        if (isFacultyMode) {
-                                            uid = facultyOwnerUid;
+                                        String uid = d.getString("approvedByUid");
+                                        if (uid == null || uid.trim().isEmpty())
+                                            uid = d.getString("createdByUid");
+                                        if (isFacultyMode && !facultyUid.equals(uid)) {
+                                            // skip this event
                                         } else {
-                                            uid = d.getString("approvedByUid");
-                                            if (uid == null || uid.trim().isEmpty())
-                                                uid = d.getString("createdByUid");
+                                            requestItems.add(AuditLogItem.entry(
+                                                    nvl(r.getPassId()),
+                                                    nvl(r.getVisitorName()),
+                                                    uid,
+                                                    resolvedName(uid),
+                                                    r.getCheckedInAtMillis(),
+                                                    r.getVisitReason()));
                                         }
-                                        requestItems.add(AuditLogItem.entry(
-                                                nvl(r.getPassId()),
-                                                nvl(r.getVisitorName()),
-                                                uid,
-                                                resolvedName(uid),
-                                                r.getCheckedInAtMillis(),
-                                                r.getVisitReason()));
                                     }
 
                                     if (r.getCheckedOutAtMillis() > 0) {
-                                        String uid;
-                                        if (isFacultyMode) {
-                                            uid = facultyOwnerUid;
+                                        String uid = d.getString("approvedByUid");
+                                        if (uid == null || uid.trim().isEmpty())
+                                            uid = d.getString("createdByUid");
+                                        if (isFacultyMode && !facultyUid.equals(uid)) {
+                                            // skip this event
                                         } else {
-                                            uid = d.getString("approvedByUid");
-                                            if (uid == null || uid.trim().isEmpty())
-                                                uid = d.getString("createdByUid");
+                                            requestItems.add(AuditLogItem.exit(
+                                                    nvl(r.getPassId()),
+                                                    nvl(r.getVisitorName()),
+                                                    uid,
+                                                    resolvedName(uid),
+                                                    r.getCheckedOutAtMillis(),
+                                                    r.getVisitReason()));
                                         }
-                                        requestItems.add(AuditLogItem.exit(
-                                                nvl(r.getPassId()),
-                                                nvl(r.getVisitorName()),
-                                                uid,
-                                                resolvedName(uid),
-                                                r.getCheckedOutAtMillis(),
-                                                r.getVisitReason()));
                                     }
                                 }
                                 done[0]++;
@@ -275,7 +263,6 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             });
 
-                    // Emergency logs are campus-wide, not linked to any faculty — skip in faculty mode
                     if (facultyUid != null) {
                         // Faculty mode: no emergency logs to fetch, already counted above
                     } else {
