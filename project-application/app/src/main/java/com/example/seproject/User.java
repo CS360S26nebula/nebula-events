@@ -48,6 +48,22 @@ public class User {
         this.cnicNumber = cnicNumber;
     }
 
+    /**
+     * 6-arg constructor without userId (userId stays null).
+     * Provided for backward compatibility with tests and callers that do not supply a userId.
+     *
+     * @param fullName    display name; may be null
+     * @param role        e.g. Admin, Faculty, Guard; may be null
+     * @param dobString   date of birth string; may be null
+     * @param email       email; may be null
+     * @param phoneNumber phone; may be null
+     * @param cnicNumber  CNIC; may be null
+     */
+    public User(@Nullable String fullName, @Nullable String role, @Nullable String dobString,
+                @Nullable String email,
+                @Nullable String phoneNumber, @Nullable String cnicNumber) {
+        this(null, fullName, role, dobString, email, phoneNumber, cnicNumber);
+    }
     @Nullable
     public String getUserId() {
         return userId;

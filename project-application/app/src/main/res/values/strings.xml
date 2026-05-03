@@ -15,4 +15,14 @@
     <string name="request_reject_failed">Could not reject request.</string>
     <string name="visitor_checked_out">Visitor checked out successfully.</string>
     <string name="checkout_failed">Failed to log exit time. Please try again.</string>
+    <string name="audit_label_pass_id">Pass ID:</string>
+    <string name="audit_label_request_id">Request ID:</string>
+    <string name="audit_label_emergency_id">Emergency ID:</string>
+    <string name="audit_label_visitor">Visitor:</string>
+    <string name="audit_label_emergency_type">Type:</string>
+    <string name="audit_label_action_by">Action By:</string>
+    <string name="audit_label_reason">Reason:</string>
+    <string name="menu_security_audit">Security Audit Report</string>
+    <string name="audit_date_from_hint">From date</string>
+    <string name="audit_date_to_hint">To date</string>
 </resources>

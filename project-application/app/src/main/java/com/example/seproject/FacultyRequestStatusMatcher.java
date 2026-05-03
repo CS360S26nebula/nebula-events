@@ -46,7 +46,8 @@ public final class FacultyRequestStatusMatcher {
             return STATUS_PENDING.equals(requestStatus) || "pending".equalsIgnoreCase(requestStatus);
         }
         if (STATUS_APPROVED.equals(targetStatus)) {
-            return STATUS_APPROVED.equals(requestStatus) ;
+            // The Approved tab shows both fully-approved and pre-approved requests.
+            return STATUS_APPROVED.equals(requestStatus) || STATUS_PRE_APPROVED.equals(requestStatus);
         }
         if (STATUS_PRE_APPROVED.equals(targetStatus)) {
             return STATUS_PRE_APPROVED.equals(requestStatus);

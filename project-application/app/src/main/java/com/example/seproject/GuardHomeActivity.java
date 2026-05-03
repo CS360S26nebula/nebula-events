@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.seproject.admin.SecurityAuditReportActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -161,7 +162,10 @@ public class GuardHomeActivity extends AppCompatActivity {
             activateTab(2);
             showCreateEntryBottomSheet();
         });
-        navPasses.setOnClickListener(v -> activateTab(3));
+        navPasses.setOnClickListener(v -> {
+            activateTab(3);
+            startActivity(new Intent(GuardHomeActivity.this, SecurityAuditReportActivity.class));
+        });
         navProfile.setOnClickListener(v -> {
             activateTab(4);
             startActivity(new Intent(GuardHomeActivity.this, ProfileActivity.class));

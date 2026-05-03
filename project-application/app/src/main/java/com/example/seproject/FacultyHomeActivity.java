@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.seproject.admin.SecurityAuditReportActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -82,13 +83,13 @@ public class FacultyHomeActivity extends AppCompatActivity {
         View pendingBox = findViewById(R.id.pendingBox);
 
         tvadhocRequests.setOnClickListener((v ->{
-                Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
-                intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
-                intent.putExtra(RequestListActivity.EXTRA_IS_ADHOC, true);
-                intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.adhoc_requests_title));
-                intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "View Adhoc Requests From your guests");
-                intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
-                startActivity(intent);
+            Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
+            intent.putExtra(RequestListActivity.EXTRA_STATUS, "Pending");
+            intent.putExtra(RequestListActivity.EXTRA_IS_ADHOC, true);
+            intent.putExtra(RequestListActivity.EXTRA_TITLE, getString(R.string.adhoc_requests_title));
+            intent.putExtra(RequestListActivity.EXTRA_SUBTITLE, "View Adhoc Requests From your guests");
+            intent.putExtra(RequestListActivity.EXTRA_ROLE, "Faculty");
+            startActivity(intent);
         }));
         pendingBox.setOnClickListener(v -> {
             Intent intent = new Intent(FacultyHomeActivity.this, RequestListActivity.class);
@@ -130,7 +131,15 @@ public class FacultyHomeActivity extends AppCompatActivity {
             startActivity(new Intent(FacultyHomeActivity.this, FacultyDownloadActivity.class));
         });
 
-        navPasses.setOnClickListener(v        -> activateTab(3));
+        navPasses.setOnClickListener(v -> {
+            activateTab(3);
+            String uid = FirebaseAuth.getInstance().getUid();
+            Intent intent = new Intent(FacultyHomeActivity.this, SecurityAuditReportActivity.class);
+            if (uid != null) {
+                intent.putExtra(SecurityAuditReportActivity.EXTRA_FACULTY_UID, uid);
+            }
+            startActivity(intent);
+        });
         navProfile.setOnClickListener(v -> {
             activateTab(4);
             startActivity(new Intent(FacultyHomeActivity.this, ProfileActivity.class));
@@ -284,16 +293,16 @@ public class FacultyHomeActivity extends AppCompatActivity {
     }
     private void activateTab(int tab) {
         int[] outlineIcons = {
-            R.drawable.home,
-            R.drawable.ic_download,
-            R.drawable.file,
-            R.drawable.ic_profile
+                R.drawable.home,
+                R.drawable.ic_download,
+                R.drawable.file,
+                R.drawable.ic_profile
         };
         int[] filledIcons = {
-            R.drawable.home_filled,
-            R.drawable.ic_download_filled,
-            R.drawable.file_filled,
-            R.drawable.ic_profile_filled
+                R.drawable.home_filled,
+                R.drawable.ic_download_filled,
+                R.drawable.file_filled,
+                R.drawable.ic_profile_filled
         };
 
         ImageView[] icons = { navHomeIcon, navDownloadIcon, navPassesIcon, navProfileIcon };

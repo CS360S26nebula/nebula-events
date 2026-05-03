@@ -64,6 +64,10 @@
             android:name=".VisitorScannerActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".admin.SecurityAuditReportActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

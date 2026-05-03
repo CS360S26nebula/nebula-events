@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.seproject.admin.AdminMenuHostActivity;
+import com.example.seproject.admin.SecurityAuditReportActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -133,7 +134,10 @@ public class AdminHomeActivity extends AppCompatActivity {
             activateTab(2);
             startActivity(new Intent(AdminHomeActivity.this, AdminMenuHostActivity.class));
         });
-        navPasses.setOnClickListener(v    -> activateTab(3));
+        navPasses.setOnClickListener(v -> {
+            activateTab(3);
+            startActivity(new Intent(AdminHomeActivity.this, SecurityAuditReportActivity.class));
+        });
         navProfile.setOnClickListener(v -> {
             activateTab(4);
             startActivity(new Intent(AdminHomeActivity.this, ProfileActivity.class));
@@ -461,16 +465,16 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private void activateTab(int tab) {
         int[] outlineIcons = {
-            R.drawable.home,
-            R.drawable.qr_code_scanner,
-            R.drawable.file,
-            R.drawable.ic_profile
+                R.drawable.home,
+                R.drawable.qr_code_scanner,
+                R.drawable.file,
+                R.drawable.ic_profile
         };
         int[] filledIcons = {
-            R.drawable.home_filled,
-            R.drawable.qr_code_scanner,
-            R.drawable.file_filled,
-            R.drawable.ic_profile_filled
+                R.drawable.home_filled,
+                R.drawable.qr_code_scanner,
+                R.drawable.file_filled,
+                R.drawable.ic_profile_filled
         };
 
         ImageView[] icons = { navHomeIcon, navScanIcon, navPassesIcon, navProfileIcon };
