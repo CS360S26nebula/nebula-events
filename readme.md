@@ -269,19 +269,20 @@ Product Backlog is also available in the kanban board linked at the end of this 
 ### Remaining:
 ### Product Backlog – Remaining Features (Final Release)
 
-| ID | Theme | User Story | Risk | Points | Release | Status |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **US08** | Ad-Hoc | As a security guard, I want to trigger an ad-hoc approval notification to a specific host (Student/Faculty), so that I can process unexpected arrivals. | High | 5 | Final | **In Progress ⏳** |
-| **US09** | Ad-Hoc | As a host (Faculty/Student), I want to receive real-time notifications to approve or deny an unexpected guest, so that I maintain control over who visits me. | High | 8 | Final |  **In Progress ⏳** |
-| **US10** | Exception | As a security guard, I want to be able to log an "Emergency" entry (ambulances), so that critical personnel can enter immediately while still leaving an audit trail. | Medium | 3 | Final |  **In Progress ⏳**|
-| **US11** | Audit | As a security administrator, I want to generate filterable reports of all entries, exits, and ad-hoc overrides, so that I can audit campus security procedures. | Medium | 5 | Final | **In Progress ⏳** |
-| **US14** | Security | As a security administrator, I want to add or remove specific individuals from a blacklist using their CNIC, so that offenders are blocked from campus entry. | Medium | 3 | Final | **In Progress ⏳** |
-| **US15** | Config | As a security administrator, I want to configure the standard daily gate timings (open/close hours), so that the system automatically enforces regular campus hours. | Low | 3 | Final |  **In Progress ⏳** |
-| **US16** | Config | As a security administrator, I want to toggle specific feature permissions for different user roles, so that I can dynamically control system access. | High | 5 | Final |  **In Progress ⏳**|
-
-### Product Backlog – Project Part 3
 | ID | Theme | User Story | Risk | Points | Release |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+
+### Product Backlog – Project Part 3
+
+| ID | Theme | User Story | Risk | Points | Release | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **US08** | Ad-Hoc | As a security guard, I want to trigger an ad-hoc approval notification to a specific host (Student/Faculty), so that I can process unexpected arrivals. | High | 5 | Final | **Completed ✅** |
+| **US09** | Ad-Hoc | As a host (Faculty/Student), I want to receive real-time notifications to approve or deny an unexpected guest, so that I maintain control over who visits me. | High | 8 | Final |  **Completed ✅** |
+| **US10** | Exception | As a security guard, I want to be able to log an "Emergency" entry (ambulances), so that critical personnel can enter immediately while still leaving an audit trail. | Medium | 3 | Final |  **Completed ✅**|
+| **US11** | Audit | As a security administrator, I want to generate filterable reports of all entries, exits, and ad-hoc overrides, so that I can audit campus security procedures. | Medium | 5 | Final | **Completed ✅** |
+| **US14** | Security | As a security administrator, I want to add or remove specific individuals from a blacklist using their CNIC, so that offenders are blocked from campus entry. | Medium | 3 | Final | **Completed ✅** |
+| **US15** | Config | As a security administrator, I want to configure the standard daily gate timings (open/close hours), so that the system automatically enforces regular campus hours. | Low | 3 | Final |  **Completed ✅**|
+| **US16** | Config | As a security administrator, I want to toggle specific feature permissions for different user roles, so that I can dynamically control system access. | High | 5 | Final |  **Completed ✅**|
 
 ---
 
