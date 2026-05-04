@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SE project</string>
+    <string name="app_name">SafeCore</string>
     <string name="plus">+</string>
     <string name="pending_requests_title">Pending Requests</string>
     <string name="adhoc_requests_title">Adhoc Requests</string>
