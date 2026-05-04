@@ -44,7 +44,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView notifToggle = view.findViewById(R.id.toggle_notifications);
         ImageView darkToggle = view.findViewById(R.id.toggle_dark_mode);
         View backButton = view.findViewById(R.id.btn_back);
         View callAdminButton = view.findViewById(R.id.btn_call_admin);
@@ -77,24 +76,6 @@ public class ProfileFragment extends Fragment {
             });
         }
 
-        if (notifToggle != null) {
-            notifToggle.setTag("off");
-            notifToggle.setImageResource(R.drawable.toggleleft);
-            notifToggle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ImageView iv = (ImageView) v;
-                    Object tag = iv.getTag();
-                    if (tag != null && tag.equals("on")) {
-                        iv.setImageResource(R.drawable.toggleleft);
-                        iv.setTag("off");
-                    } else {
-                        iv.setImageResource(R.drawable.toggleright);
-                        iv.setTag("on");
-                    }
-                }
-            });
-        }
 
         if (darkToggle != null) {
             // Check current night mode state to set initial toggle image
