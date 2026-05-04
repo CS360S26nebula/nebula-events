@@ -374,8 +374,13 @@ public class RequestListActivity extends AppCompatActivity implements PendingReq
                                         "approvedByName", approverName == null ? "" : approverName,
                                         "approvedByUserId", approverId == null ? "" : approverId
                                 )
-                                .addOnSuccessListener(unused ->
-                                        Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show())
+                                .addOnSuccessListener(unused -> {
+                                    if (isFacultyApprovingAdhoc) {
+                                        Toast.makeText(this, R.string.adhoc_request_approved, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(this, R.string.request_pre_approved, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
                                 .addOnFailureListener(e -> Toast.makeText(this, "Failed to approve", Toast.LENGTH_SHORT).show());
                     })
                     .addOnFailureListener(e ->

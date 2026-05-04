@@ -59,6 +59,8 @@ public class CreateVisitorEntry extends Fragment {
     protected EditText editVisitReason;
     protected MaterialButton btnSubmitRequest;
     protected FirebaseFirestore firestore;
+    protected View tvInvitorEmailLabel;
+    protected View tvInvitorNameLabel;
 
     public CreateVisitorEntry() {
         super(R.layout.create_visitor_entry_fragment);
@@ -86,6 +88,11 @@ public class CreateVisitorEntry extends Fragment {
         bindSpinner(spVisitTime, buildVisitTimeOptions());
         editVisitDate.setOnClickListener(v -> openDatePicker());
         btnSubmitRequest.setOnClickListener(v -> submitRequest());
+
+        if (!isAdhocEntry()) {
+            if (editInvitorEmail != null) editInvitorEmail.setVisibility(View.GONE);
+            if (tvInvitorEmailLabel != null) tvInvitorEmailLabel.setVisibility(View.GONE);
+        }
     }
 
     private void initViews(@NonNull View view) {
@@ -99,6 +106,8 @@ public class CreateVisitorEntry extends Fragment {
         spVisitTime = view.findViewById(R.id.sp_visit_time);
         spVisitorType = view.findViewById(R.id.sp_visitor_type);
         btnSubmitRequest = view.findViewById(R.id.btn_submit_request);
+        tvInvitorEmailLabel = view.findViewById(R.id.tv_invitor_email_label);
+        tvInvitorNameLabel = view.findViewById(R.id.tv_invitor_name_label);
     }
 
     private void openDatePicker() {
@@ -132,13 +141,15 @@ public class CreateVisitorEntry extends Fragment {
             toast("Please fill all required fields.");
             return false;
         }
-        if (EmptyStrings.isEmpty(invitorEmail)) {
-            toast("Please enter the invitor's email.");
-            return false;
-        }
-        if (!CreateVisitorEntryRules.isInvitorEmailFormatValid(invitorEmail)) {
-            toast("Please enter a valid invitor email.");
-            return false;
+        if (isAdhocEntry()) {
+            if (EmptyStrings.isEmpty(invitorEmail)) {
+                toast("Please enter the invitor's email.");
+                return false;
+            }
+            if (!CreateVisitorEntryRules.isInvitorEmailFormatValid(invitorEmail)) {
+                toast("Please enter a valid invitor email.");
+                return false;
+            }
         }
         if (!FacultyVisitorRequestValidator.isVisitorTypeSelected(visitorType)) {
             toast("Please select visitor type.");
@@ -242,7 +253,13 @@ public class CreateVisitorEntry extends Fragment {
 
         firestore.collection("requests").document(requestId).set(requestMap)
                 .addOnSuccessListener(unused -> {
-                    toast("Visitor entry created for " + facultyEmail + ".");
+                    if (isAdhocEntry()) {
+                        toast(getString(R.string.adhoc_request_submitted, facultyEmail));
+                    } else if (!invitorName.isEmpty()) {
+                        toast(getString(R.string.visitor_entry_created_for, invitorName));
+                    } else {
+                        toast(getString(R.string.visitor_entry_created));
+                    }
                     clearForm();
                 })
                 .addOnFailureListener(error -> {
@@ -308,17 +325,24 @@ public class CreateVisitorEntry extends Fragment {
                     return;
                 }
 
-                final String emailKey = invitorEmail;
-                lookupFacultyByEmail(emailKey,
-                        (facultyUid, facultyEmail) -> {
-                            createVisitorEntry(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason,
-                                    visitorType, visitDate, visitTime, facultyUid, facultyEmail, emailKey);
-                            btnSubmitRequest.setEnabled(true);
-                        },
-                        () -> {
-                            toast("No faculty account with this email exists");
-                            btnSubmitRequest.setEnabled(true);
-                        });
+                if (isAdhocEntry() || !invitorEmail.isEmpty()) {
+                    final String emailKey = invitorEmail;
+                    lookupFacultyByEmail(emailKey,
+                            (facultyUid, facultyEmail) -> {
+                                createVisitorEntry(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason,
+                                        visitorType, visitDate, visitTime, facultyUid, facultyEmail, emailKey);
+                                btnSubmitRequest.setEnabled(true);
+                            },
+                            () -> {
+                                toast("No faculty account with this email exists");
+                                btnSubmitRequest.setEnabled(true);
+                            });
+                } else {
+                    // Regular entry with no email -> use empty/default faculty info
+                    createVisitorEntry(visitorName, invitorName, visitorPhoneNumber, visitorCnic, visitReason,
+                            visitorType, visitDate, visitTime, "", "", "");
+                    btnSubmitRequest.setEnabled(true);
+                }
             });
         });
     }
@@ -457,7 +481,13 @@ public class CreateVisitorEntry extends Fragment {
             public View getView(int position, View convertView, android.view.ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = view.findViewById(android.R.id.text1);
-                text.setTextColor(position == 0 ? 0xFF999999 : 0xFF1E1E1E);
+                if (position == 0) {
+                    text.setTextColor(0xFF999999);
+                } else {
+                    android.content.res.TypedArray a = requireContext().obtainStyledAttributes(new int[]{com.google.android.material.R.attr.colorOnSurface});
+                    text.setTextColor(a.getColor(0, 0xFF1E1E1E));
+                    a.recycle();
+                }
                 return view;
             }
 
@@ -465,7 +495,13 @@ public class CreateVisitorEntry extends Fragment {
             public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView text = view.findViewById(android.R.id.text1);
-                text.setTextColor(position == 0 ? 0xFF999999 : 0xFF1E1E1E);
+                if (position == 0) {
+                    text.setTextColor(0xFF999999);
+                } else {
+                    android.content.res.TypedArray a = requireContext().obtainStyledAttributes(new int[]{com.google.android.material.R.attr.colorOnSurface});
+                    text.setTextColor(a.getColor(0, 0xFF1E1E1E));
+                    a.recycle();
+                }
                 return view;
             }
         };

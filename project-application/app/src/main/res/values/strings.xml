@@ -7,6 +7,10 @@
     <string name="preapproved_requests_title">Pre-Approved Requests</string>
     <string name="preapproved_requests_subtitle">View Pre-Approved Visitor Requests</string>
     <string name="request_pre_approved">Request marked as Pre-Approved.</string>
+    <string name="adhoc_request_submitted">Ad hoc request submitted to: %1$s</string>
+    <string name="adhoc_request_approved">Ad hoc request marked as approved</string>
+    <string name="visitor_entry_created_for">Visitor entry created for %1$s</string>
+    <string name="visitor_entry_created">Visitor entry created</string>
     <string name="request_approve_failed">Could not update request.</string>
     <string name="rejected_requests_title">Rejected Requests</string>
     <string name="rejected_requests_subtitle">View rejected visitor requests</string>

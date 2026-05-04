@@ -207,7 +207,9 @@
         android:paddingEnd="16dp"
         android:text="Download Pass"
         android:textAllCaps="false"
-        android:textColor="#1B2E3C"
+        android:textColor="#FFFFFF"
+        app:drawableTint="#FFFFFF"
+        android:drawableTint="#FFFFFF"
         app:backgroundTint="?attr/colorPrimary"
         android:textSize="12sp"
         android:textStyle="bold" />

@@ -357,7 +357,13 @@ public class FacultySubmitVisitorRequest extends Fragment {
             public View getView(int position, View convertView, android.view.ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = view.findViewById(android.R.id.text1);
-                text.setTextColor(position == 0 ? 0xFF999999 : 0xFF1E1E1E);
+                if (position == 0) {
+                    text.setTextColor(0xFF999999);
+                } else {
+                    android.content.res.TypedArray a = requireContext().obtainStyledAttributes(new int[]{com.google.android.material.R.attr.colorOnSurface});
+                    text.setTextColor(a.getColor(0, 0xFF1E1E1E));
+                    a.recycle();
+                }
                 return view;
             }
 
@@ -365,7 +371,13 @@ public class FacultySubmitVisitorRequest extends Fragment {
             public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView text = view.findViewById(android.R.id.text1);
-                text.setTextColor(position == 0 ? 0xFF999999 : 0xFF1E1E1E);
+                if (position == 0) {
+                    text.setTextColor(0xFF999999);
+                } else {
+                    android.content.res.TypedArray a = requireContext().obtainStyledAttributes(new int[]{com.google.android.material.R.attr.colorOnSurface});
+                    text.setTextColor(a.getColor(0, 0xFF1E1E1E));
+                    a.recycle();
+                }
                 return view;
             }
         };

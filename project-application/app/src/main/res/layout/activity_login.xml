@@ -68,7 +68,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#6B6B6B" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <EditText
                 android:id="@+id/emailEditText"
@@ -81,6 +81,7 @@
                 android:paddingStart="12dp"
                 android:paddingLeft="12dp"
                 android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +111,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#6B6B6B" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <EditText
                 android:id="@+id/passwordEditText"
@@ -123,6 +124,7 @@
                 android:paddingStart="12dp"
                 android:paddingLeft="12dp"
                 android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/passwordToggle"
@@ -139,7 +141,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#6B6B6B" />
+                app:tint="?attr/colorOnSurfaceVariant" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <CheckBox

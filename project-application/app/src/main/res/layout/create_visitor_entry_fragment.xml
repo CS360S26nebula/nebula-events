@@ -107,6 +107,7 @@
                     android:src="@drawable/keyboard_arrow_down" />
             </RelativeLayout>
             <TextView
+                android:id="@+id/tv_invitor_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -126,6 +127,7 @@
                 android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/tv_invitor_email_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
