@@ -46,6 +46,7 @@
         android:alignmentMode="alignMargins"
         android:columnCount="2"
         android:rowCount="3"
+        android:layout_gravity="center"
         android:useDefaultMargins="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,8 +101,8 @@
             android:layout_marginBottom="26dp"
             android:gravity="center">
 
-            <LinearLayout
-                android:id="@+id/card_user_settings"
+           <LinearLayout
+                android:id="@+id/card_create_visitor_entry"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:background="@drawable/bg_button"
@@ -114,15 +115,18 @@
                 <ImageView
                     android:layout_width="52dp"
                     android:layout_height="52dp"
-                    android:src="@drawable/settings" />
+                    android:contentDescription="Create visitor entry"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_plus" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="User Settings"
+                    android:gravity="center"
+                    android:text="Create Visitor Entry"
                     android:textColor="?attr/colorOnPrimary"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </FrameLayout>
@@ -211,46 +215,6 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Restrict Entry"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </FrameLayout>
-
-        <!-- Row 2, col 0 -->
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_row="2"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:layout_marginEnd="8dp"
-            android:gravity="center">
-
-            <LinearLayout
-                android:id="@+id/card_create_visitor_entry"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:background="@drawable/bg_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:contentDescription="Create visitor entry"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_plus" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="Create Visitor Entry"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="12sp"
                     android:textStyle="bold" />

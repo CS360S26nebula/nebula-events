@@ -63,14 +63,6 @@
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
                 </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/bellIcon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/notifications" />
             </RelativeLayout>
 
             <!-- ======== STATUS CARDS GRID ======== -->

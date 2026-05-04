@@ -65,13 +65,6 @@
                         android:layout_marginTop="2dp" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/bellIcon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/notifications"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <!-- ======== STATUS CARDS GRID (Faculty: Approved, Rejected, Pending) ======== -->
