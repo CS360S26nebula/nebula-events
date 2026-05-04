@@ -34,12 +34,20 @@ public class AuditLogAdapter extends RecyclerView.Adapter<AuditLogAdapter.AuditV
     private final SimpleDateFormat dateFormatter =
             new SimpleDateFormat("dd MMM yyyy, h:mm a", Locale.ENGLISH);
 
+    /**
+     * Replaces current dataset and refreshes the list.
+     *
+     * @param newItems list of audit log items
+     */
     public void setItems(@NonNull List<AuditLogItem> newItems) {
         items.clear();
         items.addAll(newItems);
         notifyDataSetChanged();
     }
 
+    /**
+     * Inflates the audit log item layout.
+     */
     @NonNull
     @Override
     public AuditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,14 +56,23 @@ public class AuditLogAdapter extends RecyclerView.Adapter<AuditLogAdapter.AuditV
         return new AuditViewHolder(v);
     }
 
+    /**
+     * Binds data to a specific list item.
+     */
     @Override
     public void onBindViewHolder(@NonNull AuditViewHolder holder, int position) {
         holder.bind(items.get(position));
     }
 
+    /**
+     * Returns total number of items.
+     */
     @Override
     public int getItemCount() { return items.size(); }
 
+    /**
+     * ViewHolder representing a single audit log card.
+     */
     final class AuditViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView tvTypeBadge;
@@ -75,6 +92,11 @@ public class AuditLogAdapter extends RecyclerView.Adapter<AuditLogAdapter.AuditV
             tvDetail        = itemView.findViewById(R.id.tv_audit_detail);
         }
 
+        /**
+         * Binds an {@link AuditLogItem} to UI components.
+         *
+         * @param item audit log data
+         */
         void bind(@NonNull AuditLogItem item) {
             Context ctx = itemView.getContext();
 
@@ -140,10 +162,16 @@ public class AuditLogAdapter extends RecyclerView.Adapter<AuditLogAdapter.AuditV
             }
         }
 
+        /**
+         * Returns "-" if value is null/empty.
+         */
         private String dash(String v) {
             return (v == null || v.trim().isEmpty()) ? "-" : v;
         }
 
+        /**
+         * Formats timestamp into readable date-time string.
+         */
         private String formatTime(long millis) {
             if (millis <= 0) return "-";
             return dateFormatter.format(new Date(millis));

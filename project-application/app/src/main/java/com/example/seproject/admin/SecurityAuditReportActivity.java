@@ -72,6 +72,9 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
     private static final SimpleDateFormat DATE_DISPLAY_FMT =
             new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
 
+    /**
+     * Initializes UI, reads intent extras, and triggers data loading.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +93,9 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         loadData();
     }
 
+    /**
+     * Binds all UI components from layout to class fields.
+     */
     private void bindViews() {
         rvAuditLog       = findViewById(R.id.rv_audit_log);
         tvEmptyState     = findViewById(R.id.tv_audit_empty);
@@ -103,15 +109,24 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         btnClearDateTo   = findViewById(R.id.btn_clear_date_to);
     }
 
+    /**
+     * Configures RecyclerView with layout manager and adapter.
+     */
     private void setupRecyclerView() {
         rvAuditLog.setLayoutManager(new LinearLayoutManager(this));
         rvAuditLog.setAdapter(adapter);
     }
 
+    /**
+     * Sets up chip-based filtering for event types.
+     */
     private void setupChips() {
         chipGroupFilter.setOnCheckedStateChangeListener((group, checkedIds) -> applyFilters());
     }
 
+    /**
+     * Attaches a text watcher to perform live search filtering.
+     */
     private void setupSearch() {
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) { }
@@ -120,6 +135,9 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes date picker UI and clear actions for date filters.
+     */
     private void setupDatePickers() {
         tvDateFrom.setOnClickListener(v -> showDatePicker(true));
         tvDateTo.setOnClickListener(v -> showDatePicker(false));
@@ -142,6 +160,11 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         btnClearDateTo.setVisibility(View.GONE);
     }
 
+    /**
+     * Displays a date picker dialog and updates the selected filter date.
+     *
+     * @param isFrom true if selecting "from" date, false for "to" date
+     */
     private void showDatePicker(boolean isFrom) {
         Calendar cal = Calendar.getInstance();
         if (isFrom && filterFromMs > 0) cal.setTimeInMillis(filterFromMs);
@@ -172,6 +195,18 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
                 cal.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    /**
+     * Loads data from Firestore including users, requests, and emergency logs.
+     *
+     * <p>
+     * Applies role-based logic:
+     * <ul>
+     *     <li>Faculty mode: filters records by UID of actor</li>
+     *     <li>Admin mode: loads all logs</li>
+     *     <li>Guard mode: same thing as for admin mode</li>
+     * </ul>
+     * </p>
+     */
     private void loadData() {
         showLoading(true);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -303,6 +338,13 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Merges request logs and emergency logs, sorts them in descending
+     * order of timestamp, and updates the UI.
+     *
+     * @param requests    list of request-related audit logs
+     * @param emergencies list of emergency audit logs
+     */
     private void mergeAndDisplay(@NonNull List<AuditLogItem> requests,
                                  @NonNull List<AuditLogItem> emergencies) {
         allItems.clear();
@@ -313,6 +355,10 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         applyFilters();
     }
 
+    /**
+     * Applies all active filters including type filter (chips), date range and search query.
+     * Updates adapter data and UI state accordingly.
+     */
     void applyFilters() {
         int checkedId = chipGroupFilter.getCheckedChipId();
         Integer typeFilter = null;
@@ -347,18 +393,35 @@ public class SecurityAuditReportActivity extends AppCompatActivity {
         tvEmptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Resolves user display name from UID.
+     *
+     * @param uid Firebase user ID
+     * @return full name if available, otherwise null
+     */
     private String resolvedName(String uid) {
         if (uid == null || uid.trim().isEmpty()) return null;
         String name = userNameByUid.get(uid);
         return (name != null && !name.isEmpty()) ? name : null;
     }
 
+    /**
+     * Utility method for safe string containment check.
+     */
     private boolean contains(String source, String query) {
         return source != null && source.toLowerCase(Locale.ENGLISH).contains(query);
     }
 
+    /**
+     * Returns non-null string value.
+     */
     private String nvl(String v) { return v != null ? v : ""; }
 
+    /**
+     * Toggles loading state visibility.
+     *
+     * @param loading true to show progress bar, false to show content
+     */
     private void showLoading(boolean loading) {
         progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
         rvAuditLog.setVisibility(loading ? View.GONE : View.VISIBLE);

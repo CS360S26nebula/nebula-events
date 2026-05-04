@@ -41,6 +41,9 @@ public class AuditLogItem {
         this.extraDetail     = extraDetail;
     }
 
+    /**
+     * Creates an entry (check-in) audit log.
+     */
     public static AuditLogItem entry(@NonNull String passId,
                                      @NonNull String visitorName,
                                      @Nullable String actorId,
@@ -55,6 +58,9 @@ public class AuditLogItem {
                 visitReason);
     }
 
+    /**
+     * Creates an exit (check-out) audit log.
+     */
     public static AuditLogItem exit(@NonNull String passId,
                                     @NonNull String visitorName,
                                     @Nullable String actorId,
@@ -69,6 +75,13 @@ public class AuditLogItem {
                 visitReason);
     }
 
+    /**
+     * Creates an ad-hoc request audit log.
+     *
+     * <p>
+     * Combines visit reason and request status into a single detail field.
+     * </p>
+     */
     public static AuditLogItem adhocRequest(@NonNull String requestId,
                                             @NonNull String visitorName,
                                             @Nullable String actorId,
@@ -87,6 +100,9 @@ public class AuditLogItem {
                 detail);
     }
 
+    /**
+     * Creates an emergency audit log.
+     */
     public static AuditLogItem emergency(@NonNull String logId,
                                          @NonNull String emergencyType,
                                          @Nullable String guardId,
